@@ -2,7 +2,7 @@
     "name": "单词背诵助手",
     "short_name": "单词背诵",
     "description": "简单好用的英语单词背诵工具",
-    "start_url": "/word/",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#3b82f6",

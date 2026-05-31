@@ -74,7 +74,7 @@ let rootMap = null;
 export async function loadRootMap() {
   if (rootMap) return rootMap;
   try {
-    const resp = await fetch('/word/data/roots.json');
+    const resp = await fetch('data/roots.json');
     rootMap = await resp.json();
     return rootMap;
   } catch (e) {

@@ -1,5 +1,5 @@
 const CACHE_NAME = 'word-learner-v2';
-const basePath = '/word';
+const basePath = new URL(self.location.href).pathname.replace(/\/[^/]*$/, '');
 
 // 需要预缓存的静态资源
 const urlsToCache = [
