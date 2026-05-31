@@ -1,0 +1,16 @@
+{
+    "name": "单词背诵助手",
+    "short_name": "单词背诵",
+    "description": "简单好用的英语单词背诵工具",
+    "start_url": "/word/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3b82f6",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/2936/2936749.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
