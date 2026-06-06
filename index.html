@@ -19,7 +19,7 @@
 
         <!-- ====== 导航栏 ====== -->
         <header class="nav-header flex items-center justify-between px-4 py-3 -mx-4 mb-4">
-            <button id="back-btn" class="btn-icon" style="visibility:hidden;font-size:1.5rem">←</button>
+            <button id="back-btn" class="btn-icon hidden" style="font-size:1.5rem">←</button>
             <h1 id="page-title" style="font-size:1.125rem;font-weight:700;color:var(--primary)">单词背诵助手</h1>
             <button id="theme-btn" class="btn-icon" style="font-size:1.25rem">🌙</button>
         </header>
@@ -276,7 +276,9 @@
                 <button class="btn-ghost" onclick="goToPage('voice-settings')">进入 →</button>
             </div>
 
-            <div class="app-card" style="padding:1rem;margin-top:1rem">
+            <button class="btn-primary" style="width:100%;margin-bottom:1rem" onclick="goHome()">← 返回首页</button>
+
+            <div class="app-card" style="padding:1rem;margin-bottom:1rem">
                 <p style="font-weight:600;margin-bottom:0.5rem">全局例句搜索</p>
                 <p style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:0.75rem">自动获取所有单词的英文例句及中文翻译。已有例句的单词会跳过。</p>
                 <button id="global-search-btn" class="btn-primary" style="width:100%">🔍 开始获取全部例句</button>

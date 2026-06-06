@@ -179,7 +179,6 @@ function renderHomePage() {
   const due = currentList ? getDueCount(currentList) : 0;
   const badge = document.getElementById('review-badge');
   if (badge) { badge.textContent = due; badge.style.display = due > 0 ? 'inline-flex' : 'none'; }
-  document.getElementById('back-btn').style.visibility = 'hidden';
   document.getElementById('page-title').textContent = '单词背诵助手';
 }
 

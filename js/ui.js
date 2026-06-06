@@ -13,7 +13,8 @@ const PAGE_TITLES = {
   'stats': '学习统计',
   'review': '今日复习',
   'roots': '词根分组',
-  'plan': '学习计划'
+  'plan': '学习计划',
+  'settings': '设置'
 };
 
 /** 切换到指定页面 */
