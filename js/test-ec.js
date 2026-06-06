@@ -90,10 +90,12 @@ function generateECOptions() {
   });
 }
 
+const MAX_RETRIES = 5;
 function prepareECReview() {
   state.reviewQueue = state.mistakes.map(m => [
     currentList.words.find(w => w.english === m.english && w.chinese === m.chinese) || { english: m.english, chinese: m.chinese },
-    m.streak || 0
+    m.streak || 0,
+    0
   ]).sort(() => Math.random() - 0.5);
   showECQuestion();
 }
@@ -139,7 +141,7 @@ function checkECAnswer(index, btnEl) {
       const [rw, streak] = state.reviewQueue.shift();
       const newStreak = streak + 1;
       if (newStreak >= 3) state.mistakes = state.mistakes.filter(m => !(m.english === rw.english && m.chinese === rw.chinese));
-      else { const m = state.mistakes.find(x => x.english === rw.english && x.chinese === rw.chinese); if (m) m.streak = newStreak; state.reviewQueue.push([rw, newStreak]); }
+      else { const m = state.mistakes.find(x => x.english === rw.english && x.chinese === rw.chinese); if (m) m.streak = newStreak; state.reviewQueue.push([rw, newStreak, 0]); }
     }
     currentList.ecMistakes = state.mistakes;
     saveData();
@@ -158,10 +160,10 @@ function checkECAnswer(index, btnEl) {
       else ex.streak = 0;
       state.currentIndex++;
     } else {
-      const [rw] = state.reviewQueue.shift();
+      const [rw, , retries = 0] = state.reviewQueue.shift();
       const m = state.mistakes.find(x => x.english === rw.english && x.chinese === rw.chinese);
       if (m) m.streak = 0;
-      state.reviewQueue.push([rw, 0]);
+      if (retries < MAX_RETRIES) state.reviewQueue.push([rw, 0, retries + 1]);
     }
     currentList.ecMistakes = state.mistakes;
     saveData();

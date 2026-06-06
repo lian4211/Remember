@@ -1,6 +1,6 @@
 // ==================== 应用主入口 (v2) ====================
 
-import { data, loadData, saveData, currentList, setCurrentList, addWord, renameList, deleteList, getDueCount } from './data.js';
+import { data, loadData, saveData, currentList, setCurrentList, getCurrentList, addWord, renameList, deleteList, getDueCount } from './data.js';
 import { goToPage, goHome, showModal, hideModal, showToast, onPageEnter } from './ui.js';
 import { initVoiceSettings, playVoice } from './voice.js';
 import { startECTest, playECVoice } from './test-ec.js';
@@ -23,7 +23,7 @@ window.startReview = startReview;
 window.exportData = exportDataFn;
 window.showPasteImport = showPasteImport;
 window.showFileImport = showFileImport;
-window.showBatchEdit = () => showBatchEdit(currentList);
+window.showBatchEdit = () => showBatchEdit(getCurrentList());
 window.showPlanSettings = showPlanSettings;
 window.globalSearchStart = globalSearchStart;
 window.playVoice = playVoice;

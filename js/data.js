@@ -101,9 +101,10 @@ export function saveData() {
 }
 
 /** 设置当前列表 */
-export function setCurrentList(list) {
-  currentList = list;
-}
+export function setCurrentList(list) { currentList = list; }
+
+/** 获取当前列表（供闭包中使用，避免捕获过期引用）*/
+export function getCurrentList() { return currentList; }
 
 /** 重置所有单词的算法数据（切换算法时调用） */
 export function resetAlgorithmData() {
@@ -121,7 +122,7 @@ export function resetAlgorithmData() {
       word.fsrsState = 0;
       word.fsrsReps = 0;
       word.fsrsLastReview = null;
-      // 不重置 passed
+      word.passed = false;
     });
   });
   saveData();

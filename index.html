@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鍗曡瘝鑳岃鍔╂墜</title>
+    <title>单词背诵助手</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,77 +12,72 @@
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="鍗曡瘝鑳岃">
+    <meta name="apple-mobile-web-app-title" content="单词背诵">
 </head>
 <body style="background:var(--bg)">
     <div id="app" style="max-width:448px;margin:0 auto;padding:0 1rem 2rem">
 
-        <!-- ====== 瀵艰埅鏍?====== -->
+        <!-- ====== 导航栏 ====== -->
         <header class="nav-header flex items-center justify-between px-4 py-3 -mx-4 mb-4">
-            <button id="back-btn" class="btn-icon" style="display:none;font-size:1.5rem">鈫?/button>
-            <h1 id="page-title" style="font-size:1.125rem;font-weight:700;color:var(--primary)">鍗曡瘝鑳岃鍔╂墜</h1>
-            <button id="theme-btn" class="btn-icon" style="font-size:1.25rem">馃寵</button>
+            <button id="back-btn" class="btn-icon" style="display:none;font-size:1.5rem">←</button>
+            <h1 id="page-title" style="font-size:1.125rem;font-weight:700;color:var(--primary)">单词背诵助手</h1>
+            <button id="theme-btn" class="btn-icon" style="font-size:1.25rem">🌙</button>
         </header>
 
-        <!-- ====== 棣栭〉 ====== -->
+        <!-- ====== 首页 ====== -->
         <div id="home-page" class="page active">
-            <!-- 浠婃棩澶嶄範 -->
             <div class="review-card">
                 <button onclick="startReview()" style="width:100%;background:transparent;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:var(--text)">
-                    <span style="font-weight:700;font-size:1rem">馃搵 浠婃棩澶嶄範</span>
+                    <span style="font-weight:700;font-size:1rem">📋 今日复习</span>
                     <span id="review-badge" class="badge badge-warning" style="display:none">0</span>
                 </button>
             </div>
 
-            <!-- 璁″垝杩涘害 -->
             <div id="plan-progress-area"></div>
 
-            <!-- 鍒楄〃閫夋嫨 -->
             <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:1rem;font-weight:600;margin-bottom:0.5rem">閫夋嫨鍗曡瘝鍒楄〃</label>
+                <label style="display:block;font-size:1rem;font-weight:600;margin-bottom:0.5rem">选择单词列表</label>
                 <div style="display:flex;gap:0.5rem">
-                    <select id="list-select" class="app-select" style="flex:1"><option value="">鏆傛棤鍒楄〃</option></select>
-                    <button id="edit-list-btn" class="btn-ghost" title="淇敼">鉁忥笍</button>
-                    <button id="delete-list-btn" class="btn-ghost" title="鍒犻櫎">馃棏锔?/button>
+                    <select id="list-select" class="app-select" style="flex:1"><option value="">暂无列表</option></select>
+                    <button id="edit-list-btn" class="btn-ghost" title="修改">✏️</button>
+                    <button id="delete-list-btn" class="btn-ghost" title="删除">🗑️</button>
                 </div>
             </div>
 
-            <button id="new-list-btn" class="btn-primary" style="width:100%;margin-bottom:1rem">鉃?鏂板缓鍗曡瘝鍒楄〃</button>
+            <button id="new-list-btn" class="btn-primary" style="width:100%;margin-bottom:1rem">➕ 新建单词列表</button>
 
-            <!-- 鍔熻兘缃戞牸 -->
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:0.75rem">
-                <div class="feature-card" onclick="goToPage('add-word')"><span class="icon">鉃?/span><span class="label">娣诲姞鍗曡瘝</span></div>
-                <div class="feature-card" onclick="startECTest()"><span class="icon">馃摐</span><span class="label">鑻辫瘧姹?/span></div>
-                <div class="feature-card" onclick="startCETest()"><span class="icon">鉁嶏笍</span><span class="label">姹夎瘧鑻?/span></div>
-                <div class="feature-card" onclick="goToPage('mistakes')"><span class="icon">鉂?/span><span class="label">閿欓搴?/span></div>
-                <div class="feature-card" onclick="goToPage('word-list')"><span class="icon">馃搵</span><span class="label">绠＄悊鍗曡瘝</span></div>
-                <div class="feature-card" onclick="goToPage('stats')"><span class="icon">馃搳</span><span class="label">瀛︿範缁熻</span></div>
-                <div class="feature-card" onclick="goToPage('roots')"><span class="icon">馃尦</span><span class="label">璇嶆牴鍒嗙粍</span></div>
-                <div class="feature-card" onclick="goToPage('plan')"><span class="icon">馃搮</span><span class="label">瀛︿範璁″垝</span></div>
-                <div class="feature-card" onclick="goToPage('settings')"><span class="icon">鈿欙笍</span><span class="label">璁剧疆</span></div>
+                <div class="feature-card" onclick="goToPage('add-word')"><span class="icon">➕</span><span class="label">添加单词</span></div>
+                <div class="feature-card" onclick="startECTest()"><span class="icon">📜</span><span class="label">英译汉</span></div>
+                <div class="feature-card" onclick="startCETest()"><span class="icon">✍️</span><span class="label">汉译英</span></div>
+                <div class="feature-card" onclick="goToPage('mistakes')"><span class="icon">❌</span><span class="label">错题库</span></div>
+                <div class="feature-card" onclick="goToPage('word-list')"><span class="icon">📋</span><span class="label">管理单词</span></div>
+                <div class="feature-card" onclick="goToPage('stats')"><span class="icon">📊</span><span class="label">学习统计</span></div>
+                <div class="feature-card" onclick="goToPage('roots')"><span class="icon">🌳</span><span class="label">词根分组</span></div>
+                <div class="feature-card" onclick="goToPage('plan')"><span class="icon">📅</span><span class="label">学习计划</span></div>
+                <div class="feature-card" onclick="goToPage('settings')"><span class="icon">⚙️</span><span class="label">设置</span></div>
             </div>
 
-            <!-- 瀵煎叆 / 鎼滅储 -->
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;margin-bottom:0.5rem">
-                <button class="btn-ghost" onclick="showFileImport()">馃搧 鏂囦欢瀵煎叆</button>
-                <button class="btn-ghost" onclick="showPasteImport()">馃搵 绮樿创瀵煎叆</button>
+                <button class="btn-ghost" onclick="showFileImport()">📁 文件导入</button>
+                <button class="btn-ghost" onclick="showPasteImport()">📋 粘贴导入</button>
             </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem">
-                <button class="btn-ghost" onclick="showBatchEdit()">鉁忥笍 鎵归噺缂栬緫</button>
-                <button class="btn-ghost" onclick="globalSearchStart()">馃攳 鑾峰彇渚嬪彞</button>
-                <button class="btn-ghost" onclick="exportData()">馃捑 瀵煎嚭</button>
+                <button class="btn-ghost" onclick="showBatchEdit()">✏️ 批量编辑</button>
+                <button class="btn-ghost" onclick="globalSearchStart()">🔍 获取例句</button>
+                <button class="btn-ghost" onclick="exportData()">💾 导出</button>
             </div>
         </div>
 
-        <!-- ====== 娣诲姞鍗曡瘝 ====== -->
+        <!-- ====== 添加单词 ====== -->
         <div id="add-word-page" class="page">
             <p id="add-word-count" style="text-align:center;color:var(--text-secondary);margin-bottom:1rem"></p>
             <div style="display:flex;flex-direction:column;gap:1rem">
                 <div>
-                    <label style="display:block;font-weight:600;margin-bottom:0.25rem">鑻辨枃鍗曡瘝</label>
+                    <label style="display:block;font-weight:600;margin-bottom:0.25rem">英文单词</label>
                     <div style="display:flex;gap:0.5rem">
-                        <input type="text" id="english-input" class="app-input" placeholder="杈撳叆鑻辨枃" style="flex:1">
-                        <button id="lookup-btn" class="btn-ghost">馃攳 鏌ヨ</button>
+                        <input type="text" id="english-input" class="app-input" placeholder="输入英文" style="flex:1">
+                        <button id="lookup-btn" class="btn-ghost">🔍 查询</button>
                     </div>
                     <div id="lookup-result" style="margin-top:0.25rem;color:var(--text-muted);font-size:0.875rem">
                         <span id="lookup-phonetic"></span>
@@ -90,60 +85,58 @@
                     </div>
                 </div>
                 <div>
-                    <label style="display:block;font-weight:600;margin-bottom:0.25rem">涓枃鍚箟</label>
-                    <input type="text" id="chinese-input" class="app-input" placeholder="杈撳叆涓枃">
+                    <label style="display:block;font-weight:600;margin-bottom:0.25rem">中文含义</label>
+                    <input type="text" id="chinese-input" class="app-input" placeholder="输入中文">
                 </div>
-                <button id="add-word-btn" class="btn-primary" style="width:100%">娣诲姞鍗曡瘝</button>
+                <button id="add-word-btn" class="btn-primary" style="width:100%">添加单词</button>
             </div>
         </div>
 
-        <!-- ====== 鍗曡瘝鍒楄〃绠＄悊 ====== -->
+        <!-- ====== 单词列表管理 ====== -->
         <div id="word-list-page" class="page">
-            <input type="text" id="word-search" class="app-input search-input" placeholder="鎼滅储鍗曡瘝锛堣嫳鏂?涓枃锛?.." style="margin-bottom:1rem">
+            <input type="text" id="word-search" class="app-input search-input" placeholder="搜索单词（英文/中文）..." style="margin-bottom:1rem">
             <p id="word-list-count" style="text-align:center;color:var(--text-secondary);margin-bottom:1rem"></p>
             <div id="word-list-container" style="display:flex;flex-direction:column;gap:0.5rem"></div>
         </div>
 
-        <!-- ====== 鑻辫瘧姹夋祴璇?====== -->
+        <!-- ====== 英译汉测试 ====== -->
         <div id="ec-page" class="page">
             <p id="ec-progress" style="text-align:center;color:var(--info);margin-bottom:1rem;font-weight:600"></p>
-            <!-- 娴嬭瘯鍖哄煙 -->
             <div id="ec-test-area">
                 <div style="display:flex;justify-content:center;align-items:center;margin-bottom:0.5rem">
                     <span id="ec-word" class="test-word" style="margin-right:0.75rem"></span>
-                    <button id="ec-play-btn" class="btn-icon" style="font-size:1.5rem">馃攰</button>
+                    <button id="ec-play-btn" class="btn-icon" style="font-size:1.5rem">🔊</button>
                 </div>
                 <div id="ec-word-detail" style="text-align:center;margin-bottom:1rem"></div>
                 <div id="ec-options" style="display:flex;flex-direction:column;gap:0.625rem;margin-bottom:1rem"></div>
                 <p id="ec-feedback"></p>
             </div>
-            <!-- 闂崱鍖哄煙 -->
             <div id="ec-flashcard-area" class="hidden"></div>
         </div>
 
-        <!-- ====== 姹夎瘧鑻辨祴璇?====== -->
+        <!-- ====== 汉译英测试 ====== -->
         <div id="ce-page" class="page">
             <p id="ce-progress" style="text-align:center;color:var(--info);margin-bottom:1rem;font-weight:600"></p>
             <div id="ce-test-area">
                 <div style="display:flex;justify-content:center;align-items:center;margin-bottom:0.5rem">
                     <span id="ce-word" style="font-size:2rem;font-weight:800;color:var(--primary);margin-right:0.75rem"></span>
-                    <button id="ce-play-btn" class="btn-icon" style="font-size:1.5rem">馃攰</button>
+                    <button id="ce-play-btn" class="btn-icon" style="font-size:1.5rem">🔊</button>
                 </div>
                 <div id="ce-word-detail" style="text-align:center;margin-bottom:0.75rem"></div>
-                <input type="text" id="ce-input" class="app-input" placeholder="杈撳叆鑻辨枃绛旀" autocomplete="off" style="text-align:center;margin-bottom:0.75rem">
-                <button id="ce-submit-btn" class="btn-primary" style="width:100%;margin-bottom:1rem">鎻愪氦</button>
+                <input type="text" id="ce-input" class="app-input" placeholder="输入英文答案" autocomplete="off" style="text-align:center;margin-bottom:0.75rem">
+                <button id="ce-submit-btn" class="btn-primary" style="width:100%;margin-bottom:1rem">提交</button>
                 <p id="ce-feedback"></p>
             </div>
             <div id="ce-flashcard-area" class="hidden"></div>
         </div>
 
-        <!-- ====== 姣忔棩澶嶄範 ====== -->
+        <!-- ====== 每日复习 ====== -->
         <div id="review-page" class="page">
             <p id="review-progress" style="text-align:center;color:var(--warning);margin-bottom:0.75rem;font-weight:600"></p>
             <div id="review-test-area">
                 <div style="display:flex;justify-content:center;align-items:center;margin-bottom:0.5rem">
                     <span id="review-question-word" style="font-size:2rem;font-weight:800;color:var(--primary);margin-right:0.75rem"></span>
-                    <button id="review-play-btn" class="btn-icon" style="font-size:1.5rem">馃攰</button>
+                    <button id="review-play-btn" class="btn-icon" style="font-size:1.5rem">🔊</button>
                 </div>
                 <p id="review-mode-label" style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-bottom:0.75rem"></p>
                 <div id="review-word-detail" style="text-align:center;margin-bottom:0.75rem"></div>
@@ -151,104 +144,104 @@
                     <div id="review-ec-options" style="display:flex;flex-direction:column;gap:0.625rem;margin-bottom:1rem"></div>
                 </div>
                 <div id="review-ce-area" class="hidden">
-                    <input type="text" id="review-ce-input" class="app-input" placeholder="杈撳叆鑻辨枃绛旀" autocomplete="off" style="text-align:center;margin-bottom:0.75rem">
-                    <button id="review-ce-submit" class="btn-primary" style="width:100%;margin-bottom:1rem;background:var(--gradient)">鎻愪氦</button>
+                    <input type="text" id="review-ce-input" class="app-input" placeholder="输入英文答案" autocomplete="off" style="text-align:center;margin-bottom:0.75rem">
+                    <button id="review-ce-submit" class="btn-primary" style="width:100%;margin-bottom:1rem;background:var(--gradient)">提交</button>
                 </div>
                 <p id="review-feedback"></p>
             </div>
             <div id="review-flashcard-area" class="hidden"></div>
         </div>
 
-        <!-- ====== 閿欓搴?====== -->
+        <!-- ====== 错题库 ====== -->
         <div id="mistakes-page" class="page">
             <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:1rem">
-                <button id="ec-mistakes-tab" style="flex:1;padding:0.5rem;font-weight:600;color:var(--primary);border-bottom:2px solid var(--primary);background:transparent;border-top:none;border-left:none;border-right:none;cursor:pointer">鑻辫瘧姹夐敊棰?/button>
-                <button id="ce-mistakes-tab" style="flex:1;padding:0.5rem;font-weight:600;color:var(--text-secondary);background:transparent;border:none;cursor:pointer">姹夎瘧鑻遍敊棰?/button>
+                <button id="ec-mistakes-tab" style="flex:1;padding:0.5rem;font-weight:600;color:var(--primary);border-bottom:2px solid var(--primary);background:transparent;border-top:none;border-left:none;border-right:none;cursor:pointer">英译汉错题</button>
+                <button id="ce-mistakes-tab" style="flex:1;padding:0.5rem;font-weight:600;color:var(--text-secondary);background:transparent;border:none;cursor:pointer">汉译英错题</button>
             </div>
             <div id="mistakes-list" style="display:flex;flex-direction:column;gap:0.5rem"></div>
         </div>
 
-        <!-- ====== 璇煶璁剧疆 ====== -->
+        <!-- ====== 语音设置 ====== -->
         <div id="voice-settings-page" class="page">
             <div style="display:flex;flex-direction:column;gap:2rem">
                 <div>
-                    <label style="display:block;font-weight:600;margin-bottom:0.5rem">璇€?(-50% ~ +100%)</label>
+                    <label style="display:block;font-weight:600;margin-bottom:0.5rem">语速 (-50% ~ +100%)</label>
                     <input type="range" id="rate-slider" min="-50" max="100" value="0" style="width:100%">
                     <p id="rate-value" style="text-align:center;font-size:1.125rem;margin-top:0.5rem">0%</p>
                 </div>
                 <div>
-                    <label style="display:block;font-weight:600;margin-bottom:0.5rem">闊抽噺 (-50% ~ +50%)</label>
+                    <label style="display:block;font-weight:600;margin-bottom:0.5rem">音量 (-50% ~ +50%)</label>
                     <input type="range" id="volume-slider" min="-50" max="50" value="0" style="width:100%">
                     <p id="volume-value" style="text-align:center;font-size:1.125rem;margin-top:0.5rem">0%</p>
                 </div>
                 <div>
-                    <label style="display:block;font-weight:600;margin-bottom:0.5rem">闊宠皟 (-20Hz ~ +20Hz)</label>
+                    <label style="display:block;font-weight:600;margin-bottom:0.5rem">音调 (-20Hz ~ +20Hz)</label>
                     <input type="range" id="pitch-slider" min="-20" max="20" value="0" style="width:100%">
                     <p id="pitch-value" style="text-align:center;font-size:1.125rem;margin-top:0.5rem">0Hz</p>
                 </div>
-                <button id="save-voice-btn" class="btn-primary">淇濆瓨璁剧疆</button>
+                <button id="save-voice-btn" class="btn-primary">保存设置</button>
             </div>
         </div>
 
-        <!-- ====== 瀛︿範缁熻 ====== -->
+        <!-- ====== 学习统计 ====== -->
         <div id="stats-page" class="page">
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;margin-bottom:1rem">
                 <div class="stat-card">
                     <p class="stat-value" style="color:var(--primary)" id="stats-today-new">0</p>
-                    <p class="stat-label">浠婃棩鏂拌瘝</p>
+                    <p class="stat-label">今日新词</p>
                 </div>
                 <div class="stat-card">
                     <p class="stat-value" style="color:var(--success)" id="stats-today-review">0</p>
-                    <p class="stat-label">浠婃棩澶嶄範</p>
+                    <p class="stat-label">今日复习</p>
                 </div>
                 <div class="stat-card">
                     <p class="stat-value" style="color:#8b5cf6" id="stats-today-accuracy">0%</p>
-                    <p class="stat-label">姝ｇ‘鐜?/p>
+                    <p class="stat-label">正确率</p>
                 </div>
                 <div class="stat-card">
                     <p class="stat-value" style="color:var(--warning)" id="stats-today-time">0:00</p>
-                    <p class="stat-label">瀛︿範鏃堕暱</p>
+                    <p class="stat-label">学习时长</p>
                 </div>
             </div>
 
             <div class="stat-card" style="margin-bottom:1rem">
-                <p style="font-size:0.75rem;color:var(--text-secondary)">杩炵画鎵撳崱</p>
-                <p style="font-size:2rem;font-weight:800;color:var(--danger)"><span class="streak-fire">馃敟</span> <span id="stats-streak">0</span> 澶?/p>
+                <p style="font-size:0.75rem;color:var(--text-secondary)">连续打卡</p>
+                <p style="font-size:2rem;font-weight:800;color:var(--danger)"><span class="streak-fire">🔥</span> <span id="stats-streak">0</span> 天</p>
             </div>
 
             <div class="stat-card" style="margin-bottom:1rem">
-                <p style="font-size:0.75rem;color:var(--text-secondary)">宸查€氳繃鍗曡瘝鎬绘暟</p>
+                <p style="font-size:0.75rem;color:var(--text-secondary)">已通过单词总数</p>
                 <p style="font-size:2rem;font-weight:800;color:var(--primary)" id="stats-total-passed">0</p>
             </div>
 
             <div class="app-card" style="padding:1rem;margin-bottom:1rem">
-                <p style="font-weight:600;margin-bottom:0.75rem">杩?澶╄秼鍔?/p>
+                <p style="font-weight:600;margin-bottom:0.75rem">近7天趋势</p>
                 <div class="chart-container" style="height:200px"><canvas id="stats-chart"></canvas></div>
             </div>
 
             <div class="app-card" style="padding:1rem">
-                <p style="font-weight:600;margin-bottom:0.75rem">鍒楄〃鎺屾彙搴?/p>
+                <p style="font-weight:600;margin-bottom:0.75rem">列表掌握度</p>
                 <div id="stats-mastery-list"></div>
             </div>
         </div>
 
-        <!-- ====== 璇嶆牴鍒嗙粍 ====== -->
+        <!-- ====== 词根分组 ====== -->
         <div id="roots-page" class="page">
-            <p style="text-align:center;color:var(--text-secondary);margin-bottom:1rem">鍩轰簬鐜版湁鍗曡瘝鑷姩璇嗗埆璇嶆牴骞跺垎缁?/p>
+            <p style="text-align:center;color:var(--text-secondary);margin-bottom:1rem">基于现有单词自动识别词根并分组</p>
             <div id="roots-container"></div>
         </div>
 
-        <!-- ====== 瀛︿範璁″垝 ====== -->
+        <!-- ====== 学习计划 ====== -->
         <div id="plan-page" class="page">
             <div id="plan-page-content"></div>
         </div>
 
-        <!-- ====== 璁剧疆 ====== -->
+        <!-- ====== 设置 ====== -->
         <div id="settings-page" class="page">
             <div class="setting-row">
                 <div>
-                    <p class="label">璁板繂绠楁硶</p>
-                    <p class="hint" id="algo-hint">褰撳墠: SM-2</p>
+                    <p class="label">记忆算法</p>
+                    <p class="hint" id="algo-hint">当前: SM-2</p>
                 </div>
                 <div style="display:flex;gap:0.5rem">
                     <button id="algo-sm2-btn" class="btn-ghost" style="font-weight:700">SM-2</button>
@@ -258,30 +251,30 @@
 
             <div class="setting-row">
                 <div>
-                    <p class="label">涓婚妯″紡</p>
-                    <p class="hint" id="theme-hint">褰撳墠: 鑷姩</p>
+                    <p class="label">主题模式</p>
+                    <p class="hint" id="theme-hint">当前: 自动</p>
                 </div>
                 <div style="display:flex;gap:0.5rem">
-                    <button id="theme-auto-btn" class="btn-ghost">鑷姩</button>
-                    <button id="theme-dark-btn" class="btn-ghost">娣辫壊</button>
-                    <button id="theme-light-btn" class="btn-ghost">娴呰壊</button>
+                    <button id="theme-auto-btn" class="btn-ghost">自动</button>
+                    <button id="theme-dark-btn" class="btn-ghost">深色</button>
+                    <button id="theme-light-btn" class="btn-ghost">浅色</button>
                 </div>
             </div>
 
             <div class="setting-row">
                 <div>
-                    <p class="label">璇煶璁剧疆</p>
-                    <p class="hint">璋冩暣 TTS 璇€?闊抽噺/闊宠皟</p>
+                    <p class="label">语音设置</p>
+                    <p class="hint">调整 TTS 语速/音量/音调</p>
                 </div>
-                <button class="btn-ghost" onclick="goToPage('voice-settings')">杩涘叆 鈫?/button>
+                <button class="btn-ghost" onclick="goToPage('voice-settings')">进入 →</button>
             </div>
 
-            <button class="btn-primary" style="width:100%;margin-bottom:1rem" onclick="goHome()">鈫?杩斿洖棣栭〉</button>
+            <button class="btn-primary" style="width:100%;margin-bottom:1rem" onclick="goHome()">← 返回首页</button>
 
             <div class="app-card" style="padding:1rem;margin-bottom:1rem">
-                <p style="font-weight:600;margin-bottom:0.5rem">鍏ㄥ眬渚嬪彞鎼滅储</p>
-                <p style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:0.75rem">鑷姩鑾峰彇鎵€鏈夊崟璇嶇殑鑻辨枃渚嬪彞鍙婁腑鏂囩炕璇戙€傚凡鏈変緥鍙ョ殑鍗曡瘝浼氳烦杩囥€?/p>
-                <button id="global-search-btn" class="btn-primary" style="width:100%">馃攳 寮€濮嬭幏鍙栧叏閮ㄤ緥鍙?/button>
+                <p style="font-weight:600;margin-bottom:0.5rem">全局例句搜索</p>
+                <p style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:0.75rem">自动获取所有单词的英文例句及中文翻译。已有例句的单词会跳过。</p>
+                <button id="global-search-btn" class="btn-primary" style="width:100%">🔍 开始获取全部例句</button>
                 <div id="global-search-progress" class="hidden" style="margin-top:0.75rem">
                     <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
                         <span class="spinner"></span>
@@ -290,14 +283,14 @@
                     <div style="background:var(--border);border-radius:999px;height:6px">
                         <div id="gs-progress-bar" style="width:0%;height:6px;border-radius:999px;background:var(--primary);transition:width 0.3s"></div>
                     </div>
-                    <button id="gs-cancel-btn" class="btn-ghost" style="margin-top:0.5rem;width:100%">鍙栨秷</button>
+                    <button id="gs-cancel-btn" class="btn-ghost" style="margin-top:0.5rem;width:100%">取消</button>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- 寮圭獥 -->
+    <!-- 弹窗 -->
     <div id="modal" class="fixed inset-0 modal-overlay flex items-center justify-center hidden z-50">
         <div class="modal-card" style="width:20rem;padding:1.5rem;margin:0 1rem">
             <h3 id="modal-title" style="font-size:1.25rem;font-weight:700;margin-bottom:1rem"></h3>
@@ -309,4 +302,3 @@
     <script type="module" src="js/app.js"></script>
 </body>
 </html>
-
