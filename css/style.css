@@ -100,8 +100,10 @@ body {
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-/* ==================== 页面切换 ==================== */
-.page.active { display: block; }
+/* ==================== 稳健显隐 — 不依赖 Tailwind CDN ==================== */
+.hidden { display: none !important; }   /* 安全网：Tailwind 加载前即生效 */
+.page { display: none; }                 /* 所有页面默认隐藏 */
+.page.active { display: block; }         /* 仅当前页面可见 */
 
 /* ==================== 导航栏 ==================== */
 .nav-header {

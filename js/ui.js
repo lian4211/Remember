@@ -19,15 +19,15 @@ const PAGE_TITLES = {
 
 /** 切换到指定页面 */
 export function goToPage(pageName) {
-  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const pageEl = document.getElementById(`${pageName}-page`);
-  if (pageEl) pageEl.classList.remove('hidden');
+  if (pageEl) pageEl.classList.add('active');
   
   const backBtn = document.getElementById('back-btn');
   if (pageName === 'home') {
-    backBtn.classList.add('hidden');
+    backBtn.style.display = 'none';
   } else {
-    backBtn.classList.remove('hidden');
+    backBtn.style.display = '';
   }
   
   document.getElementById('page-title').textContent = PAGE_TITLES[pageName] || '单词背诵助手';
