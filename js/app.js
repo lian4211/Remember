@@ -1,5 +1,4 @@
-// ==================== 应用主入口 ====================
-// 负责初始化、全局事件绑定、页面路由
+// ==================== 应用主入口 (v2) ====================
 
 import { data, loadData, saveData, currentList, setCurrentList, addWord, renameList, deleteList, getDueCount } from './data.js';
 import { goToPage, goHome, showModal, hideModal, showToast, onPageEnter } from './ui.js';
@@ -9,133 +8,158 @@ import { startCETest, handleCESubmit, handleCEKeypress, playCEVoice } from './te
 import { startReview, checkReviewCE, handleReviewCEKeypress, playReviewVoice } from './review.js';
 import { updateStats, renderStatsPage } from './stats.js';
 import { showPasteImport, showFileImport, showBatchEdit } from './import.js';
-import { fetchWordInfo, analyzeRoots } from './dictionary.js';
+import { fetchWordInfo as lookupAPI } from './dictionary.js';
 import { showPlanSettings, renderPlanProgress, getPlanProgress } from './plan.js';
+import { analyzeRoots } from './dictionary.js';
+import { initTheme, cycleTheme, getThemeIcon, getAlgorithmLabel, switchAlgorithm, getTheme, setTheme } from './settings.js';
+import { globalSearch as doGlobalSearch } from './search.js';
 
-// ==================== 初始化 ====================
+// ==================== 全局暴露 ====================
+window.goToPage = goToPage;
+window.goHome = goHome;
+window.startECTest = startECTest;
+window.startCETest = startCETest;
+window.startReview = startReview;
+window.exportData = exportDataFn;
+window.showPasteImport = showPasteImport;
+window.showFileImport = showFileImport;
+window.showBatchEdit = () => showBatchEdit(currentList);
+window.showPlanSettings = showPlanSettings;
+window.globalSearchStart = globalSearchStart;
+window.playVoice = playVoice;
+
 function init() {
   loadData();
+  initTheme();
   initVoiceSettings();
   bindEvents();
   renderHomePage();
-  registerServiceWorker();
+  registerSW();
+  updateThemeIcon();
 }
 
 // ==================== 事件绑定 ====================
 function bindEvents() {
-  // 返回按钮
   document.getElementById('back-btn').addEventListener('click', goHome);
+  document.getElementById('theme-btn').addEventListener('click', () => {
+    cycleTheme();
+    updateThemeIcon();
+  });
 
   // 列表选择
-  const listSelect = document.getElementById('list-select');
-  listSelect.addEventListener('change', (e) => {
-    const id = parseInt(e.target.value);
-    setCurrentList(data.lists.find(l => l.id === id) || null);
+  const ls = document.getElementById('list-select');
+  ls.addEventListener('change', e => {
+    setCurrentList(data.lists.find(l => l.id === parseInt(e.target.value)) || null);
   });
 
   // 新建列表
   document.getElementById('new-list-btn').addEventListener('click', () => {
     showModal('新建单词列表',
-      '<input type="text" id="new-list-name" class="w-full p-2 border rounded-lg" placeholder="输入列表名称">',
+      '<input type="text" id="new-list-name" class="app-input" placeholder="输入列表名称">',
       [
-        { text: '取消', onClick: hideModal, className: 'px-4 py-2 rounded-lg bg-gray-400 text-white' },
+        { text: '取消', onClick: hideModal, className: 'btn-ghost' },
         { text: '创建', onClick: () => {
           const name = document.getElementById('new-list-name').value.trim();
           if (!name) return;
           if (data.lists.some(l => l.name === name)) { showToast('列表名称已存在'); return; }
           const list = { id: data.nextId++, name, words: [], ecMistakes: [], ceMistakes: [] };
-          data.lists.push(list);
-          setCurrentList(list);
-          saveData();
-          refreshListSelect();
-          hideModal();
-          showToast('列表创建成功');
-        }, className: 'px-4 py-2 rounded-lg bg-blue-600 text-white' }
+          data.lists.push(list); setCurrentList(list); saveData();
+          refreshListSelect(); hideModal(); showToast('列表创建成功');
+        }, className: 'btn-primary' }
       ]
     );
   });
 
-  // 编辑/删除列表
+  // 编辑列表
   document.getElementById('edit-list-btn').addEventListener('click', () => {
     if (!currentList) { showToast('请先选择一个列表'); return; }
-    showModal('修改列表名称',
-      `<input type="text" id="edit-list-name" class="w-full p-2 border rounded-lg" value="${currentList.name}">`,
+    showModal('修改列表名称', `<input type="text" id="edit-list-name" class="app-input" value="${currentList.name}">`,
       [
-        { text: '取消', onClick: hideModal, className: 'px-4 py-2 rounded-lg bg-gray-400 text-white' },
+        { text: '取消', onClick: hideModal, className: 'btn-ghost' },
         { text: '保存', onClick: () => {
-          const newName = document.getElementById('edit-list-name').value.trim();
-          if (!newName) return;
-          if (data.lists.some(l => l.name === newName && l.id !== currentList.id)) { showToast('列表名称已存在'); return; }
-          renameList(currentList, newName);
-          refreshListSelect();
-          hideModal();
-          showToast('列表名称已修改');
-        }, className: 'px-4 py-2 rounded-lg bg-blue-600 text-white' }
+          const n = document.getElementById('edit-list-name').value.trim();
+          if (!n) return;
+          if (data.lists.some(l => l.name === n && l.id !== currentList.id)) { showToast('列表名称已存在'); return; }
+          renameList(currentList, n); refreshListSelect(); hideModal(); showToast('列表名称已修改');
+        }, className: 'btn-primary' }
       ]
     );
   });
 
+  // 删除列表
   document.getElementById('delete-list-btn').addEventListener('click', () => {
     if (!currentList) { showToast('请先选择一个列表'); return; }
-    showModal('确认删除', `确定要删除列表"${currentList.name}"吗？\n所有单词和错题数据将永久丢失！`,
+    showModal('确认删除', `确定要删除列表"${currentList.name}"吗？`,
       [
-        { text: '取消', onClick: hideModal, className: 'px-4 py-2 rounded-lg bg-gray-400 text-white' },
+        { text: '取消', onClick: hideModal, className: 'btn-ghost' },
         { text: '删除', onClick: () => {
-          deleteList(currentList);
-          setCurrentList(data.lists[0] || null);
-          refreshListSelect();
-          hideModal();
-          showToast('列表已删除');
-        }, className: 'px-4 py-2 rounded-lg bg-red-600 text-white' }
+          deleteList(currentList); setCurrentList(data.lists[0] || null);
+          refreshListSelect(); hideModal(); showToast('列表已删除');
+        }, className: 'btn-danger' }
       ]
     );
   });
 
   // 添加单词
   document.getElementById('add-word-btn').addEventListener('click', () => {
-    const english = document.getElementById('english-input').value.trim();
-    const chinese = document.getElementById('chinese-input').value.trim();
-    if (!english || !chinese) { showToast('请填写完整信息'); return; }
+    const en = document.getElementById('english-input').value.trim();
+    const cn = document.getElementById('chinese-input').value.trim();
+    if (!en || !cn) { showToast('请填写完整信息'); return; }
     if (!currentList) { showToast('请先选择一个列表'); return; }
-    
-    addWord(currentList, english, chinese);
-    updateStats('new-word', { count: 1 });
-    refreshListSelect();
-    updateAddWordUI();
+    addWord(currentList, en, cn);
+    refreshListSelect(); updateAddWordUI();
     document.getElementById('english-input').value = '';
     document.getElementById('chinese-input').value = '';
     showToast('单词添加成功');
   });
 
-  // 查找按钮（添加单词时查询词典）
-  const lookupBtn = document.getElementById('lookup-btn');
-  if (lookupBtn) {
-    lookupBtn.addEventListener('click', async () => {
-      const english = document.getElementById('english-input').value.trim();
-      if (!english) { showToast('请先输入英文单词'); return; }
-      const info = await fetchWordInfo(english);
-      if (info) {
-        if (info.phonetic) {
-          document.getElementById('lookup-phonetic').textContent = info.phonetic;
-        }
-        if (info.example) {
-          document.getElementById('lookup-example').textContent = `"${info.example}"`;
-        }
-        showToast('已获取词典信息');
-      } else {
-        showToast('未找到该单词');
-      }
-    });
-  }
-
-  // 数据变更监听（列表选择器刷新）
-  window.addEventListener('data-changed', () => {
-    refreshListSelect();
-    renderHomePage();
+  // 查询按钮
+  document.getElementById('lookup-btn').addEventListener('click', async () => {
+    const en = document.getElementById('english-input').value.trim();
+    if (!en) { showToast('请先输入英文单词'); return; }
+    const info = await lookupAPI(en);
+    if (info) {
+      document.getElementById('lookup-phonetic').textContent = info.phonetic || '';
+      document.getElementById('lookup-example').textContent = info.example ? `"${info.example}"` : '';
+      showToast('已获取');
+    } else showToast('未找到');
   });
 
+  // 搜索框
+  const si = document.getElementById('word-search');
+  if (si) si.addEventListener('input', e => renderWordListPage(e.target.value.trim()));
+
+  // 测试按钮
+  const ecPlay = document.getElementById('ec-play-btn'); if (ecPlay) ecPlay.addEventListener('click', playECVoice);
+  const ceSubmit = document.getElementById('ce-submit-btn'); if (ceSubmit) ceSubmit.addEventListener('click', handleCESubmit);
+  const ceInput = document.getElementById('ce-input'); if (ceInput) ceInput.addEventListener('keypress', handleCEKeypress);
+  const cePlay = document.getElementById('ce-play-btn'); if (cePlay) cePlay.addEventListener('click', playCEVoice);
+  const rvCE = document.getElementById('review-ce-submit'); if (rvCE) rvCE.addEventListener('click', checkReviewCE);
+  const rvCI = document.getElementById('review-ce-input'); if (rvCI) rvCI.addEventListener('keypress', handleReviewCEKeypress);
+  const rvPlay = document.getElementById('review-play-btn'); if (rvPlay) rvPlay.addEventListener('click', playReviewVoice);
+
+  // 错题标签
+  document.getElementById('ec-mistakes-tab')?.addEventListener('click', () => switchMistakeTab('ec'));
+  document.getElementById('ce-mistakes-tab')?.addEventListener('click', () => switchMistakeTab('ce'));
+
+  // 设置页：算法切换
+  document.getElementById('algo-sm2-btn')?.addEventListener('click', () => { switchAlgorithm('sm2'); updateAlgoUI(); });
+  document.getElementById('algo-fsrs-btn')?.addEventListener('click', () => { switchAlgorithm('fsrs'); updateAlgoUI(); });
+
+  // 设置页：主题切换
+  document.getElementById('theme-auto-btn')?.addEventListener('click', () => { setTheme('auto'); updateThemeUI(); updateThemeIcon(); });
+  document.getElementById('theme-dark-btn')?.addEventListener('click', () => { setTheme('dark'); updateThemeUI(); updateThemeIcon(); });
+  document.getElementById('theme-light-btn')?.addEventListener('click', () => { setTheme('light'); updateThemeUI(); updateThemeIcon(); });
+
+  // 设置页：全局搜索
+  document.getElementById('global-search-btn')?.addEventListener('click', globalSearchStart);
+  document.getElementById('gs-cancel-btn')?.addEventListener('click', () => { window._gsCancel = true; });
+
+  // 数据变更
+  window.addEventListener('data-changed', () => { refreshListSelect(); renderHomePage(); });
+
   // 页面进入回调
-  onPageEnter((pageName) => {
+  onPageEnter(pageName => {
     if (pageName === 'add-word') updateAddWordUI();
     else if (pageName === 'word-list') renderWordListPage('');
     else if (pageName === 'mistakes') renderMistakesList();
@@ -143,412 +167,271 @@ function bindEvents() {
     else if (pageName === 'home') renderHomePage();
     else if (pageName === 'roots') renderRootsPage();
     else if (pageName === 'plan') renderPlanPage();
+    else if (pageName === 'settings') { updateAlgoUI(); updateThemeUI(); }
+    else if (pageName === 'voice-settings') initVoiceSettings();
   });
-
-  // 全局按钮绑定（首页按钮通过 onclick 属性，这里不再重复绑定）
-  // 部分需要额外绑定的：
-  bindTestButtons();
 }
 
-function bindTestButtons() {
-  // EC 播放按钮
-  const ecPlayBtn = document.getElementById('ec-play-btn');
-  if (ecPlayBtn) ecPlayBtn.addEventListener('click', playECVoice);
-
-  // CE 提交和播放
-  const ceSubmitBtn = document.getElementById('ce-submit-btn');
-  if (ceSubmitBtn) ceSubmitBtn.addEventListener('click', handleCESubmit);
-  const ceInput = document.getElementById('ce-input');
-  if (ceInput) ceInput.addEventListener('keypress', handleCEKeypress);
-  const cePlayBtn = document.getElementById('ce-play-btn');
-  if (cePlayBtn) cePlayBtn.addEventListener('click', playCEVoice);
-
-  // 复习按钮
-  const reviewCEBtn = document.getElementById('review-ce-submit');
-  if (reviewCEBtn) reviewCEBtn.addEventListener('click', checkReviewCE);
-  const reviewCEInput = document.getElementById('review-ce-input');
-  if (reviewCEInput) reviewCEInput.addEventListener('keypress', handleReviewCEKeypress);
-  const reviewPlayBtn = document.getElementById('review-play-btn');
-  if (reviewPlayBtn) reviewPlayBtn.addEventListener('click', playReviewVoice);
-
-  // 错题标签切换
-  document.getElementById('ec-mistakes-tab')?.addEventListener('click', () => switchMistakeTab('ec'));
-  document.getElementById('ce-mistakes-tab')?.addEventListener('click', () => switchMistakeTab('ce'));
-}
-
-// ==================== 首页渲染 ====================
+// ==================== 首页 ====================
 function renderHomePage() {
   refreshListSelect();
   renderPlanProgress();
-  
-  // 更新今日复习数量
-  const dueCount = currentList ? getDueCount(currentList) : 0;
-  const reviewBadge = document.getElementById('review-badge');
-  if (reviewBadge) {
-    reviewBadge.textContent = dueCount;
-    reviewBadge.style.display = dueCount > 0 ? 'inline' : 'none';
-  }
-  
-  // 更新计划进度
-  const planProgress = getPlanProgress();
-  const planArea = document.getElementById('plan-progress-area');
-  if (planArea && planProgress) {
-    renderPlanProgress();
-  }
+  const due = currentList ? getDueCount(currentList) : 0;
+  const badge = document.getElementById('review-badge');
+  if (badge) { badge.textContent = due; badge.style.display = due > 0 ? 'inline-flex' : 'none'; }
+  document.getElementById('back-btn').style.visibility = 'hidden';
+  document.getElementById('page-title').textContent = '单词背诵助手';
 }
 
-// ==================== 列表选择器 ====================
 function refreshListSelect() {
-  const select = document.getElementById('list-select');
-  const previousListId = currentList ? currentList.id : null;
-  
-  select.innerHTML = '';
-  if (data.lists.length === 0) {
-    select.innerHTML = '<option value="">暂无列表</option>';
-    setCurrentList(null);
-    return;
-  }
-  
-  data.lists.forEach(list => {
-    const option = document.createElement('option');
-    option.value = list.id;
-    option.textContent = `${list.name} (${list.words.length}个单词)`;
-    select.appendChild(option);
-  });
-  
-  if (previousListId) {
-    const found = data.lists.find(l => l.id === previousListId);
-    if (found) {
-      setCurrentList(found);
-      select.value = found.id;
-    } else {
-      setCurrentList(data.lists[0]);
-      select.value = data.lists[0].id;
-    }
-  } else {
-    setCurrentList(data.lists[0]);
-    select.value = data.lists[0].id;
-  }
+  const sel = document.getElementById('list-select');
+  const prev = currentList?.id;
+  sel.innerHTML = '';
+  if (data.lists.length === 0) { sel.innerHTML = '<option value="">暂无列表</option>'; setCurrentList(null); return; }
+  data.lists.forEach(l => { const o = document.createElement('option'); o.value = l.id; o.textContent = `${l.name} (${l.words.length})`; sel.appendChild(o); });
+  const found = prev ? data.lists.find(l => l.id === prev) : null;
+  setCurrentList(found || data.lists[0]);
+  sel.value = (found || data.lists[0]).id;
 }
 
-// ==================== 添加单词页面 ====================
 function updateAddWordUI() {
-  document.getElementById('add-word-count').textContent = currentList
-    ? `当前列表已有 ${currentList.words.length} 个单词`
-    : '请先选择一个列表';
+  document.getElementById('add-word-count').textContent = currentList ? `当前列表已有 ${currentList.words.length} 个单词` : '请先选择一个列表';
 }
 
-// ==================== 单词列表页面 ====================
-let currentWordFilter = '';
-
+// ==================== 单词列表 ====================
+let wordFilter = '';
 function renderWordListPage(filter = '') {
-  currentWordFilter = filter;
-  const container = document.getElementById('word-list-container');
-  const countEl = document.getElementById('word-list-count');
-  
-  if (!currentList || currentList.words.length === 0) {
-    countEl.textContent = '当前列表没有单词';
-    container.innerHTML = '';
-    return;
-  }
-  
+  wordFilter = filter;
+  const c = document.getElementById('word-list-container'), cnt = document.getElementById('word-list-count');
+  if (!currentList || currentList.words.length === 0) { cnt.textContent = '当前列表没有单词'; c.innerHTML = ''; return; }
   let words = currentList.words;
-  if (filter) {
-    const q = filter.toLowerCase();
-    words = words.filter(w => w.english.toLowerCase().includes(q) || w.chinese.includes(q));
-  }
-  
-  countEl.textContent = filter 
-    ? `搜索"${filter}"：找到 ${words.length} 个单词`
-    : `共 ${currentList.words.length} 个单词`;
-  
-  container.innerHTML = words.map((word, index) => {
-    const realIndex = currentList.words.indexOf(word);
-    let badges = '';
-    if (word.phonetic) badges += `<span class="text-xs text-gray-400 mr-2">${word.phonetic}</span>`;
-    if (word.nextReview) badges += `<span class="text-xs bg-blue-100 text-blue-700 px-1 rounded">复习:${word.nextReview}</span>`;
-    
-    return `
-      <div class="bg-white p-3 rounded-lg border border-gray-200">
-        <div class="flex justify-between items-center">
-          <div>
-            <p class="text-lg font-medium">${word.english} <span class="text-gray-600">${word.chinese}</span></p>
-            <div class="mt-1">${badges}</div>
-            ${word.example ? `<p class="text-xs text-gray-400 italic mt-1">"${word.example}"</p>` : ''}
-          </div>
-          <div class="flex gap-1 shrink-0">
-            <button class="px-2 py-1 bg-blue-500 text-white rounded text-sm" onclick="window._editWordDetail(${realIndex})">详情</button>
-            <button class="px-2 py-1 bg-yellow-500 text-white rounded text-sm" onclick="window._editWord(${realIndex})">修改</button>
-            <button class="px-2 py-1 bg-red-500 text-white rounded text-sm" onclick="window._deleteWord(${realIndex})">删除</button>
+  if (filter) { const q = filter.toLowerCase(); words = words.filter(w => w.english.toLowerCase().includes(q) || w.chinese.includes(q)); }
+  cnt.textContent = filter ? `搜索"${filter}"：${words.length} 个` : `共 ${currentList.words.length} 个单词`;
+  c.innerHTML = words.map(w => {
+    const idx = currentList.words.indexOf(w);
+    return `<div class="app-card" style="padding:0.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <p style="font-weight:600">${esc(w.english)} <span style="color:var(--text-secondary);font-weight:400">${esc(w.chinese)}</span></p>
+          <div style="margin-top:0.25rem;display:flex;gap:0.25rem;flex-wrap:wrap">
+            ${w.phonetic ? `<span class="badge badge-primary">${esc(w.phonetic)}</span>` : ''}
+            ${w.passed ? `<span class="badge badge-success">通过</span>` : ''}
+            ${w.nextReview ? `<span class="badge badge-warning">${w.nextReview}</span>` : ''}
           </div>
         </div>
-      </div>`;
-  }).join('');
-
-  // 挂载全局函数
-  window._editWord = editWordHandler;
-  window._deleteWord = deleteWordHandler;
-  window._editWordDetail = editWordDetailHandler;
-}
-
-function editWordHandler(index) {
-  const word = currentList.words[index];
-  showModal('修改单词',
-    `<div class="space-y-3">
-      <input type="text" id="edit-english" class="w-full p-2 border rounded-lg" value="${word.english}">
-      <input type="text" id="edit-chinese" class="w-full p-2 border rounded-lg" value="${word.chinese}">
-      <input type="text" id="edit-note" class="w-full p-2 border rounded-lg" placeholder="笔记（可选）" value="${word.note || ''}">
-    </div>`,
-    [
-      { text: '取消', onClick: hideModal, className: 'px-4 py-2 rounded-lg bg-gray-400 text-white' },
-      { text: '保存', onClick: () => {
-        const newEnglish = document.getElementById('edit-english').value.trim();
-        const newChinese = document.getElementById('edit-chinese').value.trim();
-        const newNote = document.getElementById('edit-note').value.trim();
-        if (!newEnglish || !newChinese) { showToast('请填写完整信息'); return; }
-        word.english = newEnglish;
-        word.chinese = newChinese;
-        word.note = newNote;
-        saveData();
-        renderWordListPage(currentWordFilter);
-        refreshListSelect();
-        hideModal();
-        showToast('单词已修改');
-      }, className: 'px-4 py-2 rounded-lg bg-blue-600 text-white' }
-    ]
-  );
-}
-
-function editWordDetailHandler(index) {
-  const word = currentList.words[index];
-  showModal(`单词详情: ${word.english}`,
-    `<div class="space-y-3 text-sm">
-      ${word.phonetic ? `<p><span class="font-medium">音标:</span> ${word.phonetic}</p>` : ''}
-      <p><span class="font-medium">中文:</span> ${word.chinese}</p>
-      ${word.example ? `<p><span class="font-medium">例句:</span> <span class="italic">"${word.example}"</span></p>` : ''}
-      ${word.note ? `<p><span class="font-medium">笔记:</span> ${word.note}</p>` : ''}
-      <p><span class="font-medium">SM-2:</span> EF=${word.easeFactor?.toFixed(1)} 间隔=${word.interval}天 重复=${word.repetitions}次</p>
-      ${word.nextReview ? `<p><span class="font-medium">下次复习:</span> ${word.nextReview}</p>` : '<p class="text-gray-400">尚未安排复习</p>'}
-      <div class="space-y-2 mt-2">
-        <input type="text" id="detail-note" class="w-full p-2 border rounded-lg" placeholder="添加笔记" value="${word.note || ''}">
-        <input type="text" id="detail-synonyms" class="w-full p-2 border rounded-lg" placeholder="近义词（逗号分隔）" value="${(word.synonyms || []).join(', ')}">
-        <input type="text" id="detail-antonyms" class="w-full p-2 border rounded-lg" placeholder="反义词（逗号分隔）" value="${(word.antonyms || []).join(', ')}">
-        <button id="detail-lookup-btn" class="w-full bg-green-500 text-white py-1 rounded-lg text-sm">查询词典信息</button>
+        <div style="display:flex;gap:0.25rem;flex-shrink:0">
+          <button class="btn-ghost" style="padding:0.25rem 0.5rem;font-size:0.75rem" onclick="window._ed=${idx};editWordDetail(${idx})">详情</button>
+          <button class="btn-ghost" style="padding:0.25rem 0.5rem;font-size:0.75rem" onclick="window._ew=${idx};editWordHandler(${idx})">修改</button>
+          <button class="btn-ghost" style="padding:0.25rem 0.5rem;font-size:0.75rem;color:var(--danger)" onclick="deleteWordHandler(${idx})">删除</button>
+        </div>
       </div>
+    </div>`;
+  }).join('');
+  window.editWordHandler = editWordHandlerFn;
+  window.deleteWordHandler = deleteWordHandlerFn;
+  window.editWordDetail = editWordDetailFn;
+}
+
+function editWordHandlerFn(idx) {
+  const word = currentList.words[idx];
+  showModal('修改单词',
+    `<div style="display:flex;flex-direction:column;gap:0.75rem">
+      <input type="text" id="edit-english" class="app-input" value="${esc(word.english)}">
+      <input type="text" id="edit-chinese" class="app-input" value="${esc(word.chinese)}">
+      <input type="text" id="edit-note" class="app-input" placeholder="笔记" value="${esc(word.note || '')}">
     </div>`,
     [
-      { text: '关闭', onClick: hideModal, className: 'px-4 py-2 rounded-lg bg-gray-400 text-white' },
-      { text: '朗读', onClick: () => playVoice(word.english), className: 'px-4 py-2 rounded-lg bg-blue-600 text-white' },
+      { text: '取消', onClick: hideModal, className: 'btn-ghost' },
       { text: '保存', onClick: () => {
-        word.note = document.getElementById('detail-note').value.trim();
-        word.synonyms = document.getElementById('detail-synonyms').value.split(',').map(s => s.trim()).filter(Boolean);
-        word.antonyms = document.getElementById('detail-antonyms').value.split(',').map(s => s.trim()).filter(Boolean);
-        saveData();
-        hideModal();
-        showToast('已保存');
-        renderWordListPage(currentWordFilter);
-      }, className: 'px-4 py-2 rounded-lg bg-green-600 text-white' }
+        const ne = document.getElementById('edit-english').value.trim();
+        const nc = document.getElementById('edit-chinese').value.trim();
+        const nn = document.getElementById('edit-note').value.trim();
+        if (!ne || !nc) { showToast('请填写完整'); return; }
+        word.english = ne; word.chinese = nc; word.note = nn;
+        saveData(); renderWordListPage(wordFilter); refreshListSelect(); hideModal(); showToast('已修改');
+      }, className: 'btn-primary' }
     ]
   );
-  
-  // 延迟绑定查询按钮
+}
+
+function deleteWordHandlerFn(idx) {
+  const word = currentList.words[idx];
+  showModal('确认删除', `确定要删除"${esc(word.english)} - ${esc(word.chinese)}"吗？`,
+    [
+      { text: '取消', onClick: hideModal, className: 'btn-ghost' },
+      { text: '删除', onClick: () => {
+        currentList.words.splice(idx, 1);
+        currentList.ecMistakes = currentList.ecMistakes.filter(m => !(m.english === word.english && m.chinese === word.chinese));
+        currentList.ceMistakes = currentList.ceMistakes.filter(m => !(m.english === word.english && m.chinese === word.chinese));
+        saveData(); renderWordListPage(wordFilter); refreshListSelect(); hideModal(); showToast('已删除');
+      }, className: 'btn-danger' }
+    ]
+  );
+}
+
+function editWordDetailFn(idx) {
+  const word = currentList.words[idx];
+  showModal(`详情: ${esc(word.english)}`,
+    `<div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem">
+      ${word.phonetic ? `<p><b>音标:</b> ${esc(word.phonetic)}</p>` : ''}
+      <p><b>中文:</b> ${esc(word.chinese)}</p>
+      ${word.example ? `<p><b>例句:</b> <i>"${esc(word.example)}"</i></p>` : ''}
+      ${word.exampleCN ? `<p><b>译:</b> ${esc(word.exampleCN)}</p>` : ''}
+      ${word.note ? `<p><b>笔记:</b> ${esc(word.note)}</p>` : ''}
+      <p style="color:var(--text-secondary)">EF=${word.easeFactor?.toFixed(1)} 间隔=${word.interval}天 复=${word.repetitions}次 ${word.passed?'✅':'⬜'}</p>
+      <input type="text" id="dtl-note" class="app-input" placeholder="笔记" value="${esc(word.note || '')}">
+      <button id="dtl-lookup" class="btn-ghost" style="width:100%">查询词典</button>
+    </div>`,
+    [
+      { text: '关闭', onClick: hideModal, className: 'btn-ghost' },
+      { text: '朗读', onClick: () => playVoice(word.english), className: 'btn-primary' },
+      { text: '保存', onClick: () => {
+        word.note = document.getElementById('dtl-note').value.trim();
+        saveData(); hideModal(); showToast('已保存'); renderWordListPage(wordFilter);
+      }, className: 'btn-primary' }
+    ]
+  );
   setTimeout(() => {
-    const btn = document.getElementById('detail-lookup-btn');
-    if (btn) {
-      btn.addEventListener('click', async () => {
-        btn.textContent = '查询中...';
-        btn.disabled = true;
-        const info = await fetchWordInfo(word.english);
-        if (info) {
-          if (info.phonetic) word.phonetic = info.phonetic;
-          if (info.example) word.example = info.example;
-          saveData();
-          hideModal();
-          showToast('词典信息已更新');
-          setTimeout(() => editWordDetailHandler(index), 100);
-        } else {
-          btn.textContent = '未找到';
-          btn.disabled = false;
-        }
-      });
-    }
+    const btn = document.getElementById('dtl-lookup');
+    if (btn) btn.addEventListener('click', async () => {
+      btn.textContent = '查询中...'; btn.disabled = true;
+      const info = await lookupAPI(word.english);
+      if (info) { if (info.phonetic) word.phonetic = info.phonetic; if (info.example) word.example = info.example; saveData(); }
+      hideModal(); showToast('已更新'); setTimeout(() => editWordDetailFn(idx), 100);
+    });
   }, 100);
 }
 
-function deleteWordHandler(index) {
-  const word = currentList.words[index];
-  showModal('确认删除', `确定要删除单词"${word.english} - ${word.chinese}"吗？`,
-    [
-      { text: '取消', onClick: hideModal, className: 'px-4 py-2 rounded-lg bg-gray-400 text-white' },
-      { text: '删除', onClick: () => {
-        deleteWord(currentList, index);
-        renderWordListPage(currentWordFilter);
-        refreshListSelect();
-        hideModal();
-        showToast('单词已删除');
-      }, className: 'px-4 py-2 rounded-lg bg-red-600 text-white' }
-    ]
-  );
-}
-
-// 搜索功能
-const searchInput = document.getElementById('word-search');
-if (searchInput) {
-  searchInput.addEventListener('input', (e) => {
-    renderWordListPage(e.target.value.trim());
-  });
-}
-
 // ==================== 错题库 ====================
-let currentMistakeTab = 'ec';
-
-function switchMistakeTab(tab) {
-  currentMistakeTab = tab;
-  document.getElementById('ec-mistakes-tab').className = tab === 'ec'
-    ? 'flex-1 py-2 text-lg font-medium text-blue-600 border-b-2 border-blue-600'
-    : 'flex-1 py-2 text-lg font-medium text-gray-500';
-  document.getElementById('ce-mistakes-tab').className = tab === 'ce'
-    ? 'flex-1 py-2 text-lg font-medium text-blue-600 border-b-2 border-blue-600'
-    : 'flex-1 py-2 text-lg font-medium text-gray-500';
+let mistakeTab = 'ec';
+function switchMistakeTab(t) {
+  mistakeTab = t;
+  document.getElementById('ec-mistakes-tab').style.cssText = `flex:1;padding:0.5rem;font-weight:600;color:${t==='ec'?'var(--primary)':'var(--text-secondary)'};border-bottom:2px solid ${t==='ec'?'var(--primary)':'transparent'};background:transparent;border-top:none;border-left:none;border-right:none;cursor:pointer`;
+  document.getElementById('ce-mistakes-tab').style.cssText = `flex:1;padding:0.5rem;font-weight:600;color:${t==='ce'?'var(--primary)':'var(--text-secondary)'};border-bottom:2px solid ${t==='ce'?'var(--primary)':'transparent'};background:transparent;border-top:none;border-left:none;border-right:none;cursor:pointer`;
   renderMistakesList();
 }
-
 function renderMistakesList() {
-  const listDiv = document.getElementById('mistakes-list');
-  const mistakes = currentMistakeTab === 'ec'
-    ? (currentList?.ecMistakes || [])
-    : (currentList?.ceMistakes || []);
-  
-  if (mistakes.length === 0) {
-    listDiv.innerHTML = '<p class="text-center text-gray-500 text-lg mt-8">暂无错题 🎉</p>';
-    return;
-  }
-  listDiv.innerHTML = mistakes.map(m => `
-    <div class="bg-white p-3 rounded-lg border border-gray-200 flex justify-between items-center">
-      <div>
-        <p class="text-lg">${m.english} - ${m.chinese}</p>
-        <p class="text-sm text-gray-500">连续正确: ${m.streak || 0}/3</p>
-      </div>
-      <button class="px-3 py-1 bg-blue-500 text-white rounded text-sm" onclick="playVoice('${m.english}')">🔊</button>
-    </div>
-  `).join('');
+  const d = document.getElementById('mistakes-list');
+  const mistakes = mistakeTab === 'ec' ? (currentList?.ecMistakes||[]) : (currentList?.ceMistakes||[]);
+  if (mistakes.length === 0) { d.innerHTML = '<p style="text-align:center;color:var(--text-muted);margin-top:2rem">暂无错题 🎉</p>'; return; }
+  d.innerHTML = mistakes.map(m =>
+    `<div class="app-card" style="padding:0.75rem;display:flex;justify-content:space-between;align-items:center">
+      <div><p style="font-weight:600">${esc(m.english)} - ${esc(m.chinese)}</p><p style="color:var(--text-secondary);font-size:0.75rem">连续正确: ${m.streak||0}/3</p></div>
+      <button class="btn-icon" onclick="playVoice('${esc(m.english)}')">🔊</button>
+    </div>`).join('');
 }
 
-// ==================== 数据导出 ====================
-function exportData() {
+// ==================== 导出 ====================
+function exportDataFn() {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `单词数据_${new Date().toLocaleDateString()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('数据导出成功');
+  const a = document.createElement('a'); a.href = url;
+  a.download = `单词数据_${new Date().toLocaleDateString()}.json`; a.click();
+  URL.revokeObjectURL(url); showToast('导出成功');
 }
 
-// ==================== 词根分析页面 ====================
+// ==================== 词根页面 ====================
 async function renderRootsPage() {
-  const container = document.getElementById('roots-container');
-  if (!container) return;
-  
-  // 收集所有单词
-  const allWords = [];
-  data.lists.forEach(list => {
-    list.words.forEach(w => allWords.push(w));
-  });
-  
-  if (allWords.length === 0) {
-    container.innerHTML = '<p class="text-center text-gray-500 mt-8">尚无单词数据</p>';
-    return;
-  }
-  
-  container.innerHTML = '<p class="text-center text-gray-400 mb-4">正在分析词根...</p>';
-  
-  const rootGroups = await analyzeRoots(allWords);
-  
-  container.innerHTML = rootGroups.map(group => `
-    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
-      <div class="bg-blue-50 px-4 py-2 font-medium text-blue-700 flex justify-between items-center">
-        <span>📚 ${group.root}</span>
-        <span class="text-sm text-gray-500">${group.words.length}个单词</span>
-      </div>
-      <div class="p-3">
-        ${group.words.map(w => `<span class="inline-block bg-gray-100 rounded px-2 py-1 m-1 text-sm">${w.english} <span class="text-gray-400">${w.chinese}</span></span>`).join('')}
-      </div>
-    </div>
-  `).join('');
-  
-  if (rootGroups.length === 0) {
-    container.innerHTML = '<p class="text-center text-gray-500 mt-8">未检测到词根关联</p>';
-  }
+  const c = document.getElementById('roots-container'); if (!c) return;
+  const all = []; data.lists.forEach(l => l.words.forEach(w => all.push(w)));
+  if (all.length === 0) { c.innerHTML = '<p style="text-align:center;color:var(--text-muted);margin-top:2rem">尚无单词</p>'; return; }
+  c.innerHTML = '<p style="text-align:center;color:var(--text-muted);margin-bottom:1rem">分析中...</p>';
+  const groups = await analyzeRoots(all);
+  c.innerHTML = groups.map(g =>
+    `<div class="root-group">
+      <div class="root-header"><span>📚 ${esc(g.root)}</span><span style="font-size:0.75rem;color:var(--text-secondary)">${g.words.length}个</span></div>
+      <div class="root-body">${g.words.map(w => `<span class="badge badge-primary" style="margin:0.125rem">${esc(w.english)} <span style="color:var(--text-muted)">${esc(w.chinese)}</span></span>`).join(' ')}</div>
+    </div>`).join('');
+  if (groups.length === 0) c.innerHTML = '<p style="text-align:center;color:var(--text-muted)">未检测到词根关联</p>';
 }
 
-// ==================== 学习计划页面 ====================
+// ==================== 计划页面 ====================
 function renderPlanPage() {
-  const container = document.getElementById('plan-page-content');
-  if (!container) return;
-  
-  const progress = getPlanProgress();
-  if (!progress) {
-    container.innerHTML = `
-      <div class="text-center py-8">
-        <p class="text-gray-500 mb-4">尚未设置学习计划</p>
-        <button id="plan-setup-btn" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg">设置学习计划</button>
-      </div>`;
-    document.getElementById('plan-setup-btn').addEventListener('click', showPlanSettings);
-    return;
+  const c = document.getElementById('plan-page-content'); if (!c) return;
+  const p = getPlanProgress();
+  if (!p) {
+    c.innerHTML = `<div style="text-align:center;padding:2rem"><p style="color:var(--text-secondary);margin-bottom:1rem">尚未设置学习计划</p><button id="plan-setup-btn" class="btn-primary">设置学习计划</button></div>`;
+    document.getElementById('plan-setup-btn').addEventListener('click', showPlanSettings); return;
   }
-  
-  container.innerHTML = `
-    <div class="bg-white rounded-lg p-4 border border-gray-200 mb-4">
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="font-bold text-lg">📅 30天学习计划</h3>
-        <button id="plan-edit-btn" class="text-blue-600 text-sm">修改</button>
+  c.innerHTML = `
+    <div class="app-card" style="padding:1rem;margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+        <h3 style="font-weight:700;font-size:1.125rem">📅 学习计划</h3>
+        <button id="plan-edit-btn" class="btn-ghost" style="font-size:0.75rem">修改</button>
       </div>
-      <div class="w-full bg-gray-200 rounded-full h-4 mb-3">
-        <div class="bg-gradient-to-r from-blue-500 to-green-500 h-4 rounded-full progress-bar" style="width:${progress.percent}%"></div>
+      <div style="background:var(--border);border-radius:999px;height:8px;margin-bottom:0.75rem">
+        <div class="progress-bar" style="width:${p.percent}%;height:8px;border-radius:999px;background:var(--gradient)"></div>
       </div>
-      <div class="grid grid-cols-2 gap-4 text-center">
-        <div class="bg-blue-50 rounded-lg p-3">
-          <p class="text-2xl font-bold text-blue-600">${progress.learned}</p>
-          <p class="text-sm text-gray-500">已学单词</p>
-        </div>
-        <div class="bg-green-50 rounded-lg p-3">
-          <p class="text-2xl font-bold text-green-600">${progress.total - progress.learned}</p>
-          <p class="text-sm text-gray-500">剩余单词</p>
-        </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;text-align:center">
+        <div class="stat-card" style="background:var(--primary-bg)"><p style="font-size:1.5rem;font-weight:800;color:var(--primary)">${p.learned}</p><p class="stat-label">已学单词</p></div>
+        <div class="stat-card" style="background:var(--success-bg)"><p style="font-size:1.5rem;font-weight:800;color:var(--success)">${p.total-p.learned}</p><p class="stat-label">剩余单词</p></div>
       </div>
-      <div class="mt-3 text-sm text-gray-600">
-        <p>📌 每日目标：${progress.dailyNew} 个新单词</p>
-        <p>📊 预期进度：${progress.expected}/${progress.total}</p>
-        <p>${progress.onTrack ? '✅ 进度正常，继续保持！' : '⚠️ 进度落后，加油！'}</p>
+      <div style="margin-top:0.75rem;font-size:0.875rem;color:var(--text-secondary)">
+        <p>📌 每日目标：${p.dailyNew} 个新词</p>
+        <p>📊 预期进度：${p.expected}/${p.total}</p>
+        <p>${p.onTrack?'✅ 进度正常！':'⚠️ 进度落后！'}</p>
       </div>
     </div>`;
   document.getElementById('plan-edit-btn').addEventListener('click', showPlanSettings);
 }
 
-// ==================== Service Worker ====================
-function registerServiceWorker() {
+// ==================== 设置页 UI ====================
+function updateAlgoUI() {
+  document.getElementById('algo-hint').textContent = `当前: ${getAlgorithmLabel()}`;
+  const sm2Btn = document.getElementById('algo-sm2-btn');
+  const fsrsBtn = document.getElementById('algo-fsrs-btn');
+  if (data.algorithm === 'sm2') { sm2Btn.style.fontWeight='700'; fsrsBtn.style.fontWeight='400'; }
+  else { fsrsBtn.style.fontWeight='700'; sm2Btn.style.fontWeight='400'; }
+}
+
+function updateThemeUI() {
+  const t = getTheme();
+  document.getElementById('theme-hint').textContent = `当前: ${t==='auto'?'自动':t==='dark'?'深色':'浅色'}`;
+}
+
+function updateThemeIcon() {
+  document.getElementById('theme-btn').textContent = getThemeIcon();
+}
+
+// ==================== 全局搜索 ====================
+let gsAbort = null;
+async function globalSearchStart() {
+  const div = document.getElementById('global-search-progress');
+  const bar = document.getElementById('gs-progress-bar');
+  const txt = document.getElementById('gs-progress-text');
+  const btn = document.getElementById('global-search-btn');
+  const cancel = document.getElementById('gs-cancel-btn');
+  div.classList.remove('hidden'); btn.disabled = true;
+  window._gsCancel = false;
+
+  try {
+    await doGlobalSearch(
+      ({ done, total, updated }) => {
+        if (window._gsCancel) return;
+        bar.style.width = `${Math.round((done/total)*100)}%`;
+        txt.textContent = `${done}/${total} — 新增 ${updated} 条例句`;
+      },
+      { get aborted() { return window._gsCancel; } }
+    );
+    if (!window._gsCancel) showToast('例句获取完成！');
+  } catch(e) {
+    showToast('获取失败: ' + e.message);
+  }
+  div.classList.add('hidden'); btn.disabled = false; window._gsCancel = false;
+}
+
+// ==================== SW ====================
+function registerSW() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('Service Worker registered'))
-        .catch(err => console.log('SW registration failed:', err));
+        .then(() => console.log('SW registered')).catch(() => {});
     });
   }
 }
 
-// ==================== 全局暴露（供 HTML onclick 调用）====================
-window.goToPage = goToPage;
-window.goHome = goHome;
-window.startECTest = startECTest;
-window.startCETest = startCETest;
-window.startReview = startReview;
-window.exportData = exportData;
-window.showPasteImport = showPasteImport;
-window.showFileImport = showFileImport;
-window.showBatchEdit = () => showBatchEdit(currentList);
-window.showPlanSettings = showPlanSettings;
+// ==================== 工具 ====================
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-// 启动应用
+// 启动
 init();

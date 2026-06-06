@@ -1,16 +1,98 @@
-/* ==================== 自定义样式补充 ==================== */
+/* ==================== CSS 变量主题系统 ==================== */
+:root,
+[data-theme="light"] {
+  --bg: #f1f5f9;
+  --bg-alt: #e2e8f0;
+  --card: #ffffff;
+  --card-hover: #f8fafc;
+  --text: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --primary-bg: #eef2ff;
+  --success: #10b981;
+  --success-bg: #d1fae5;
+  --danger: #ef4444;
+  --danger-bg: #fee2e2;
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+  --info: #3b82f6;
+  --info-bg: #dbeafe;
+  --gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --gradient-hover: linear-gradient(135deg, #4f46e5, #7c3aed);
+  --gradient-success: linear-gradient(135deg, #10b981, #059669);
+  --gradient-danger: linear-gradient(135deg, #ef4444, #dc2626);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+  --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.05);
+  --radius-sm: 0.5rem;
+  --radius: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+}
 
-/* Toast 弹出提示 */
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --bg-alt: #1e293b;
+  --card: #1e293b;
+  --card-hover: #334155;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #334155;
+  --border-light: #1e293b;
+  --primary: #818cf8;
+  --primary-light: #a5b4fc;
+  --primary-dark: #6366f1;
+  --primary-bg: #1e1b4b;
+  --success: #34d399;
+  --success-bg: #064e3b;
+  --danger: #f87171;
+  --danger-bg: #7f1d1d;
+  --warning: #fbbf24;
+  --warning-bg: #78350f;
+  --info: #60a5fa;
+  --info-bg: #1e3a5f;
+  --gradient: linear-gradient(135deg, #818cf8, #a78bfa);
+  --gradient-hover: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --gradient-success: linear-gradient(135deg, #34d399, #10b981);
+  --gradient-danger: linear-gradient(135deg, #f87171, #ef4444);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  --shadow: 0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 6px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.35);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,.5), 0 4px 6px rgba(0,0,0,.3);
+}
+
+/* ==================== 全局基础 ==================== */
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background var(--transition), color var(--transition);
+}
+
+#app {
+  background: transparent;
+}
+
+/* ==================== Toast ==================== */
 .toast {
   position: fixed;
   bottom: 5rem;
   left: 50%;
   transform: translateX(-50%);
-  background: #1f2937;
-  color: white;
+  background: var(--card);
+  color: var(--text);
   padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-lg);
   z-index: 100;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
   animation: toast-in 0.3s ease-out;
 }
 @keyframes toast-in {
@@ -18,48 +100,205 @@
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-/* 页面切换 — 由 Tailwind hidden class 控制，此处仅作增强 */
+/* ==================== 页面切换 ==================== */
 .page.active { display: block; }
 
-/* 统计页面图表容器 */
-.chart-container {
-  position: relative;
+/* ==================== 导航栏 ==================== */
+.nav-header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* ==================== 卡片 ==================== */
+.app-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  transition: all var(--transition);
+}
+.app-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 功能网格卡片 */
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  text-decoration: none;
+  user-select: none;
+}
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+.feature-card .icon {
+  font-size: 2rem;
+  transition: transform var(--transition);
+}
+.feature-card:hover .icon {
+  transform: scale(1.1);
+}
+.feature-card .label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* 复习入口卡片 */
+.review-card {
+  background: linear-gradient(135deg, var(--warning-bg), var(--primary-bg));
+  border: 1px solid var(--warning);
+  border-radius: var(--radius-xl);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* ==================== 按钮 ==================== */
+.btn-primary {
+  background: var(--gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow);
+}
+.btn-primary:hover {
+  background: var(--gradient-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-ghost:hover {
+  background: var(--bg-alt);
+  color: var(--text);
+}
+
+.btn-danger {
+  background: var(--gradient-danger);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+}
+.btn-icon:hover {
+  background: var(--bg-alt);
+  color: var(--text);
+}
+
+/* ==================== 输入框 ==================== */
+.app-input {
   width: 100%;
-  max-height: 250px;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 1rem;
+  transition: all var(--transition);
 }
-.chart-container canvas { width: 100% !important; }
+.app-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-bg);
+}
+.app-input::placeholder {
+  color: var(--text-muted);
+}
 
-/* 复习进度条 */
+/* 搜索框 */
+.search-input {
+  background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") 0.75rem center no-repeat;
+  padding-left: 2.5rem;
+}
+
+/* ==================== 选择框 ==================== */
+.app-select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+/* ==================== 进度条 ==================== */
 .progress-bar {
-  transition: width 0.3s ease;
+  transition: width 0.4s cubic-bezier(.4,0,.2,1);
 }
 
-/* 闪卡翻转效果 */
-.flashcard {
-  perspective: 1000px;
+/* ==================== 统计页面 ==================== */
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
 }
-.flashcard-inner {
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
-.flashcard.flipped .flashcard-inner {
-  transform: rotateY(180deg);
-}
-.flashcard-front, .flashcard-back {
-  backface-visibility: hidden;
-}
-.flashcard-back {
-  transform: rotateY(180deg);
-}
-
-/* 批量编辑 textarea */
-.batch-textarea {
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.6;
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
 }
 
-/* 打卡火焰动画 */
+/* 连续打卡 */
 .streak-fire {
   display: inline-block;
   animation: fire-pulse 0.6s ease-in-out infinite alternate;
@@ -67,4 +306,238 @@
 @keyframes fire-pulse {
   from { transform: scale(1); }
   to { transform: scale(1.15); }
+}
+
+/* ==================== 测试页面 ==================== */
+.test-word {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.option-btn {
+  width: 100%;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  font-size: 1.125rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+}
+.option-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-bg);
+  transform: translateX(4px);
+}
+.option-btn.correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+}
+.option-btn.wrong {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.feedback-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+}
+.feedback-correct {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.feedback-wrong {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* ==================== 闪卡 ==================== */
+.flashcard-overlay {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 1.5rem;
+  animation: flashcard-in 0.3s ease-out;
+}
+@keyframes flashcard-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.flashcard-word {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+.flashcard-phonetic {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+.flashcard-meaning {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--success);
+  margin-bottom: 0.75rem;
+}
+.flashcard-section {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}
+.flashcard-section .title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+/* ==================== 弹窗 ==================== */
+.modal-overlay {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+}
+.modal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* ==================== 设置页面 ==================== */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+}
+.setting-row .label {
+  font-weight: 600;
+}
+.setting-row .hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* 开关切换 */
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  background: var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.toggle-switch.active {
+  background: var(--primary);
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: transform var(--transition);
+}
+.toggle-switch.active::after {
+  transform: translateX(20px);
+}
+
+/* ==================== 批量编辑 ==================== */
+.batch-textarea {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* ==================== 图表容器 ==================== */
+.chart-container {
+  position: relative;
+  width: 100%;
+}
+.chart-container canvas { width: 100% !important; }
+
+/* ==================== 词根分组 ==================== */
+.root-group {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+.root-header {
+  background: var(--primary-bg);
+  padding: 0.625rem 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.root-body {
+  padding: 0.625rem 1rem;
+}
+
+/* ==================== 标签 Badge ==================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-primary { background: var(--primary-bg); color: var(--primary); }
+.badge-success { background: var(--success-bg); color: var(--success); }
+.badge-warning { background: var(--warning-bg); color: var(--warning); }
+.badge-danger { background: var(--danger-bg); color: var(--danger); }
+
+/* ==================== 加载动画 ==================== */
+.spinner {
+  width: 24px; height: 24px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ==================== 响应式微调 ==================== */
+@media (max-width: 380px) {
+  .feature-card { padding: 0.875rem 0.5rem; }
+  .feature-card .icon { font-size: 1.5rem; }
+  .feature-card .label { font-size: 0.7rem; }
 }

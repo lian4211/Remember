@@ -7,6 +7,8 @@ const STORAGE_KEY = 'wordLearnerData';
 export let data = {
   lists: [],
   nextId: 1,
+  algorithm: "sm2",       // "sm2" | "fsrs"
+  theme: "auto",          // "light" | "dark" | "auto"
   voiceSettings: { rate: "+0%", volume: "+0%", pitch: "+0Hz" },
   stats: { daily: {}, streak: 0, lastStudyDate: null },
   plan: { totalWords: 0, startDate: null, dailyNew: 0 }
@@ -26,27 +28,47 @@ export function createWord(english, chinese) {
     repetitions: 0,
     nextReview: null,
     lastReview: null,
+    // FSRS 字段
+    stability: 0,
+    difficulty: 0,
+    fsrsState: 0,           // 0=New 1=Learning 2=Review 3=Relearning
+    fsrsReps: 0,
+    fsrsLastReview: null,
     // 辅助记忆字段
     phonetic: "",
     example: "",
+    exampleCN: "",
     note: "",
     synonyms: [],
-    antonyms: []
+    antonyms: [],
+    // 学习状态
+    passed: false
   };
 }
 
 /** 迁移旧数据格式到新格式 */
 function migrateWord(word) {
+  // SM-2
   if (word.easeFactor === undefined) word.easeFactor = 2.5;
   if (word.interval === undefined) word.interval = 0;
   if (word.repetitions === undefined) word.repetitions = 0;
   if (word.nextReview === undefined) word.nextReview = null;
   if (word.lastReview === undefined) word.lastReview = null;
+  // FSRS
+  if (word.stability === undefined) word.stability = 0;
+  if (word.difficulty === undefined) word.difficulty = 0;
+  if (word.fsrsState === undefined) word.fsrsState = 0;
+  if (word.fsrsReps === undefined) word.fsrsReps = 0;
+  if (word.fsrsLastReview === undefined) word.fsrsLastReview = null;
+  // 辅助
   if (word.phonetic === undefined) word.phonetic = "";
   if (word.example === undefined) word.example = "";
+  if (word.exampleCN === undefined) word.exampleCN = "";
   if (word.note === undefined) word.note = "";
   if (word.synonyms === undefined) word.synonyms = [];
   if (word.antonyms === undefined) word.antonyms = [];
+  // 状态
+  if (word.passed === undefined) word.passed = false;
   return word;
 }
 
@@ -64,6 +86,8 @@ export function loadData() {
     const parsed = JSON.parse(saved);
     data.lists = (parsed.lists || []).map(migrateList);
     data.nextId = parsed.nextId || 1;
+    data.algorithm = parsed.algorithm || "sm2";
+    data.theme = parsed.theme || "auto";
     data.voiceSettings = parsed.voiceSettings || { rate: "+0%", volume: "+0%", pitch: "+0Hz" };
     data.stats = parsed.stats || { daily: {}, streak: 0, lastStudyDate: null };
     data.plan = parsed.plan || { totalWords: 0, startDate: null, dailyNew: 0 };
@@ -76,54 +100,92 @@ export function saveData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-/** 刷新列表选择器（供外部调用时更新选中状态） */
+/** 设置当前列表 */
 export function setCurrentList(list) {
   currentList = list;
 }
 
-/** 获取到期需要复习的单词列表 */
+/** 重置所有单词的算法数据（切换算法时调用） */
+export function resetAlgorithmData() {
+  data.lists.forEach(list => {
+    list.words.forEach(word => {
+      // SM-2
+      word.easeFactor = 2.5;
+      word.interval = 0;
+      word.repetitions = 0;
+      word.nextReview = null;
+      word.lastReview = null;
+      // FSRS
+      word.stability = 0;
+      word.difficulty = 0;
+      word.fsrsState = 0;
+      word.fsrsReps = 0;
+      word.fsrsLastReview = null;
+      // 不重置 passed
+    });
+  });
+  saveData();
+}
+
+/** 根据当前算法获取到期单词 */
 export function getDueWords(list) {
   if (!list) return [];
-  const today = new Date().toISOString().split('T')[0];
+  if (data.algorithm === 'fsrs') return getDueWordsFSRS(list);
+  return getDueWordsSM2(list);
+}
+
+function getDueWordsSM2(list) {
+  const today = todayStr();
   return list.words.filter(w => w.nextReview && w.nextReview <= today);
+}
+
+function getDueWordsFSRS(list) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return list.words.filter(w => {
+    if (!w.fsrsLastReview || w.fsrsState === 0) return false;
+    // 简单策略：fsrsState>0 且过了 scheduled 天数就算到期
+    if (w.fsrsState === 1) return true; // Learning 总是需要复习
+    // Review 状态：检查是否到了预约日期
+    const lastReview = new Date(w.fsrsLastReview);
+    lastReview.setHours(0, 0, 0, 0);
+    const elapsed = Math.round((today - lastReview) / (1000 * 60 * 60 * 24));
+    // R < 0.9 则到期
+    if (w.stability <= 0) return elapsed >= 1;
+    const R = Math.exp(Math.log(0.9) * elapsed / w.stability);
+    return R < 0.9;
+  });
 }
 
 /** 获取到期复习单词数量 */
 export function getDueCount(list) {
-  return getDueWords(list).length;
+  if (!list) return 0;
+  if (data.algorithm === 'fsrs') return getDueWordsFSRS(list).length;
+  return getDueWordsSM2(list).length;
 }
 
-/** 获取列表掌握度（SM-2 中 repetitions>=3 视为掌握） */
+/** 获取列表掌握度 */
 export function getMastery(list) {
   if (!list || list.words.length === 0) return { mastered: 0, total: 0, percent: 0 };
-  const mastered = list.words.filter(w => w.repetitions >= 3).length;
+  const mastered = list.words.filter(w => w.passed).length;
   return { mastered, total: list.words.length, percent: Math.round((mastered / list.words.length) * 100) };
 }
 
-/** 获取今日日期字符串 */
+/** 获取今日日期字符串 YYYY-MM-DD */
 export function todayStr() {
   return new Date().toISOString().split('T')[0];
 }
 
 /** 创建新列表 */
 export function createList(name) {
-  const list = {
-    id: data.nextId++,
-    name,
-    words: [],
-    ecMistakes: [],
-    ceMistakes: []
-  };
+  const list = { id: data.nextId++, name, words: [], ecMistakes: [], ceMistakes: [] };
   data.lists.push(list);
   saveData();
   return list;
 }
 
 /** 重命名列表 */
-export function renameList(list, newName) {
-  list.name = newName;
-  saveData();
-}
+export function renameList(list, newName) { list.name = newName; saveData(); }
 
 /** 删除列表 */
 export function deleteList(list) {
@@ -131,7 +193,7 @@ export function deleteList(list) {
   saveData();
 }
 
-/** 向列表添加单词 */
+/** 添加单词 */
 export function addWord(list, english, chinese) {
   const word = createWord(english, chinese);
   list.words.push(word);
@@ -139,7 +201,7 @@ export function addWord(list, english, chinese) {
   return word;
 }
 
-/** 删除单词并清理关联错题 */
+/** 删除单词并清理关联 */
 export function deleteWord(list, index) {
   const word = list.words[index];
   list.words.splice(index, 1);
@@ -148,16 +210,11 @@ export function deleteWord(list, index) {
   saveData();
 }
 
-/** 将单词标记为错题 */
+/** 添加错题 */
 export function addMistake(list, word, type) {
   const mistakes = type === 'ec' ? list.ecMistakes : list.ceMistakes;
   const existing = mistakes.find(m => m.english === word.english && m.chinese === word.chinese);
-  if (!existing) {
-    mistakes.push({ english: word.english, chinese: word.chinese, streak: 0 });
-  } else {
-    existing.streak = 0;
-  }
+  if (!existing) mistakes.push({ english: word.english, chinese: word.chinese, streak: 0 });
+  else existing.streak = 0;
   saveData();
 }
-
-
