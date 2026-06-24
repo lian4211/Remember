@@ -55,6 +55,7 @@
                 <div class="feature-card" onclick="goToPage('stats')"><span class="icon">📊</span><span class="label">学习统计</span></div>
                 <div class="feature-card" onclick="goToPage('roots')"><span class="icon">🌳</span><span class="label">词根分组</span></div>
                 <div class="feature-card" onclick="goToPage('plan')"><span class="icon">📅</span><span class="label">学习计划</span></div>
+                <div class="feature-card" onclick="goToPage('quiz-list')"><span class="icon">📝</span><span class="label">试题测试</span></div>
                 <div class="feature-card" onclick="goToPage('settings')"><span class="icon">⚙️</span><span class="label">设置</span></div>
             </div>
 
@@ -286,6 +287,20 @@
                     <button id="gs-cancel-btn" class="btn-ghost" style="margin-top:0.5rem;width:100%">取消</button>
                 </div>
             </div>
+        </div>
+
+        <!-- ====== 试题测试列表 ====== -->
+        <div id="quiz-list-page" class="page">
+            <button class="btn-primary" style="width:100%;margin-bottom:1rem" onclick="showQuizImportModal()">📁 导入试题（JSON）</button>
+            <div id="quiz-list-container"></div>
+        </div>
+
+        <!-- ====== 试题答题页 ====== -->
+        <div id="quiz-test-page" class="page">
+            <p id="quiz-progress" style="text-align:center;color:var(--info);margin-bottom:0.75rem;font-weight:600"></p>
+            <div id="quiz-test-area"></div>
+            <p id="quiz-feedback" style="text-align:center;margin:0.5rem 0"></p>
+            <div id="quiz-nav-area" style="display:flex;gap:0.5rem;margin-top:0.5rem"></div>
         </div>
 
     </div>

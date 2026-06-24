@@ -14,7 +14,9 @@ const PAGE_TITLES = {
   'review': '今日复习',
   'roots': '词根分组',
   'plan': '学习计划',
-  'settings': '设置'
+  'settings': '设置',
+  'quiz-list': '试题测试',
+  'quiz-test': '答题中'
 };
 
 /** 切换到指定页面 */

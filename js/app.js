@@ -13,6 +13,7 @@ import { showPlanSettings, renderPlanProgress, getPlanProgress } from './plan.js
 import { analyzeRoots } from './dictionary.js';
 import { initTheme, cycleTheme, getThemeIcon, getAlgorithmLabel, switchAlgorithm, getTheme, setTheme } from './settings.js';
 import { globalSearch as doGlobalSearch } from './search.js';
+import { renderQuizListPage, showQuizImportModal, loadBuiltinQuizzes } from './quiz.js';
 
 // ==================== 全局暴露 ====================
 window.goToPage = goToPage;
@@ -27,6 +28,7 @@ window.showBatchEdit = () => showBatchEdit(getCurrentList());
 window.showPlanSettings = showPlanSettings;
 window.globalSearchStart = globalSearchStart;
 window.playVoice = playVoice;
+window.showQuizImportModal = showQuizImportModal;
 
 function init() {
   loadData();
@@ -36,6 +38,7 @@ function init() {
   renderHomePage();
   registerSW();
   updateThemeIcon();
+  loadBuiltinQuizzes();   // 首次启动加载内置试题集（毛概）
 }
 
 // ==================== 事件绑定 ====================
@@ -169,6 +172,7 @@ function bindEvents() {
     else if (pageName === 'plan') renderPlanPage();
     else if (pageName === 'settings') { updateAlgoUI(); updateThemeUI(); }
     else if (pageName === 'voice-settings') initVoiceSettings();
+    else if (pageName === 'quiz-list') renderQuizListPage();
   });
 }
 

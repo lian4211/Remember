@@ -11,7 +11,8 @@ export let data = {
   theme: "auto",          // "light" | "dark" | "auto"
   voiceSettings: { rate: "+0%", volume: "+0%", pitch: "+0Hz" },
   stats: { daily: {}, streak: 0, lastStudyDate: null },
-  plan: { totalWords: 0, startDate: null, dailyNew: 0 }
+  plan: { totalWords: 0, startDate: null, dailyNew: 0 },
+  quizSets: []    // 试题集：[{ id, name, questions:[{type:'choice'|'qa', category, question, options?, answer, passed?}] }]
 };
 
 /** 当前选中的列表引用 */
@@ -91,6 +92,7 @@ export function loadData() {
     data.voiceSettings = parsed.voiceSettings || { rate: "+0%", volume: "+0%", pitch: "+0Hz" };
     data.stats = parsed.stats || { daily: {}, streak: 0, lastStudyDate: null };
     data.plan = parsed.plan || { totalWords: 0, startDate: null, dailyNew: 0 };
+  data.quizSets = parsed.quizSets || [];
   }
   return data;
 }
@@ -219,3 +221,22 @@ export function addMistake(list, word, type) {
   else existing.streak = 0;
   saveData();
 }
+
+// ==================== 试题集管理 ====================
+
+/** 添加试题集（questions 已就绪） */
+export function addQuizSet(name, questions) {
+  const qs = { id: data.nextId++, name, questions: questions || [] };
+  data.quizSets.push(qs);
+  saveData();
+  return qs;
+}
+
+/** 删除试题集 */
+export function deleteQuizSet(qs) {
+  data.quizSets = data.quizSets.filter(x => x.id !== qs.id);
+  saveData();
+}
+
+/** 重命名试题集 */
+export function renameQuizSet(qs, newName) { qs.name = newName; saveData(); }
