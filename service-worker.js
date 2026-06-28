@@ -1,4 +1,4 @@
-const CACHE_NAME = 'word-learner-v3';
+const CACHE_NAME = 'word-learner-v4';
 const basePath = new URL(self.location.href).pathname.replace(/\/[^/]*$/, '');
 
 // 需要预缓存的静态资源
@@ -25,7 +25,9 @@ const urlsToCache = [
     `${basePath}/js/search.js`,
     `${basePath}/js/flashcard.js`,
     `${basePath}/js/quiz.js`,
-    `${basePath}/data/quiz-maogai.json`
+    `${basePath}/data/quiz-maogai.json`,
+    `${basePath}/data/quiz-java.json`,
+    `${basePath}/data/quiz-maogai-exam.json`
 ];
 
 // 安装时缓存静态资源
@@ -50,45 +52,28 @@ self.addEventListener('activate', event => {
     );
 });
 
-// 请求拦截：HTML 网络优先，其他资源缓存优先
+// 请求拦截：所有资源网络优先，离线时回退缓存
 self.addEventListener('fetch', event => {
     const { request } = event;
     const url = new URL(request.url);
 
-    // 跳过非本域请求和 API 请求
+    // 跳过非本域请求
     if (!url.pathname.startsWith(basePath) || url.hostname !== self.location.hostname) {
         return;
     }
 
-    // 导航请求或 HTML 文档：网络优先
-    if (request.mode === 'navigate' || request.destination === 'document') {
-        event.respondWith(
-            fetch(request)
-                .then(response => {
+    event.respondWith(
+        fetch(request)
+            .then(response => {
+                // 成功则更新缓存
+                if (response.status === 200) {
                     const responseClone = response.clone();
                     caches.open(CACHE_NAME).then(cache => {
                         cache.put(request, responseClone);
                     });
-                    return response;
-                })
-                .catch(() => caches.match(request))
-        );
-        return;
-    }
-
-    // JS/CSS/JSON 等静态资源：缓存优先
-    event.respondWith(
-        caches.match(request)
-            .then(cachedResponse => {
-                return cachedResponse || fetch(request).then(response => {
-                    if (response.status === 200) {
-                        const responseClone = response.clone();
-                        caches.open(CACHE_NAME).then(cache => {
-                            cache.put(request, responseClone);
-                        });
-                    }
-                    return response;
-                });
+                }
+                return response;
             })
+            .catch(() => caches.match(request))
     );
 });
