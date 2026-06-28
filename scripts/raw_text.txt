@@ -1,0 +1,1149 @@
+Java期末复习资料
+一、单选题
+1. 采用（）关键字修饰该类，则该类不能被继承。
+A.private    B.final    C.public    D.stop
+答案：B
+2. 定义不能被继承的Fish类，应采用（）。
+A.class Fish{}
+B.native class Fish{}
+C.class final Fish{}
+D.final class Fish{}
+答案：D
+3. 用abstract定义的类__。
+A.可以定义对象
+B.只能包含抽象方法
+C.可以被子类继承
+D.不能被子类继承
+答案：C
+4. 定义了一个类AbstractClass，关于该类说法正确的是( )。
+abstract class AbstractClass{ }
+A.能利用new AbstractClass()构造方法实例化为一个对象。
+B.该类不能被继承
+C.该类的方法都不能被重载
+D.以上说法都不对
+答案：D
+5. 在Java类中，使用以下( )声明语句来定义公有的、类的int型常量MAX。
+A.public int MAX = 100;
+B.final int MAX = 100;
+C.public static int MAX = 100;
+D.public static final int MAX = 100;
+答案：D
+6. 接口中定义的成员方法是（）。（JDK8之前）
+A.抽象方法   B.具体方法
+C.有方法体   D.与类中方法相同
+答案：A
+7. 用interface声明一个接口时，可以使用默认或者( )修饰符修饰成员方法。（JDK8之前）
+A.private           B.protected abstract
+C.public abstract    D.以上都不可以
+答案：C
+8. 下面描述不正确的是( )。（JDK8之前）
+A.Java通过接口实现多重继承
+B.接口中的所有成员变量都是静态的
+C.抽象类中可以定义非抽象方法
+D.接口中可以定义非抽象方法
+答案：D
+9. 下面说法正确的是( )。（JDK8之前）
+A.一个普通类继承抽象类，可以不实现其中的抽象方法
+B.抽象方法可以含有方法的声明，也能够含方法体
+C.接口只能含有抽象方法，可以不在方法前面加abstract
+D.接口中成员变量的值可以发生改变
+答案：C
+10. 以下( )正确定义了接口。（JDK8之前）
+A.
+interface InterfaceB{
+    void print(){ };
+}
+B.
+abstract interface InterfaceB {
+    void print();
+}
+C.
+interface InterfaceB extends InterfaceA1, InterfaceA2
+    void print(){ };
+}
+D.
+interface InterfaceB {
+    viod print();
+}
+答案：B
+11. 假设X、Y和Z都是已经定义的接口，（）是不正确的接口定义。（JDK8之前）
+A.
+public interface A extends X{
+    void show( );
+}
+B.
+interface B extends Y{
+    void show( );
+}
+C.
+interface C extends X,Y,Z{
+    void show( );
+}
+D.
+interface D extends X{
+    void show(){}
+}
+答案：D
+12. 关于接口的描述，错误的是（）。
+A.接口可以使得设计与实现相分离。
+B.如果没有指定接口中方法和成员变量的访问权限，Java将其隐式地声明成public。
+C.接口中定义的成员变量分为常量和变量两种。
+D.一个类可以实现多个接口，表示的是一种多重继承关系。
+答案：C
+13. 关于接口和抽象类的叙述，不正确是( )。
+A.接口中所有的方法隐含的都是抽象的，而抽象类则可以同时包含抽象和非抽象的方法
+B.类可以实现很多个接口，但是只能继承一个抽象类
+C. Java接口与抽象类都可以包含非final的变量
+D.接口是绝对抽象的，不可以被实例化，抽象类也不可以被实例化
+答案：C
+14. 下面关于Java接口的说法错误的是( )。
+A.一个Java接口是一些方法特征的集合，但没有方法的实现
+B. Java接口中定义的方法在不同的地方被实现。可以具有完全不同的行为。
+C. Java接口中可以声明私有成员
+D. Java接口不能被实例化
+答案：C
+15. 接口中合法的方法是（）。（JDK8之前）
+A. public void show(){}
+B. public int show(){}
+C. void show( );
+D. void show(){}
+答案：C
+16. 现有类A和接口B，以下描述中表示类A实现接口B的语句是 。
+A. class A implements B
+B. class B implements A
+C. class A extends B
+D. class B extends A
+答案：A
+17. 接口中可以包含以下内容 。
+A. 静态变量和抽象方法
+B. 任何变量和抽象方法
+C. 任何变量和任何方法
+D. 静态常量和抽象方法
+答案：D
+18. 多态的表现形式有()
+A.重写    B.抽象     C.继承    D.封装
+答案：A
+19. Java虚拟机指的是
+A.Java操作的家用设备
+B.Java字节码的解释程序
+C.Java源代码的编译器
+D.运行Java所需的硬件设备
+答案：B
+20. JAVA语言的哪个特性使得它可以在不同的操作系统上运行而无需重新编译？
+A.面向对象    B.自动内存管理    C.垃圾回收机制    D.跨平台性
+答案：D
+21. Java语言最初是由（）公司于1995年推出的面向对象程序设计语言。
+A.IBM    B.Microsoft    C.Oracle    D.Sun
+答案：D
+22. 2<<3运算后的结果为
+A.4    B.8    C.16    D.32
+答案：C
+23. 5%2+2的值是__________。
+A.3    B.4    C.4.5    D.5
+答案：A
+24. System.out.println(5&6)的输出结果为。
+A.4    B.5    C.6    D.7
+答案：A
+25. 关于静态方法的描述，错误的是（）。
+A.静态方法并不属于调用它的对象，所以不能用静态方法来访问实例属性
+B.可以使用"类名.方法名"来调用静态方法。
+C.可以使用"对象.方法名"来调用静态方法。
+D.需要先创建实例对象后才可以调用静态方法。
+答案：D
+26. 构造方法在（）时被调用。
+A.定义类时。
+B.创建对象时。
+C.调用对象成员方法时。
+D.使用对象成员变量时。
+答案：B
+27. 关于Java的引用，以下( )是正确说法？
+A.引用也是基本数据类型
+B.引用就是对象本身
+C.引用实际上就是指针
+D.一个对象只能被一个引用所指引
+答案：C
+28. 编译如下定义的MyString类将出现( )
+class MyString extends java.lang.String{}
+A.成功编译
+B.不能编译，因为没有main方法
+C.不能编译，因为String是abstract类型的
+D.不能编译，因为String是final类型的
+答案：D
+29. 以下程序运行结果是（）。
+class FatherX{
+    public Integer getX() {
+        return new Integer(10);
+    }
+}
+class Son extends FatherX{
+    public Double getX() {
+        return new Double(20);
+    }
+}
+public class Demo12 {
+    public static void main(String[] args) {
+        FatherX f=new FatherX();
+        Son s=new Son();
+        System.out.println(f.getX()+s.getX());
+    }
+}
+A.30       B.30.0      C.30.000    D.编译失败
+答案：D
+30. 定义了一个类AbstractClass，关于该类说法正确的是( )。
+abstract class AbstractClass{ }
+A.能利用new AbstractClass()构造方法实例化为一个对象。
+B.该类不能被继承
+C.该类的方法都不能被重载
+D.以上说法都不对
+答案：D
+31. 下列选项中不是合法 Java 标识符的是（）
+A. ab    B. $_3    C. 3ab    D. ab32
+答案：C
+32. 下面，哪一个是有效的标识符？
+A. break B. default C. _object D. a-class
+答案：C
+33. 标识符是字母、下划线、____、数字组成的字符混合序列，不能以____开头。
+A.字母 下划线 B.字母 C.下划线 D.数字
+答案：D
+34. Java 程序中使用（）作为多行注释。
+A. //   B. /* /   C. /* */   D. - -
+答案：C
+35. 下列哪个选项不是 Java 关键字。
+A. boolean B. private C. hi D. if
+答案：C
+36. 下列哪项不是 Java 的原子数据类型。
+A. long   B. for   C. byte   D. char
+答案：B
+37. Java 语言中的语句是以（）为结尾的。
+A. 逗号 B. 分号 C. 单引号 D. 句号
+答案：B
+38. 下列选项中，属于 Java 基本数据类型的是（）。
+A. byte   B. String   C. integer   D. Float
+答案：A
+39. Java 语言 int 类型数据所占的二进制位数是（）。
+A. 8   B. 16   C. 32   D. 64
+答案：C
+40. 下列数据类型中，需要内存空间最小的是（）。
+A. short   B. long   C. int   D. byte
+答案：D
+41. 以下的选项中能正确表示 Java 语言中的一个整型常量的是_______。
+A. 12.1   B. -20   C. 1,000   D. 4 5 6
+答案：B
+42. 2<<3 运算后的结果为
+A. 4   B. 8   C. 16   D. 32
+答案：C
+43. 5%2+2 的值是___________。
+A. 3   B. 4   C. 4.5   D. 5
+答案：A
+44. 若所用变量都已正确定义，以下选项中，非法的表达式是
+A. 'a' != 4
+B. 'a' % 3
+C. 'a' = 1/2
+D. 'a' + a
+答案：C
+45. 对整型变量 a=16,b=5, 下列表达式的值为 true 的是
+A. !(b==a/3)
+B. b!=a%11
+C. a>1&&b<1
+D. a!=b||a>b
+答案：D
+46. （）是 Java 程序中不合法的赋值语句。
+A. int x=12345;
+B. int x=12345L;
+C. double x=3.1415F
+D. float x=(float) 3.1415;
+答案：B
+47. 语句 System.out.println ('1'+'2'+""+3+4); 输出结果是（）。
+A. 334
+B. 1234
+C. 37
+D. 9934
+答案：D
+48. Java 程序中表达式 37/10f 的运算结果是 ( )。
+A. 3
+B. 3.70
+C. 3.7
+D. 3.0
+答案：C
+49. 下面声明数组的写法错误的是
+A. int a [ ];
+B. int [ ] a;
+C. int a [ ][ ];
+D. int a [3 ][3];
+答案：D
+50. 数组第一个元素的下标是
+A. 0   B. 1   C. 2   D. -1
+答案：A
+51. 若有定义：byte [] x={11,22,33,-66}; 其中 0≤k≤3，则对 x 数组元素错误的引用是
+A. x [5-3]   B. x [k]   C. x [k+5]   D. x [0]
+答案：C
+52. int [] a={1,2,3,4,5,6,7,8,9,10}，打印数组最后一个元素正确代码是
+A.  System.out.println (a [10]);
+B.  System.out.println (a [9]);
+C.  System.out.println (a [a.length]);
+D.  System.out.println (a (9));
+答案：B
+53. int a []={66,88,99}; 叙述错误的是
+A. 定义了一个名为 a 的一维数组
+B. a 数组有 3 个元素
+C. a 数组的元素的下标为 1～3
+D. 对数组元素的引用 a [a.length-1] 是合法的
+答案：C
+54. Java 语言中，正确的初始化语句是
+A. char str [ ]="hello";
+B. char str [100]="hello";
+C. char str [ ]={'h','e','l','l','o'};
+D. char str [ ]={'hello'};
+答案：C
+55. int [] a=new int [10]; 错误的引用是
+A. a [0]=1;
+B. a [10]=2;
+C. a [0]=5*2;
+D. a [1]=a [2]*a [0];
+答案：B
+56. 下列数组定义中，正确的是
+A. int a [][]=new int [10,10];
+B. int a [10][10];
+C. int a [][]=new int [10][10];
+D. int a [][10];
+答案：C
+57. 正确地初始化二维数组语句是
+A. float b [2][2]={1.12,3.45,8.36,0.4};
+B. int a [][]={{1,2},{3,4},{1},{4,5,6,7}};
+C. int a [2][]={{1,2},{3,4}};
+D. float a [2][2]={0};
+答案：B
+58. 下面的方法重载，正确的是
+A. int fun (int a,float b){ }
+float fun (int a,float b){ }
+B. float fun (int a,float b){ }
+float fun (int x,float y){ }
+C. float fun (float a){ }
+float fun (float a,float b){ }
+D. float fun1 (int a,float b){ }
+float fun2 (int a,float b){ }
+答案：C
+59. 为了区分类中重载的同名的不同方法，要求
+A. 采用不同的形式参数列表
+B. 返回值类型不同
+C. 调用时用类名或对象名做前缀
+D. 参数名不同
+答案：A
+60. 下列方法定义中，方法头不正确的是
+A. public int x (){ ...}
+B. public static int x ( double y ){ ... }
+C. void x ( double d ) { ... }
+D. public static x ( double a ){ ... }
+答案：D
+61. （）可以用来区别类中的重载方法。
+A. 采用不同的形式参数列表
+B. 返回值的数据类型不同
+C. 调用时用类名或对象名做前缀
+D. 参数名不同
+答案：A
+62. 下列方法定义中，正确的是
+A. void x (int a, b) { return a-b; }
+B. x ( int a,int b) { return a-b; }
+C. double x { return b; }
+D. int x ( int a,int b) { return a+b; }
+答案：D
+63. 下面关于静态方法和实例方法的描述，正确的是（）。
+A. 静态方法可以访问静态成员变量，不可以访问实例成员变量。
+B. 实例方法可以访问静态成员变量，不可以访问实例成员变量。
+C. 静态方法可以访问静态成员变量，也可以访问实例成员变量。
+D. 静态方法不可以访问静态成员变量，也不可以访问实例成员变量。
+答案：A
+二、判断题
+1. 可用abstract和static同时修饰一个方法。
+答案：错
+2. 可以用final和abstract同时修饰一个类。
+答案：错
+3. 关键字final不仅可以修饰成员变量，而且可以修饰局部变量。
+答案：对
+4. 关键字final不能修饰局部变量。
+答案：错
+5. 用final修饰的成员方法不能被重载。
+答案：错
+6. 用final修饰的成员变量如果是基本类型，则需要在定义时初始化赋值。
+答案：对
+7. 抽象类中必须定义至少一个抽象方法。
+答案：错
+8. 抽象类中不能定义构造方法。
+答案：错
+9. 在实际应用中，接口用来制定标准，类完成接口的具体实现。
+答案：对
+10. 接口中的成员变量都是静态的。
+答案：对
+11. 通过实现接口是Java程序实现多重继承的唯一途径。
+答案：对
+12. 接口不能扩展(继承)多个接口。
+答案：错
+13. 接口可以继承接口
+答案：对
+14. 以下代码能够通过JDK 8的编译。
+interface NewI{
+    int data=10;
+    void show();
+    public default void say() {
+        System.out.println(NewI.data);
+    }
+    public static void print() { }
+}
+public class Demo2 {
+    public static void main(String[] args){
+        NewI.print();
+    }
+}
+答案：对
+15. JAVA的跨平台性依赖于JAVA虚拟机。
+答案：对
+16. if( -0.0 == 0.0 )返回true。
+答案：对
+17. 表达式(0.05+0.01)==0.06的返回结果是true
+答案：错
+18. 类的访问控制权限和类成员的访问控制权限共同决定了类成员的访问控制权限。
+答案：对
+19. Java 语言中进行单行注释的符号是 "\\"。
+答案：错
+20. Java 是不区分大小写的语言。
+答案：错
+21. 运算 20.3%5 是错误的。
+答案：错
+22. 表达式 (0.05+0.01)==0.06 的返回结果是 true
+答案：错
+23. 在 Java 语言中，数组类型是基本类型。
+答案：错
+24. 不同对象的实例变量占用的堆空间不同。
+答案：对
+25. 在 main (String [] args) 方法内可以直接调用本类中的一个非静态方法
+答案：错
+26. Java 类中定义的静态代码块每次新建对象时都会被执行。
+答案：错
+27. 在一个类中，static 方法能够访问非 static 方法。
+答案：错
+28. 在一个类中，非 static 方法能够访问 static 方法。
+答案：对
+29. 在类中定义的非静态方法能够直接访问静态方法和非静态方法。
+答案：对
+30. 不同对象的实例变量占用的堆空间不同。
+答案：对
+31. 所有对象的静态变量的存储空间相同。
+答案：对
+32. 在 Java 类中，静态构造块能够访问静态成员变量（类变量）。
+答案：对
+33. 在 Java 类中，静态构造块能够访问实例变量（非静态成员变量）。
+答案：错
+三、填空题
+1. 用____修饰的类叫最终类，只能被实例化，不能被继承。
+答案：final
+2. 用____修饰的类叫抽象类。抽象类只能被继承，不能被实例化。
+答案：abstract
+4. 如果一个类包含一个或多个abstract方法，它就是一个（）类。
+答案：抽象（abstract / 抽象类）
+5. 不能通过new调用（）类的构造方法创建对象，必须由它的子类调用构造方法创建对象。
+答案：抽象（abstract / 抽象类）
+6. 下面程序中第（ ）行代码出现编译错误。
+interface Newl{// (1)
+int data=10;// (2)
+}
+public class Demo2 {
+public static void main(String[] args) {
+Newl.data=20;//(3)
+System.out.println(Newl.data);//(4)
+}
+}
+答案：3
+7. 接口指用（ ）关键字定义的特殊类，也称为接口类型。
+答案：interface
+8. Java语言中，子类继承父类时使用( )关键字，而类实现接口时采用( )关键字。实例化对象时，使用( )运算符为对象分配存储空间。
+答案：extends、implements、new
+9. 接口中只能定义常量和____方法。
+答案：抽象
+10. 标识符命名大小写要求：常量名要求全部____。
+答案：大写
+11. Java 程序中的单行注释形式是____。
+答案：//
+12. Java 语言采用（）字符集，该字符集的每个字符占（）字节。
+答案：Unicode；2
+13. Java 程序中定义的变量三要素是（）、（）和 ()。
+答案：变量名；变量类型；变量值
+14. Java 语言提供了（）种基本数据类型。
+答案：8
+15. 键盘输入代码补全
+Scanner sc=new Scanner (____);
+int n=sc.____();// 输入整数
+double d=sc.____();// 输入小数
+String s=sc.____();// 输入字符串
+答案：System.in；nextInt；nextDouble；next /nextLine
+16. x 的 y 次方在 Java 中写成：double d=____; 根号 10 写成 double d=____。
+答案：Math.pow(x,y)；Math.sqrt(10)
+17. 赋值语句符号是____，关系运算符相等判断是____。
+答案：=；==
+18. float x=3.5f, y=4.6f；表达式 x != y 的值为____。
+答案：true
+19. 表达式 4%4+4*4+4/4 的值是____。
+答案：17
+20. 一维数组求和程序运行结果
+import java.io.*;
+public class abc{
+    public static void main(String args[ ]){
+        int i , s = 0 ;
+        int a[ ] = { 10, 20 , 30 , 40 , 50 , 60 , 70 , 80 , 90 };
+        for ( i = 0 ; i < a.length ; i ++ )
+            s += a[i] ;
+        System.out.println("s="+s);
+    }
+}
+答案：s=450
+21. 通过（）访问数组元素，一维数组 array 的长度为 ( )。
+答案：下标；array.length
+22. JVM 将数组元素存储在 () (栈或者堆) 中。
+答案：堆
+23. Java 语言中，对象类型数组元素的默认值是 ( )。
+答案：null
+24. arraycopy数组复制求和结果
+public class Demo {
+   public static void main(String[] args) {
+      int a[]={1,3,5,7,9,11,13};
+      int b[]=new int[10];
+      int sum=0;
+      System.arraycopy(a,2,b,3,3);
+      for(int x:b)
+         sum=sum+x;
+      System.out.println(sum);
+   }
+}
+答案：21
+25. 语句 int [][] arr1 = { { 2, 3, 4 }, { 5, 6 }, { 7, 8, 9, 0 } }; 则 arr1 [2][2] * arr1.length * arr1 [2].length 的值是（）
+答案：108
+26. 变长二维数组 array，获得该数组第 3 行的列数的表达式是（），获取该数组行数的表达式是（）
+答案：array[2].length；array.length
+27. 二维数组双重循环求和程序结果
+public class Demo2 {
+   public static void main(String[] args) {
+      int [][] arr=new int[4][3];
+      int sum=0;
+      for(int i=0;i<arr.length;i++)
+         for(int j=0;j<arr[i].length;j++)
+            sum=sum+i+j;
+      System.out.println(sum);
+   }
+}
+答案：30
+28. 二维数组增强for条件累加程序结果
+public class Demo05 {
+   public static void main(String[] args) {
+      int temp = 0;
+      int[][] arr = { { 3, 4, 5 }, { 7, 8, 2 }, { 1 }, { 6, 2, 8 } };
+      for (int[] list : arr)
+         for (int x : list) {
+            if(x>3)
+                temp += list.length;
+         }
+      System.out.println(temp);
+   }
+}
+答案：18
+29. JVM 为命名对象分配（）空间来存储对象首地址，分配（）空间来存储对象信息。
+答案：栈；堆
+30. Java 程序中，类是由（）和（）组成的一个程序单元。
+答案：成员变量（数据成员 / 字段）；成员方法（方法 / 函数）
+31. 文字抽象题：西游记中，太上老君、观世音菩萨、玉皇大帝等都是神仙、而白骨精、金角大王、牛魔王、九尾狐狸等是妖怪，妖怪吃人，神仙制服妖怪。
+可以抽象出的类有（），相应的行为有（）。
+答案：神仙、妖怪；神仙：制服妖怪；妖怪：吃人
+四、程序填空
+第1题
+题目代码：
+class Student{
+    //所有学生学校名相同，并且不能改变校名
+    public ① String SCHOOL_NAME="吉首大学";//学生所在学校名称
+    private String name;
+    private char sex;
+    //省略其它代码
+}
+答案：① static final（也可写final static）
+第2题
+题目代码：
+① class Product{
+    private String name;
+    public Product(String name) {
+        this.name = name;
+    }
+    public ② getName() {
+        return this.name;
+    }
+    public abstract void show();
+}
+class Fan extends Product {//电扇
+    private double power; //功率
+    public Fan(String name,double power)
+    {
+        ③;
+        this.power = power;
+    }
+    public void show() {
+        System.out.println(this.getName() + ",电扇功率:" + this.power );
+    }
+}
+class Phone extends Product {//手机
+    private double price;
+    public Phone(String name,double price)
+    {
+        super(name);
+        ④;
+    }
+    public void show() {
+        System.out.println(this.getName() + ",手机价格:" + this.price);
+    }
+}
+class Factory {
+    public static ⑤ getProduct(String name , double x) {
+        Product p = null;
+        if (name.equals("格力电扇"))
+            p = new Fan(name,x);
+        else if (name.equals("手机"))
+            p = new Phone("苹果手机",x);
+        else
+            p = null;
+        return p;
+    }
+}
+public class Demo {
+    public static void main( String[ ] args){
+        Product fan=Factory.getProduct("格力电扇", 100);
+        fan.show();
+    }
+}
+答案：
+① abstract
+② String
+③ super(name)
+④ this.price = price
+⑤ Product
+第3题
+题目代码：
+① class Base{
+    private int x;
+    public ② (int x) {
+        this.x=x;
+    }
+    public ③ void show();
+}
+class Sub ④ Base{
+    private Vector v;
+    public Sub(int x,Vector v) {
+        ⑤ ;//调用父类构造方法
+        this.v=v;
+    }
+    public void show() {}
+}
+答案：
+① abstract
+② Base
+③ abstract
+④ extends
+⑤ super(x)
+第4题
+题目代码：
+( ① ) IA{
+    void show();
+}
+class Base implements IA{
+    ( ② ) int max = 100; //公共静态成员变量
+    public void show() {
+        System.out.println("执行方法show");
+    }
+}
+答案：
+① interface
+② public static final（顺序可互换）
+第5题
+题目代码：
+① Action{  //定义接口
+    void say();
+}
+class Speak ② Action{  //实现接口
+    public void ③ {
+        System.out.println("八戒，前方妖气很重，保护好师傅！");
+    }
+}
+class Person {
+    private String name;
+    public Person(String name) {
+        ④ = name;
+    }
+    public void addListener( ⑤ ) {
+        action.say();
+    }
+}
+public class Demo {
+    public static void main(String[] args) {
+        Person p = new Person("孙悟空");
+        Speak s = new Speak();
+        p.addListener(s);
+    }
+}
+答案：
+① interface
+② implements
+③ say()
+④ this.name
+⑤ Action action
+第6题
+题目代码：
+//JDK 8 下的接口定义
+interface MyInterface{
+    void show();//抽象方法
+    //静态方法
+    ① void print() {
+        System.out.println("print");
+    }
+    //默认方法
+    ② void receive() {
+        System.out.println("receive");
+    }
+}
+public class MyClass ③ MyInterface{
+    public void show() {
+        System.out.println("show");
+    }
+}
+public class Demo {
+    public static void main(String[] args) {
+        MyClass c=new MyClass();
+        c.show();
+        c.receive();
+        ④ ;//调用MyInterface的print()方法
+    }
+}
+答案：
+① static / public static
+② default / public default
+③ implements
+④ MyInterface.print()
+第7题（适配器模式）
+题目代码：
+//利用适配器模式，把一个英文单词翻译成中文
+//源类：英语单词类
+class English {
+    private String[] list = { "dream", "great", "wonderful" };
+    public String ① {
+        return list[i];
+    }
+    public int getSize() {
+        return list.length;
+    }
+}
+// 目标接口：汉语
+interface ② {
+    String ③ ;
+}
+// 适配器类，把英语单词转换成中文
+class ④ implements Chinese {
+    private ⑤ list;
+    int index;
+    public PowerAdapter(English list, int index) {
+        this.list = list;
+        this.index = index;
+    }
+    public String getChinese() {// 把英文转换成中文
+        if (this.index > list.getSize() || this.index < 0)
+            return null;
+        String word = list.getEnglishWord(this.index);
+        if (word.equalsIgnoreCase("dream"))
+            return "梦想";
+        else if (word.equalsIgnoreCase("great"))
+            return "伟大";
+        else if (word.equalsIgnoreCase("wonderful"))
+            return "绝妙的";
+        return null;
+    }
+}
+public class DemoAdapter {
+    public static void main(String[] args) {
+        English english = new English();
+        Chinese chinese = new PowerAdapter(english, 0);
+        System.out.println(chinese.getChinese());
+    }
+}
+答案：
+① getEnglishWord(int i)
+② Chinese
+③ getChinese()
+④ PowerAdapter
+⑤ English
+题目8
+题目代码：
+//遍历二维数组
+for(int i=0;i<________;i++){
+    for(int j=0;j<________;j++){
+        //输出元素
+    }
+}
+空1答案：arr.length
+空2答案：arr[i].length
+题目9
+题目代码：
+public static int [][] swapRowColumn(int [][]arr) {
+    int  ①    = new int[arr.length][arr.length];
+    for (int i = 0; i <     ②      ; i++) {
+        for (int j = 0; j <      ③     ; j++) {
+            arr2[i][j] =        ④       ;
+        }
+    }
+    return arr2;
+}
+public static void main(String[] args) {
+    int arr[][] = new int[][] { { 22, 33, 44 }, { 55, 66, 77 }, { 88, 88, 0 } };
+    int [][] list=swapRowColumn(arr);
+            ⑤         ;
+}
+①答案：int [][] arr2
+②答案：arr.length
+③答案：arr.length
+④答案：arr[j][i]
+⑤答案：showArray(list)
+题目10
+题目代码：
+int [ ][ ] arr={{3,4,5},{7,8,2},{1},{6,2,8}};
+for(    ①        list:arr)
+  for(int x:    ②    ) {
+       System.out.println(x);
+  }
+①答案：int []
+②答案：list
+五、程序编写题
+习题1：Person基础类设计
+题目要求
+1. 设计Person类
+- 属性：姓名name，年龄age，性别sex；
+- 方法：printPerson()输出姓名；getName()获取姓名；setName(String aName)设置姓名。
+2. 测试类Demo
+- 创建Person对象swk；设置姓名为"孙悟空"；调用printPerson()输出姓名。
+完整正确代码
+public class Person {
+    private String name;
+    private int age;
+    private char sex;
+    public String getName() {
+        return name;
+    }
+    public void setName(String aName) {
+        this.name = aName;
+    }
+    public void printPerson() {
+        System.out.println(name);
+    }
+}
+public class Demo {
+    public static void main(String[] args) {
+        Person swk = new Person();
+        swk.setName("孙悟空");
+        swk.printPerson();
+    }
+}
+习题2：抽象类Animal、子类牛和蛇、测试类Living
+题目要求
+1. 抽象父类Animal，包含抽象方法eating(String food)；
+2. 子类Cow（牛，属性color）、Snake（蛇，属性length）重写eating；
+3. Living类提供toEating(Animal animal,String food)完成多态测试。
+完整正确代码
+public abstract class Animal {
+    private String name;
+    public Animal() {}
+    public Animal(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    abstract public void eating(String food);
+}
+public class Cow extends Animal {
+    private String color;
+    public Cow() {}
+    public Cow(String name, String color) {
+        super(name);
+        this.color = color;
+    }
+    @Override
+    public void eating(String food) {
+        System.out.println(this.getName() + "在咀嚼：" + food);
+    }
+}
+public class Snake extends Animal {
+    private double length;
+    public Snake() {}
+    public Snake(String name, double length) {
+        super(name);
+        this.length = length;
+    }
+    @Override
+    public void eating(String food) {
+        System.out.println(this.getName() + "在吞食：" + food);
+    }
+}
+public class Living {
+    public void toEating(Animal animal, String food) {
+        animal.eating(food);
+    }
+    public static void main(String[] args) {
+        Living live = new Living();
+        live.toEating(new Cow("奶牛", "黑白"), "饲料");
+        live.toEating(new Snake("非洲蟒蛇", 6.8), "小牛");
+    }
+}
+习题3：Graph图形接口多态程序（矩形、圆、三角形）
+题目要求
+1. Graph接口：抽象方法drawing()绘图；
+2. 实现类：Rectangle矩形（长、宽）、Circle圆形（半径）、Triangle三角形（三边）；
+3. Client类myDrawing(Graph g)接收图形对象调用绘图；
+4. Demo测试类创建三种图形完成绘制。
+完整正确代码
+public interface Graph {
+    void drawing();
+}
+public class Circle implements Graph {
+    private double radius;
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    @Override
+    public void drawing() {
+        System.out.println("画一个圆，半径：" + radius);
+    }
+}
+public class Rectangle implements Graph {
+    private double length;
+    private double width;
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+    @Override
+    public void drawing() {
+        System.out.println("画一个长方形，长："+length+"，宽："+width);
+    }
+}
+public class Triangle implements Graph {
+    private double a,b,c;
+    public Triangle(double a, double b, double c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+    }
+    @Override
+    public void drawing() {
+        System.out.println("画一个三角形，三边："+a+","+b+","+c);
+    }
+}
+public class Client {
+    public void myDrawing(Graph g) {
+        g.drawing();
+    }
+}
+public class Demo {
+    public static void main(String[] args) {
+        Client c = new Client();
+        c.myDrawing(new Rectangle(10, 5));
+        c.myDrawing(new Circle(5));
+        c.myDrawing(new Triangle(3,4,5));
+    }
+}
+习题4：Person父类、ITask接口、Student/Teacher子类综合题
+题目要求
+1. Person父类：name/sex/age属性，saying(Person per,String msg)对话方法；
+2. ITask接口：working()、rest()、show()三个抽象方法；
+3. Student继承Person实现ITask：学号id，reading(String book)读书；
+4. Teacher继承Person实现ITask：部门department，teaching(Student std,String course)授课；
+5. Demo测试类实例化学生孙悟空、老师唐僧，调用全部方法。
+完整正确代码
+public class Person {
+    private String name;
+    private char sex;
+    private int age;
+    public Person(String name, char sex, int age) {
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
+    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public char getSex() { return sex; }
+    public void setSex(char sex) { this.sex = sex; }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+    public void saying(Person per, String msg) {
+        System.out.println(this.name + "对" + per.getName() + "说：\"" + msg + "\"");
+    }
+}
+public interface ITask {
+    void working();
+    void rest();
+    void show();
+}
+public class Student extends Person implements ITask {
+    private String id;
+    public Student(String name, char sex, int age, String id) {
+        super(name, sex, age);
+        this.id = id;
+    }
+    @Override
+    public void working() {
+        System.out.println(this.getName() + "正在学习。");
+    }
+    @Override
+    public void rest() {
+        System.out.println(this.getName() + "正在休息。");
+    }
+    @Override
+    public void show() {
+        System.out.println("姓名：" + this.getName() + "，性别：" + this.getSex() + "，年龄：" + this.getAge() + "，学号：" + this.id + "。");
+    }
+    public void reading(String book) {
+        System.out.println(this.getName() + "读：" + book + "。");
+    }
+}
+public class Teacher extends Person implements ITask {
+    private String department;
+    public Teacher(String name, char sex, int age, String department) {
+        super(name, sex, age);
+        this.department = department;
+    }
+    @Override
+    public void working() {
+        System.out.println(this.getName() + "正在上课。");
+    }
+    @Override
+    public void rest() {
+        System.out.println(this.getName() + "正在休息。");
+    }
+    @Override
+    public void show() {
+        System.out.println("姓名：" + this.getName() + "，性别：" + this.getSex() + "，年龄：" + this.getAge() + "，部门：" + this.department + "。");
+    }
+    public void teaching(Student std, String course) {
+        System.out.println(this.getName() + "正在向" + std.getName() + "讲授" + course + "课程。");
+    }
+}
+public class Demo {
+    public static void main(String[] args) {
+        Student sun = new Student("孙悟空", '男', 22, "190010987");
+        Teacher tang = new Teacher("唐僧", '男', 26, "国学系");
+        System.out.println("----------测试Student类----------");
+        sun.show();
+        sun.reading("西游记");
+        sun.working();
+        sun.rest();
+        sun.saying(tang, "师傅你注意安全，俺老孙去去就回。");
+        System.out.println("----------测试Teacher类----------");
+        tang.teaching(sun, "除妖记");
+        tang.show();
+        tang.saying(sun, "悟空你又调皮了！");
+    }
+}
+习题5：Student学生类封装+静态变量习题
+题目要求
+1. Student类：
+- 私有成员：name、age、sex；
+- 公共静态变量school，初始值"吉首大学"；
+- 空参构造、name+age构造；
+- 全部私有属性getter/setter；
+- getStudent()输出全部信息。
+2. Demo测试类：创建张三，22岁，男，打印全部信息。
+完整正确代码
+public class Student {
+    private String name;
+    private int age;
+    private char sex;
+    public static String school = "吉首大学";
+    public Student() {}
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+    public char getSex() { return sex; }
+    public void setSex(char sex) { this.sex = sex; }
+    public void getStudent() {
+        System.out.println("姓名："+name+"，年龄："+age+"，性别："+sex+"，学校："+school);
+    }
+}
+public class Demo {
+    public static void main(String[] args) {
+        Student t1 = new Student("张三", 22);
+        t1.setSex('男');
+        t1.getStudent();
+    }
+}
+习题6：密码输入验证（while版本 + for版本）
+题目要求
+密码固定`jsu12345`，最多输入3次；
+- 输入正确：提示进入系统；
+- 3次全部错误：暂停5秒后退出程序；
+- 分别实现while循环、for循环两套代码。
+完整正确代码
+import java.util.Scanner;
+public class PwdWhileDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Scanner sc = new Scanner(System.in);
+        String rightPwd = "jsu12345";
+        int count = 0;
+        while(count < 3) {
+            System.out.println("请输入用户密码：");
+            String input = sc.next();
+            if(input.equals(rightPwd)) {
+                System.out.println("输入密码与设置密码一致，可以进入系统啦！");
+                break;
+            } else {
+                count++;
+                int left = 3 - count;
+                System.out.println("输入密码与设置密码不一致，请重新输入密码！");
+                if(left > 0) {
+                    System.out.println("你还有 " + left + " 次机会输入密码");
+                }
+            }
+        }
+        if(count == 3) {
+            System.out.println("密码连续错误3次，5秒后退出系统...");
+            Thread.sleep(5000);
+            System.out.println("系统已退出");
+        }
+        sc.close();
+    }
+}
+import java.util.Scanner;
+public class PwdForDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Scanner sc = new Scanner(System.in);
+        String rightPwd = "jsu12345";
+        boolean flag = false;
+        for(int i = 0; i < 3; i++) {
+            System.out.println("请输入用户密码：");
+            String input = sc.next();
+            if(input.equals(rightPwd)) {
+                System.out.println("输入密码与设置密码一致，可以进入系统啦！");
+                flag = true;
+                break;
+            } else {
+                int left = 2 - i;
+                System.out.println("输入密码与设置密码不一致，请重新输入密码！");
+                if(left > 0) {
+                    System.out.println("你还有 " + left + " 次机会输入密码");
+                }
+            }
+        }
+        if(!flag) {
+            System.out.println("密码连续错误3次，5秒后退出系统...");
+            Thread.sleep(5000);
+            System.out.println("系统已退出");
+        }
+        sc.close();
+    }
+}
