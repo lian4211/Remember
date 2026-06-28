@@ -153,20 +153,32 @@ function renderQuestion() {
   fb.textContent = ''; fb.className = '';
 
   if (q.type === 'choice') {
+    const isMulti = Array.isArray(q.answer);  // 多选
+    state.multiSelected = isMulti ? new Set() : null;
     area.innerHTML = `
       <div class="app-card" style="padding:1rem;margin-bottom:0.75rem">
         <p style="font-weight:600;margin-bottom:0.75rem;line-height:1.7">${escapeHtml(q.question)}</p>
+        ${isMulti ? '<p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.5rem">（多选，请选择所有正确选项后确认）</p>' : ''}
         <div id="quiz-options" style="display:flex;flex-direction:column;gap:0.5rem"></div>
-      </div>`;
+      </div>
+      ${isMulti ? '<button id="multi-confirm-btn" class="btn-primary" style="width:100%;margin-top:0.5rem" disabled>确认答案</button>' : ''}`;
     const od = document.getElementById('quiz-options');
     (q.options || []).forEach((opt, i) => {
       const b = document.createElement('button');
       b.className = 'option-btn';
       b.style.textAlign = 'left';
       b.innerHTML = `<span style="font-weight:700;margin-right:0.5rem">${String.fromCharCode(65 + i)}</span>${escapeHtml(opt)}`;
-      b.onclick = () => checkChoice(i, b);
+      if (isMulti) {
+        b.onclick = () => toggleMultiOption(i, b);
+        b.dataset.idx = i;
+      } else {
+        b.onclick = () => checkChoice(i, b);
+      }
       od.appendChild(b);
     });
+    if (isMulti) {
+      document.getElementById('multi-confirm-btn').onclick = confirmMultiChoice;
+    }
   } else if (q.type === 'fill') {
     // fill 填空题：把题目中的 ________ 替换为输入框，提交后判断对错
     const questionHTML = escapeHtml(q.question).replace(
@@ -226,6 +238,51 @@ function revealAnswer() {
   const isLast = state.currentIndex >= state.questions.length - 1;
   btn.textContent = isLast ? '完成 ✓' : '下一题 →';
   renderNav();
+}
+
+function toggleMultiOption(idx, btnEl) {
+  if (state.choiceAnswered) return;
+  const set = state.multiSelected;
+  if (set.has(idx)) {
+    set.delete(idx);
+    btnEl.classList.remove('selected');
+  } else {
+    set.add(idx);
+    btnEl.classList.add('selected');
+  }
+  const confirmBtn = document.getElementById('multi-confirm-btn');
+  if (confirmBtn) confirmBtn.disabled = set.size === 0;
+}
+
+function confirmMultiChoice() {
+  if (state.choiceAnswered) return;
+  state.choiceAnswered = true;
+  state.answeredChoice++;
+  const q = state.questions[state.currentIndex];
+  const correctSet = new Set(q.answer);
+  const selected = [...state.multiSelected].sort();
+  // 必须完全匹配
+  const correct = selected.length === correctSet.size &&
+                  selected.every(i => correctSet.has(i));
+
+  if (correct) state.correctCount++;
+
+  const opts = document.querySelectorAll('#quiz-options .option-btn');
+  opts.forEach((b, i) => {
+    b.disabled = true;
+    if (correctSet.has(i)) b.classList.add('correct');
+    if (state.multiSelected.has(i) && !correctSet.has(i)) b.classList.add('wrong');
+  });
+
+  const confirmBtn = document.getElementById('multi-confirm-btn');
+  if (confirmBtn) confirmBtn.disabled = true;
+
+  const correctLetters = q.answer.map(i => String.fromCharCode(65 + i)).join('');
+  const fb = document.getElementById('quiz-feedback');
+  fb.textContent = correct ? '✅ 回答正确' : `❌ 正确答案: ${correctLetters}`;
+  fb.className = `feedback-text ${correct ? 'feedback-correct' : 'feedback-wrong'}`;
+  renderNav();
+  saveData();
 }
 
 function checkChoice(idx, btnEl) {

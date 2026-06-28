@@ -544,6 +544,13 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ==================== 多选按钮 ==================== */
+.option-btn.selected {
+  background: var(--primary-bg) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
 /* ==================== 填空样式 ==================== */
 .fill-blank {
   display: inline-block;
