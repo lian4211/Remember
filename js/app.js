@@ -15,7 +15,7 @@ import { initTheme, cycleTheme, getThemeIcon, getAlgorithmLabel, switchAlgorithm
 import { globalSearch as doGlobalSearch } from './search.js';
 import { renderQuizListPage, showQuizImportModal, loadBuiltinQuizzes } from './quiz.js';
 
-const APP_VERSION = '2.0';
+const APP_VERSION = '2.1';
 
 // ==================== 全局暴露 ====================
 window.goToPage = goToPage;

@@ -544,6 +544,18 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ==================== 填空样式 ==================== */
+.fill-blank {
+  display: inline-block;
+  min-width: 2.5em;
+  border-bottom: 2px dashed var(--primary);
+  color: var(--primary);
+  font-weight: 700;
+  padding: 0 0.3em;
+  margin: 0 0.15em;
+  text-align: center;
+}
+
 /* ==================== 响应式微调 ==================== */
 @media (max-width: 380px) {
   .feature-card { padding: 0.875rem 0.5rem; }

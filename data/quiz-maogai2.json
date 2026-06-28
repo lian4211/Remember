@@ -2,163 +2,163 @@
   "name": "毛概复习题库（填空+简答/论述）",
   "questions": [
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "马克思主义中国化时代化的最新理论成果是________。",
       "answer": "习近平新时代中国特色社会主义思想"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "毛泽东思想形成的实践基础是________。",
       "answer": "中国革命和建设的实践"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "新民主主义革命的主力军是________。",
       "answer": "农民（贫雇农）"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "新民主主义革命时期统一战线的基础是________。",
       "answer": "工农联盟"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "建设新型人民军队的根本原则是________。",
       "answer": "党对军队的绝对领导（党指挥枪）"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "新民主主义社会属于________的过渡性质的社会。",
       "answer": "社会主义体系"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "和平赎买政策的主要实施对象是________。",
       "answer": "民族资产阶级（资本主义工商业）"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "中国特色社会主义理论体系形成的实践基础是________。",
       "answer": "改革开放和现代化建设生动实践"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "改革开放以来，党的全部理论和实践创新的主题是________。",
       "answer": "中国特色社会主义"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "________正式提出“邓小平理论”这一概念。",
       "answer": "党的十五大"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "建设中国特色社会主义的总依据是________。",
       "answer": "社会主义初级阶段理论"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "“一个党，一个国家，一个民族，如果一切从本本出发，思想僵化，迷信盛行，那它就不能前进，它的生机就停止了，就要亡党亡国。”这句话核心强调________。",
       "answer": "坚持解放思想、实事求是"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "社会主义的根本任务是________。",
       "answer": "解放和发展社会生产力"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "坚持中国共产党的领导，核心是________。",
       "answer": "坚持党的先进性"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "科学发展观的基本要求是________。",
       "answer": "全面协调可持续"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "科学发展观的精神实质是________。",
       "answer": "解放思想、实事求是、与时俱进、求真务实"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "把握马克思主义中国化时代化的科学内涵，必须坚持把马克思主义基本原理同________、________相结合。",
       "answer": "中国具体实际；中华优秀传统文化"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "过渡时期总路线中，________是主体，________是两翼。",
       "answer": "一化；三改"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "解放思想的目的归根到底是为了________。",
       "answer": "实事求是"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "社会主义初级阶段________任何国家进入社会主义都要经历的起始阶段。（填“是/不是”）",
       "answer": "不是"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "邓小平对社会主义本质的概括突出强调________在社会主义发展中的重要地位。",
       "answer": "解放和发展生产力"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "依法治国是党领导人民治理国家的________。",
       "answer": "基本方略"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "党执政兴国的第一要务是________。",
       "answer": "发展"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "科学发展观的核心立场是________。",
       "answer": "以人为本"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "毛泽东思想活的灵魂是________、、。",
       "answer": "实事求是；群众路线；独立自主"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "新民主主义革命总路线的领导力量是________。",
       "answer": "无产阶级"
     },
     {
-      "type": "qa",
+      "type": "fill",
       "category": "填空题",
       "question": "党在过渡时期三大改造针对________、、。",
       "answer": "农业；手工业；资本主义工商业"

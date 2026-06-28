@@ -30,13 +30,14 @@ export function renderQuizListPage() {
   c.innerHTML = data.quizSets.map(qs => {
     const cats = [...new Set(qs.questions.map(q => q.category || '未分类'))];
     const choiceCnt = qs.questions.filter(q => q.type === 'choice').length;
-    const qaCnt = qs.questions.length - choiceCnt;
+    const fillCnt = qs.questions.filter(q => q.type === 'fill').length;
+    const qaCnt = qs.questions.length - choiceCnt - fillCnt;
     return `<div class="app-card" style="padding:1rem;margin-bottom:0.75rem">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem">
         <div style="flex:1;min-width:0">
           <p style="font-weight:700;font-size:1rem;word-break:break-all">${escapeHtml(qs.name)}</p>
           <p style="color:var(--text-secondary);font-size:0.8125rem;margin-top:0.25rem">
-            共 ${qs.questions.length} 题${choiceCnt ? ` · 选择${choiceCnt}` : ''}${qaCnt ? ` · 问答${qaCnt}` : ''}
+            共 ${qs.questions.length} 题${choiceCnt ? ` · 选择${choiceCnt}` : ''}${fillCnt ? ` · 填空${fillCnt}` : ''}${qaCnt ? ` · 问答${qaCnt}` : ''}
           </p>
           <p style="color:var(--text-muted);font-size:0.75rem;margin-top:0.25rem">${cats.map(escapeHtml).join(' / ')}</p>
         </div>
@@ -130,8 +131,8 @@ export function startQuiz(quizSet, opts = {}) {
     quizSet, questions: qs, currentIndex: 0,
     filter: opts.filter || 'all', shuffle: !!opts.shuffle,
     startTime: Date.now(),
-    correctCount: 0, answeredChoice: 0, revealedQA: 0,
-    revealed: false, choiceAnswered: false
+    correctCount: 0, answeredChoice: 0, revealedQA: 0, answeredFill: 0,
+    revealed: false, choiceAnswered: false, fillAnswered: false
   };
   goToPage('quiz-test');
   renderQuestion();
@@ -142,6 +143,7 @@ function renderQuestion() {
   if (!q) { finishQuiz(); return; }
   state.revealed = false;
   state.choiceAnswered = false;
+  state.fillAnswered = false;
 
   const prog = document.getElementById('quiz-progress');
   prog.textContent = `进度: ${state.currentIndex + 1}/${state.questions.length} | ${q.category || '未分类'}`;
@@ -165,6 +167,37 @@ function renderQuestion() {
       b.onclick = () => checkChoice(i, b);
       od.appendChild(b);
     });
+  } else if (q.type === 'fill') {
+    // fill 填空题：把题目中的 ________ 替换为输入框，提交后判断对错
+    const questionHTML = escapeHtml(q.question).replace(
+      /_{2,}|（\s*）|\(\s*\)/g,
+      '<span class="fill-blank">________</span>'
+    );
+    area.innerHTML = `
+      <div class="app-card" style="padding:1.25rem;margin-bottom:0.75rem">
+        <p style="font-weight:600;line-height:2;font-size:1.0625rem">${questionHTML}</p>
+      </div>
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <input type="text" id="fill-input" class="app-input" placeholder="在此输入答案..." autocomplete="off"
+          style="flex:1;text-align:center;font-size:1.0625rem;padding:0.625rem 1rem">
+        <button id="fill-submit-btn" class="btn-primary" style="white-space:nowrap;padding:0.625rem 1.25rem">提交</button>
+      </div>
+      <div id="fill-answer-area" class="hidden" style="margin-top:0.75rem"></div>
+      <div style="margin-top:0.35rem">
+        <button id="fill-hint-btn" class="btn-ghost" style="font-size:0.75rem;padding:0.2rem 0.5rem">💡 提示</button>
+      </div>`;
+    document.getElementById('fill-submit-btn').onclick = checkFill;
+    document.getElementById('fill-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); checkFill(); }
+    });
+    document.getElementById('fill-hint-btn').onclick = () => {
+      const q = state.questions[state.currentIndex];
+      const ans = q.answer || '';
+      const hint = ans.length > 6 ? ans.slice(0, 2) + '…' + ans.slice(-2) : ans[0] + '…';
+      document.getElementById('fill-input').placeholder = hint;
+      document.getElementById('fill-input').focus();
+    };
+    setTimeout(() => document.getElementById('fill-input')?.focus(), 50);
   } else {
     // qa 问答题：先显示题目，点击显示答案
     area.innerHTML = `
@@ -213,6 +246,47 @@ function checkChoice(idx, btnEl) {
   saveData();
 }
 
+function checkFill() {
+  if (state.fillAnswered) return;
+  const input = document.getElementById('fill-input');
+  const userAnswer = (input?.value || '').trim();
+  if (!userAnswer) { showToast('请先输入答案'); return; }
+  state.fillAnswered = true;
+  state.answeredFill++;
+  input.disabled = true;
+  document.getElementById('fill-submit-btn').disabled = true;
+
+  const q = state.questions[state.currentIndex];
+  // 规范化：去空格、全角转半角、大小写不敏感
+  const normalize = s => s.trim().toLowerCase()
+    .replace(/[\s\u3000]+/g, '')           // 去所有空格
+    .replace(/[（）]/g, '()')               // 全角括号转半角
+    .replace(/[，。；：、]/g, ',.;:,');      // 标点统一
+  const correctRaw = (q.answer || '').trim();
+  const userNorm = normalize(userAnswer);
+  // 支持多答案（用 ；或 ; 或换行分隔），答对任意一个即可
+  const answers = correctRaw.split(/[；;\n]/).map(s => normalize(s)).filter(Boolean);
+  const isCorrect = answers.some(a =>
+    userNorm === a ||                          // 完全一致
+    (a.length >= 3 && userNorm.includes(a))    // 长答案(≥3字)：用户输入包含正确关键词
+  );
+
+  if (isCorrect) state.correctCount++;
+
+  const area = document.getElementById('fill-answer-area');
+  area.classList.remove('hidden');
+  area.innerHTML = `<div class="app-card" style="padding:1rem;border-left:3px solid ${isCorrect ? 'var(--success)' : 'var(--danger)'};background:var(--primary-bg)">
+    <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.5rem;font-weight:600">${isCorrect ? '✅ 回答正确' : '❌ 回答错误'}</p>
+    <p style="line-height:1.85;white-space:pre-wrap;font-size:0.9375rem;color:${isCorrect ? 'var(--success)' : 'var(--text)'}">参考答案：${escapeHtml(q.answer || '（无答案）')}</p>
+  </div>`;
+
+  const fb = document.getElementById('quiz-feedback');
+  fb.textContent = isCorrect ? '✅ 回答正确' : `❌ 正确答案: ${q.answer}`;
+  fb.className = `feedback-text ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`;
+  renderNav();
+  saveData();
+}
+
 function nextQuestion() {
   if (state.currentIndex < state.questions.length - 1) {
     state.currentIndex++;
@@ -235,12 +309,12 @@ function renderNav() {
   const q = state.questions[state.currentIndex];
   const isLast = state.currentIndex >= state.questions.length - 1;
   const isFirst = state.currentIndex === 0;
-  const answered = q.type === 'choice' ? state.choiceAnswered : state.revealed;
+  const answered = q.type === 'choice' ? state.choiceAnswered : (q.type === 'fill' ? state.fillAnswered : state.revealed);
   nav.innerHTML = `
     <button class="btn-ghost" style="flex:1" onclick="window._quizPrev()" ${isFirst ? 'disabled' : ''}>← 上一题</button>
     ${answered
       ? `<button class="btn-primary" style="flex:1" onclick="window._quizNext()">${isLast ? '完成 ✓' : '下一题 →'}</button>`
-      : `<button class="btn-ghost" style="flex:1" disabled>${q.type === 'choice' ? '请先答题' : '请先看答案'}</button>`}`;
+      : `<button class="btn-ghost" style="flex:1" disabled>${q.type === 'choice' || q.type === 'fill' ? '请先答题' : '请先看答案'}</button>`}`;
 }
 
 window._quizPrev = prevQuestion;
@@ -251,17 +325,21 @@ function finishQuiz() {
   updateStats('time', { seconds: time });
   const total = state.questions.length;
   const choiceCnt = state.questions.filter(q => q.type === 'choice').length;
-  const qaCnt = total - choiceCnt;
-  let body = `<div style="text-align:center">
-    <p style="font-size:2.5rem;margin-bottom:0.5rem">🎉</p>
-    <p style="font-size:1.125rem">已完成 ${total} 题</p>`;
+  const fillCnt = state.questions.filter(q => q.type === 'fill').length;
+  const qaCnt = total - choiceCnt - fillCnt;
+  let body = '<div style="text-align:center">' +
+    '<p style="font-size:2.5rem;margin-bottom:0.5rem">🎉</p>' +
+    '<p style="font-size:1.125rem">已完成 ' + total + ' 题</p>';
   if (choiceCnt > 0) {
-    body += `<p style="color:var(--success);margin-top:0.5rem">选择题正确: ${state.correctCount}/${choiceCnt}</p>`;
+    body += '<p style="color:var(--success);margin-top:0.5rem">选择题正确: ' + state.correctCount + '/' + choiceCnt + '</p>';
+  }
+  if (fillCnt > 0) {
+    body += '<p style="color:var(--success);margin-top:0.25rem">填空题正确: ' + state.correctCount + '/' + fillCnt + '</p>';
   }
   if (qaCnt > 0) {
-    body += `<p style="color:var(--info);margin-top:0.25rem">问答题已看: ${state.revealedQA}/${qaCnt}</p>`;
+    body += '<p style="color:var(--info);margin-top:0.25rem">问答题已看: ' + state.revealedQA + '/' + qaCnt + '</p>';
   }
-  body += `<p style="color:var(--text-secondary);font-size:0.875rem;margin-top:0.5rem">用时: ${Math.floor(time / 60)}分${time % 60}秒</p></div>`;
+  body += '<p style="color:var(--text-secondary);font-size:0.875rem;margin-top:0.5rem">用时: ' + Math.floor(time / 60) + '分' + time % 60 + '秒</p></div>';
   showModal('测试完成', body, [
     { text: '返回试题列表', onClick: () => { hideModal(); goToPage('quiz-list'); } },
     { text: '返回首页', onClick: () => { hideModal(); goHome(); }, className: 'btn-ghost' }
