@@ -27,7 +27,8 @@ const urlsToCache = [
     `${basePath}/js/quiz.js`,
     `${basePath}/data/quiz-maogai.json`,
     `${basePath}/data/quiz-java.json`,
-    `${basePath}/data/quiz-maogai-exam.json`
+    `${basePath}/data/quiz-maogai-exam.json`,
+    `${basePath}/data/quiz-maogai2.json`
 ];
 
 // 安装时缓存静态资源
