@@ -295,7 +295,8 @@ export async function loadBuiltinQuizzes() {
   if (data.quizSets.length > 0) return;
   const builtin = [
     { file: 'data/quiz-maogai.json', name: '毛概复习资料（究极版）' },
-    { file: 'data/quiz-java.json', name: 'Java期末复习资料' }
+    { file: 'data/quiz-java.json', name: 'Java期末复习资料' },
+    { file: 'data/quiz-maogai-exam.json', name: '毛概复习资料（参考题）' }
   ];
   for (const b of builtin) {
     try {
