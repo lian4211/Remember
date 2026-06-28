@@ -1,4 +1,4 @@
-// ==================== 应用主入口 (v2) ====================
+// ==================== 应用主入口 ====================
 
 import { data, loadData, saveData, currentList, setCurrentList, getCurrentList, addWord, renameList, deleteList, getDueCount } from './data.js';
 import { goToPage, goHome, showModal, hideModal, showToast, onPageEnter } from './ui.js';
@@ -14,6 +14,8 @@ import { analyzeRoots } from './dictionary.js';
 import { initTheme, cycleTheme, getThemeIcon, getAlgorithmLabel, switchAlgorithm, getTheme, setTheme } from './settings.js';
 import { globalSearch as doGlobalSearch } from './search.js';
 import { renderQuizListPage, showQuizImportModal, loadBuiltinQuizzes } from './quiz.js';
+
+const APP_VERSION = '2.0';
 
 // ==================== 全局暴露 ====================
 window.goToPage = goToPage;
@@ -38,7 +40,18 @@ function init() {
   renderHomePage();
   registerSW();
   updateThemeIcon();
-  loadBuiltinQuizzes();   // 首次启动加载内置试题集（毛概）
+  // 版本号显示与版本变更检测
+  const badge = document.getElementById('version-badge');
+  if (badge) badge.textContent = 'v' + APP_VERSION;
+  const storedVer = data._appVersion;
+  if (storedVer !== APP_VERSION) {
+    // 版本变了：清除旧的内置试题集，重新加载
+    data.quizSets = [];
+    data._appVersion = APP_VERSION;
+    loadBuiltinQuizzes();
+  } else {
+    loadBuiltinQuizzes();
+  }
 }
 
 // ==================== 事件绑定 ====================

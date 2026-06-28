@@ -93,6 +93,7 @@ export function loadData() {
     data.stats = parsed.stats || { daily: {}, streak: 0, lastStudyDate: null };
     data.plan = parsed.plan || { totalWords: 0, startDate: null, dailyNew: 0 };
   data.quizSets = parsed.quizSets || [];
+  data._appVersion = parsed._appVersion || '';
   }
   return data;
 }
