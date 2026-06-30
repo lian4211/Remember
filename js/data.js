@@ -92,7 +92,7 @@ export function loadData() {
     data.voiceSettings = parsed.voiceSettings || { rate: "+0%", volume: "+0%", pitch: "+0Hz" };
     data.stats = parsed.stats || { daily: {}, streak: 0, lastStudyDate: null };
     data.plan = parsed.plan || { totalWords: 0, startDate: null, dailyNew: 0 };
-  data.quizSets = parsed.quizSets || [];
+  data.quizSets = (parsed.quizSets || []).map(migrateQuizSet);
   data._appVersion = parsed._appVersion || '';
   }
   return data;
@@ -241,3 +241,70 @@ export function deleteQuizSet(qs) {
 
 /** 重命名试题集 */
 export function renameQuizSet(qs, newName) { qs.name = newName; saveData(); }
+
+/** 初始化试题的算法字段 */
+function initQuizAlgo(q) {
+  if (!q.sm2) q.sm2 = { easeFactor: 2.5, interval: 0, repetitions: 0, nextReview: null, lastReview: null };
+  if (!q.fsrs) q.fsrs = { stability: 0, difficulty: 0, fsrsState: 0, fsrsReps: 0, fsrsLastReview: null };
+  return q;
+}
+
+/** 迁移试题集：给每题添加算法字段 */
+function migrateQuizSet(qs) {
+  if (qs.questions) qs.questions = qs.questions.map(initQuizAlgo);
+  return qs;
+}
+
+/** 获取试题集到期题目ID列表 (SM-2) */
+function getDueQuizIdsSM2(questions) {
+  const today = new Date().toISOString().split('T')[0];
+  return questions
+    .map((q, i) => ({ idx: i, next: q.sm2?.nextReview }))
+    .filter(q => q.next && q.next <= today)
+    .map(q => q.idx);
+}
+
+/** 获取试题集到期题目ID列表 (FSRS) */
+function getDueQuizIdsFSRS(questions) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const due = [];
+  questions.forEach((q, i) => {
+    const f = q.fsrs;
+    if (!f?.fsrsLastReview) return;
+    if (f.fsrsState === 1) { due.push(i); return; }
+    const lr = new Date(f.fsrsLastReview); lr.setHours(0, 0, 0, 0);
+    const elapsed = Math.max(0, Math.round((today - lr) / 86400000));
+    if (f.stability <= 0) { if (elapsed >= 1) due.push(i); return; }
+    const R = Math.exp(Math.log(0.9) * elapsed / f.stability);
+    if (R < 0.9) due.push(i);
+  });
+  return due;
+}
+
+/** 按记忆算法排序试题：到期优先→未学→按下次复习日期 */
+export function sortQuizByAlgo(questions) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const algo = data.algorithm;
+  
+  return questions.map((q, i) => {
+    const sm2 = q.sm2;
+    let score = 0; // higher = more urgent
+
+    if (sm2?.nextReview) {
+      const nr = new Date(sm2.nextReview); nr.setHours(0, 0, 0, 0);
+      const daysOver = Math.round((today - nr) / 86400000);
+      if (daysOver >= 0) {
+        // Overdue: score increases with days
+        score = 1000 + daysOver;
+      } else {
+        // Not due yet: negative score
+        score = daysOver;
+      }
+    } else {
+      // Never reviewed: medium priority (new cards first)
+      score = 500;
+    }
+    return { question: q, origIdx: i, score };
+  }).sort((a, b) => b.score - a.score)
+    .map(item => item.question);
+}

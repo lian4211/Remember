@@ -1,13 +1,16 @@
 // ==================== 试题测试模块 ====================
 // 支持 choice(选择题,选项答题) 和 qa(问答题,点击显示答案) 两种题型
 
-import { data, saveData, addQuizSet, deleteQuizSet, renameQuizSet } from './data.js';
+import { data, saveData, addQuizSet, deleteQuizSet, renameQuizSet, sortQuizByAlgo } from './data.js';
 import { goToPage, goHome, showModal, hideModal, showToast, escapeHtml } from './ui.js';
 import { updateStats } from './stats.js';
+import { sm2Answer } from './sm2.js';
+import { fsrsAnswer } from './fsrs.js';
 
 let state = {
   quizSet: null,
   questions: [],
+  memoryMode: false,    // 是否启用记忆算法模式
   currentIndex: 0,
   filter: 'all',
   shuffle: false,
@@ -32,6 +35,19 @@ function formatQuestionText(text) {
     return `<pre style="white-space:pre-wrap;font-family:Consolas,'Courier New',monospace;background:var(--card-bg,#f5f5f5);border:1px solid var(--border,#e0e0e0);padding:0.75rem;border-radius:6px;font-size:0.875rem;line-height:1.65;margin:0;color:var(--text)">${html}</pre>`;
   }
   return `<p style="font-weight:600;line-height:1.8;font-size:1.0625rem;white-space:pre-wrap;margin:0">${html}</p>`;
+}
+
+/** 根据当前算法更新试题的记忆状态 */
+function quizAnswer(question, correct) {
+  if (!question) return;
+  const algo = data.algorithm;
+  if (algo === 'fsrs') {
+    const f = question.fsrs;
+    if (f) fsrsAnswer(f, correct);
+  } else {
+    const s = question.sm2;
+    if (s) sm2Answer(s, correct);
+  }
 }
 
 // ==================== 试题列表页 ====================
@@ -83,7 +99,16 @@ function showQuizStartOptions(qs) {
   const cats = [...new Set(qs.questions.map(q => q.category || '未分类'))];
   const catOpts = ['all', ...cats].map(c =>
     `<option value="${escapeHtml(c)}">${c === 'all' ? '全部分类' : escapeHtml(c)}</option>`).join('');
-  showModal('开始测试 · ' + qs.name,
+  // 统计到期的题目数(用于记忆模式)
+  const algo = data.algorithm;
+  const today = new Date().toISOString().split('T')[0];
+  let dueCount = 0;
+  qs.questions.forEach(q => {
+    const next = algo === 'fsrs' ? q.fsrs?.fsrsLastReview : q.sm2?.nextReview;
+    if (next && next <= today) dueCount++;
+  });
+  const dueHint = dueCount > 0 ? `（已到期: ${dueCount}题）` : '';
+  showModal('开始测试 · ' + qs.name + ' ' + dueHint,
     `<div style="display:flex;flex-direction:column;gap:0.75rem">
       <div>
         <label style="display:block;font-weight:600;margin-bottom:0.25rem">分类筛选</label>
@@ -94,16 +119,24 @@ function showQuizStartOptions(qs) {
         <select id="quiz-order" class="app-select">
           <option value="seq">顺序出题</option>
           <option value="shuffle">随机出题</option>
+          ${dueCount > 0 ? '<option value="memory">🧠 记忆算法（到期优先）</option>' : ''}
         </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <input type="checkbox" id="quiz-memory" style="width:1.125rem;height:1.125rem">
+        <label for="quiz-memory" style="font-size:0.9375rem">启用记忆算法（答错会重新出现）</label>
       </div>
     </div>`,
     [
       { text: '取消', onClick: hideModal, className: 'btn-ghost' },
       { text: '开始', onClick: () => {
         const f = document.getElementById('quiz-filter').value;
-        const s = document.getElementById('quiz-order').value === 'shuffle';
+        const orderVal = document.getElementById('quiz-order').value;
+        const memory = document.getElementById('quiz-memory').checked;
+        const shuffle = orderVal === 'shuffle';
+        const algoOrder = orderVal === 'memory';
         hideModal();
-        startQuiz(qs, { filter: f, shuffle: s });
+        startQuiz(qs, { filter: f, shuffle: shuffle || algoOrder, memory: memory });
       }, className: 'btn-primary' }
     ]
   );
@@ -140,11 +173,14 @@ export function startQuiz(quizSet, opts = {}) {
   if (opts.filter && opts.filter !== 'all') {
     qs = qs.filter(q => (q.category || '未分类') === opts.filter);
   }
-  if (opts.shuffle) qs = qs.sort(() => Math.random() - 0.5);
+  // 记忆算法模式：按到期优先级排序
+  if (opts.memory) qs = sortQuizByAlgo(qs);
+  else if (opts.shuffle) qs = qs.sort(() => Math.random() - 0.5);
   if (qs.length === 0) { showToast('该筛选下无题目'); return; }
   state = {
     quizSet, questions: qs, currentIndex: 0,
     filter: opts.filter || 'all', shuffle: !!opts.shuffle,
+    memoryMode: !!opts.memory,
     startTime: Date.now(),
     correctCount: 0, answeredChoice: 0, revealedQA: 0, answeredFill: 0,
     revealed: false, choiceAnswered: false, fillAnswered: false
@@ -251,6 +287,10 @@ function revealAnswer() {
   state.revealed = true;
   state.revealedQA++;
   const q = state.questions[state.currentIndex];
+
+  // 记忆算法更新（QA: 点击查看答案视为已复习）
+  if (state.memoryMode) { quizAnswer(q, true); }
+
   const a = document.getElementById('quiz-answer-area');
   a.classList.remove('hidden');
   a.innerHTML = `<div class="app-card" style="padding:1rem;border-left:3px solid var(--primary);background:var(--primary-bg)">
@@ -290,6 +330,9 @@ function confirmMultiChoice() {
 
   if (correct) state.correctCount++;
 
+  // 记忆算法更新
+  if (state.memoryMode) { quizAnswer(q, correct); }
+
   const opts = document.querySelectorAll('#quiz-options .option-btn');
   opts.forEach((b, i) => {
     b.disabled = true;
@@ -317,6 +360,10 @@ function checkChoice(idx, btnEl) {
   const correct = idx === q.answer;
   state.answeredChoice++;
   if (correct) state.correctCount++;
+
+  // 记忆算法更新
+  if (state.memoryMode) { quizAnswer(q, correct); }
+
   if (q.options && q.answer >= 0) opts[q.answer].classList.add('correct');
   if (!correct && btnEl) btnEl.classList.add('wrong');
   const fb = document.getElementById('quiz-feedback');
@@ -352,6 +399,9 @@ function checkFill() {
   );
 
   if (isCorrect) state.correctCount++;
+
+  // 记忆算法更新
+  if (state.memoryMode) { quizAnswer(q, isCorrect); }
 
   const area = document.getElementById('fill-answer-area');
   area.classList.remove('hidden');
