@@ -18,10 +18,10 @@
       "category": "单选题",
       "question": "定义不能被继承的Fish类，应采用（）。",
       "options": [
-        "class Fish{}",
-        "native class Fish{}",
-        "class final Fish{}",
-        "final class Fish{}"
+        "A.class Fish{}",
+        "B.native class Fish{}",
+        "C.class final Fish{}",
+        "D.final class Fish{}"
       ],
       "answer": 3
     },
@@ -30,10 +30,10 @@
       "category": "单选题",
       "question": "用abstract定义的类__。",
       "options": [
-        "可以定义对象",
-        "只能包含抽象方法",
-        "可以被子类继承",
-        "不能被子类继承"
+        "A.可以定义对象",
+        "B.只能包含抽象方法",
+        "C.可以被子类继承",
+        "D.不能被子类继承"
       ],
       "answer": 2
     },
@@ -42,10 +42,10 @@
       "category": "单选题",
       "question": "定义了一个类AbstractClass，关于该类说法正确的是( )。 abstract class AbstractClass{ }",
       "options": [
-        "能利用new AbstractClass()构造方法实例化为一个对象。",
-        "该类不能被继承",
-        "该类的方法都不能被重载",
-        "以上说法都不对"
+        "A.能利用new AbstractClass()构造方法实例化为一个对象。",
+        "B.该类不能被继承",
+        "C.该类的方法都不能被重载",
+        "D.以上说法都不对"
       ],
       "answer": 3
     },
@@ -54,10 +54,10 @@
       "category": "单选题",
       "question": "在Java类中，使用以下( )声明语句来定义公有的、类的int型常量MAX。",
       "options": [
-        "public int MAX = 100;",
-        "final int MAX = 100;",
-        "public static int MAX = 100;",
-        "public static final int MAX = 100;"
+        "A.public int MAX = 100;",
+        "B.final int MAX = 100;",
+        "C.public static int MAX = 100;",
+        "D.public static final int MAX = 100;"
       ],
       "answer": 3
     },
@@ -90,10 +90,10 @@
       "category": "单选题",
       "question": "下面描述不正确的是( )。（JDK8之前）",
       "options": [
-        "Java通过接口实现多重继承",
-        "接口中的所有成员变量都是静态的",
-        "抽象类中可以定义非抽象方法",
-        "接口中可以定义非抽象方法"
+        "A.Java通过接口实现多重继承",
+        "B.接口中的所有成员变量都是静态的",
+        "C.抽象类中可以定义非抽象方法",
+        "D.接口中可以定义非抽象方法"
       ],
       "answer": 3
     },
@@ -102,10 +102,10 @@
       "category": "单选题",
       "question": "下面说法正确的是( )。（JDK8之前）",
       "options": [
-        "一个普通类继承抽象类，可以不实现其中的抽象方法",
-        "抽象方法可以含有方法的声明，也能够含方法体",
-        "接口只能含有抽象方法，可以不在方法前面加abstract",
-        "接口中成员变量的值可以发生改变"
+        "A.一个普通类继承抽象类，可以不实现其中的抽象方法",
+        "B.抽象方法可以含有方法的声明，也能够含方法体",
+        "C.接口只能含有抽象方法，可以不在方法前面加abstract",
+        "D.接口中成员变量的值可以发生改变"
       ],
       "answer": 2
     },
@@ -114,10 +114,10 @@
       "category": "单选题",
       "question": "以下( )正确定义了接口。（JDK8之前） interface InterfaceB{ void print(){ }; } abstract interface InterfaceB { void print(); } interface InterfaceB extends InterfaceA1, InterfaceA2 void print(){ }; } interface InterfaceB { viod print(); }",
       "options": [
-        "",
-        "",
-        "",
-        ""
+        "A.",
+        "B.",
+        "C.",
+        "D."
       ],
       "answer": 1
     },
@@ -126,10 +126,10 @@
       "category": "单选题",
       "question": "假设X、Y和Z都是已经定义的接口，（）是不正确的接口定义。（JDK8之前） public interface A extends X{ void show( ); } interface B extends Y{ void show( ); } interface C extends X,Y,Z{ void show( ); } interface D extends X{ void show(){} }",
       "options": [
-        "",
-        "",
-        "",
-        ""
+        "A.",
+        "B.",
+        "C.",
+        "D."
       ],
       "answer": 3
     },
@@ -138,10 +138,10 @@
       "category": "单选题",
       "question": "关于接口的描述，错误的是（）。",
       "options": [
-        "接口可以使得设计与实现相分离。",
-        "如果没有指定接口中方法和成员变量的访问权限，Java将其隐式地声明成public。",
-        "接口中定义的成员变量分为常量和变量两种。",
-        "一个类可以实现多个接口，表示的是一种多重继承关系。"
+        "A.接口可以使得设计与实现相分离。",
+        "B.如果没有指定接口中方法和成员变量的访问权限，Java将其隐式地声明成public。",
+        "C.接口中定义的成员变量分为常量和变量两种。",
+        "D.一个类可以实现多个接口，表示的是一种多重继承关系。"
       ],
       "answer": 2
     },
@@ -150,10 +150,10 @@
       "category": "单选题",
       "question": "关于接口和抽象类的叙述，不正确是( )。",
       "options": [
-        "接口中所有的方法隐含的都是抽象的，而抽象类则可以同时包含抽象和非抽象的方法",
-        "类可以实现很多个接口，但是只能继承一个抽象类",
-        "Java接口与抽象类都可以包含非final的变量",
-        "接口是绝对抽象的，不可以被实例化，抽象类也不可以被实例化"
+        "A.接口中所有的方法隐含的都是抽象的，而抽象类则可以同时包含抽象和非抽象的方法",
+        "B.类可以实现很多个接口，但是只能继承一个抽象类",
+        "C. Java接口与抽象类都可以包含非final的变量",
+        "D.接口是绝对抽象的，不可以被实例化，抽象类也不可以被实例化"
       ],
       "answer": 2
     },
@@ -162,10 +162,10 @@
       "category": "单选题",
       "question": "下面关于Java接口的说法错误的是( )。",
       "options": [
-        "一个Java接口是一些方法特征的集合，但没有方法的实现",
-        "Java接口中定义的方法在不同的地方被实现。可以具有完全不同的行为。",
-        "Java接口中可以声明私有成员",
-        "Java接口不能被实例化"
+        "A.一个Java接口是一些方法特征的集合，但没有方法的实现",
+        "B. Java接口中定义的方法在不同的地方被实现。可以具有完全不同的行为。",
+        "C. Java接口中可以声明私有成员",
+        "D. Java接口不能被实例化"
       ],
       "answer": 2
     },
@@ -174,10 +174,10 @@
       "category": "单选题",
       "question": "接口中合法的方法是（）。（JDK8之前）",
       "options": [
-        "public void show(){}",
-        "public int show(){}",
-        "void show( );",
-        "void show(){}"
+        "A. public void show(){}",
+        "B. public int show(){}",
+        "C. void show( );",
+        "D. void show(){}"
       ],
       "answer": 2
     },
@@ -186,10 +186,10 @@
       "category": "单选题",
       "question": "现有类A和接口B，以下描述中表示类A实现接口B的语句是 。",
       "options": [
-        "class A implements B",
-        "class B implements A",
-        "class A extends B",
-        "class B extends A"
+        "A. class A implements B",
+        "B. class B implements A",
+        "C. class A extends B",
+        "D. class B extends A"
       ],
       "answer": 0
     },
@@ -198,10 +198,10 @@
       "category": "单选题",
       "question": "接口中可以包含以下内容 。",
       "options": [
-        "静态变量和抽象方法",
-        "任何变量和抽象方法",
-        "任何变量和任何方法",
-        "静态常量和抽象方法"
+        "A. 静态变量和抽象方法",
+        "B. 任何变量和抽象方法",
+        "C. 任何变量和任何方法",
+        "D. 静态常量和抽象方法"
       ],
       "answer": 3
     },
@@ -222,10 +222,10 @@
       "category": "单选题",
       "question": "Java虚拟机指的是",
       "options": [
-        "Java操作的家用设备",
-        "Java字节码的解释程序",
-        "Java源代码的编译器",
-        "运行Java所需的硬件设备"
+        "A.Java操作的家用设备",
+        "B.Java字节码的解释程序",
+        "C.Java源代码的编译器",
+        "D.运行Java所需的硬件设备"
       ],
       "answer": 1
     },
@@ -294,10 +294,10 @@
       "category": "单选题",
       "question": "关于静态方法的描述，错误的是（）。",
       "options": [
-        "静态方法并不属于调用它的对象，所以不能用静态方法来访问实例属性",
-        "可以使用\"类名.方法名\"来调用静态方法。",
-        "可以使用\"对象.方法名\"来调用静态方法。",
-        "需要先创建实例对象后才可以调用静态方法。"
+        "A.静态方法并不属于调用它的对象，所以不能用静态方法来访问实例属性",
+        "B.可以使用\"类名.方法名\"来调用静态方法。",
+        "C.可以使用\"对象.方法名\"来调用静态方法。",
+        "D.需要先创建实例对象后才可以调用静态方法。"
       ],
       "answer": 3
     },
@@ -306,10 +306,10 @@
       "category": "单选题",
       "question": "构造方法在（）时被调用。",
       "options": [
-        "定义类时。",
-        "创建对象时。",
-        "调用对象成员方法时。",
-        "使用对象成员变量时。"
+        "A.定义类时。",
+        "B.创建对象时。",
+        "C.调用对象成员方法时。",
+        "D.使用对象成员变量时。"
       ],
       "answer": 1
     },
@@ -318,10 +318,10 @@
       "category": "单选题",
       "question": "关于Java的引用，以下( )是正确说法？",
       "options": [
-        "引用也是基本数据类型",
-        "引用就是对象本身",
-        "引用实际上就是指针",
-        "一个对象只能被一个引用所指引"
+        "A.引用也是基本数据类型",
+        "B.引用就是对象本身",
+        "C.引用实际上就是指针",
+        "D.一个对象只能被一个引用所指引"
       ],
       "answer": 2
     },
@@ -330,10 +330,10 @@
       "category": "单选题",
       "question": "编译如下定义的MyString类将出现( ) class MyString extends java.lang.String{}",
       "options": [
-        "成功编译",
-        "不能编译，因为没有main方法",
-        "不能编译，因为String是abstract类型的",
-        "不能编译，因为String是final类型的"
+        "A.成功编译",
+        "B.不能编译，因为没有main方法",
+        "C.不能编译，因为String是abstract类型的",
+        "D.不能编译，因为String是final类型的"
       ],
       "answer": 3
     },
@@ -346,6 +346,18 @@
         "30.0",
         "30.000",
         "编译失败"
+      ],
+      "answer": 3
+    },
+    {
+      "type": "choice",
+      "category": "单选题",
+      "question": "定义了一个类AbstractClass，关于该类说法正确的是( )。 abstract class AbstractClass{ }",
+      "options": [
+        "A.能利用new AbstractClass()构造方法实例化为一个对象。",
+        "B.该类不能被继承",
+        "C.该类的方法都不能被重载",
+        "D.以上说法都不对"
       ],
       "answer": 3
     },
@@ -510,10 +522,10 @@
       "category": "单选题",
       "question": "若所用变量都已正确定义，以下选项中，非法的表达式是",
       "options": [
-        "'a' != 4",
-        "'a' % 3",
-        "'a' = 1/2",
-        "'a' + a"
+        "A. 'a' != 4",
+        "B. 'a' % 3",
+        "C. 'a' = 1/2",
+        "D. 'a' + a"
       ],
       "answer": 2
     },
@@ -522,10 +534,10 @@
       "category": "单选题",
       "question": "对整型变量 a=16,b=5, 下列表达式的值为 true 的是",
       "options": [
-        "!(b==a/3)",
-        "b!=a%11",
-        "a>1&&b<1",
-        "a!=b||a>b"
+        "A. !(b==a/3)",
+        "B. b!=a%11",
+        "C. a>1&&b<1",
+        "D. a!=b||a>b"
       ],
       "answer": 3
     },
@@ -534,10 +546,10 @@
       "category": "单选题",
       "question": "（）是 Java 程序中不合法的赋值语句。",
       "options": [
-        "int x=12345;",
-        "int x=12345L;",
-        "double x=3.1415F",
-        "float x=(float) 3.1415;"
+        "A. int x=12345;",
+        "B. int x=12345L;",
+        "C. double x=3.1415F",
+        "D. float x=(float) 3.1415;"
       ],
       "answer": 1
     },
@@ -546,10 +558,10 @@
       "category": "单选题",
       "question": "语句 System.out.println ('1'+'2'+\"\"+3+4); 输出结果是（）。",
       "options": [
-        "334",
-        "1234",
-        "37",
-        "9934"
+        "A. 334",
+        "B. 1234",
+        "C. 37",
+        "D. 9934"
       ],
       "answer": 3
     },
@@ -558,10 +570,10 @@
       "category": "单选题",
       "question": "Java 程序中表达式 37/10f 的运算结果是 ( )。",
       "options": [
-        "3",
-        "3.70",
-        "3.7",
-        "3.0"
+        "A. 3",
+        "B. 3.70",
+        "C. 3.7",
+        "D. 3.0"
       ],
       "answer": 2
     },
@@ -570,10 +582,10 @@
       "category": "单选题",
       "question": "下面声明数组的写法错误的是",
       "options": [
-        "int a [ ];",
-        "int [ ] a;",
-        "int a [ ][ ];",
-        "int a [3 ][3];"
+        "A. int a [ ];",
+        "B. int [ ] a;",
+        "C. int a [ ][ ];",
+        "D. int a [3 ][3];"
       ],
       "answer": 3
     },
@@ -606,10 +618,10 @@
       "category": "单选题",
       "question": "int [] a={1,2,3,4,5,6,7,8,9,10}，打印数组最后一个元素正确代码是",
       "options": [
-        "System.out.println (a [10]);",
-        "System.out.println (a [9]);",
-        "System.out.println (a [a.length]);",
-        "System.out.println (a (9));"
+        "A.  System.out.println (a [10]);",
+        "B.  System.out.println (a [9]);",
+        "C.  System.out.println (a [a.length]);",
+        "D.  System.out.println (a (9));"
       ],
       "answer": 1
     },
@@ -618,10 +630,10 @@
       "category": "单选题",
       "question": "int a []={66,88,99}; 叙述错误的是",
       "options": [
-        "定义了一个名为 a 的一维数组",
-        "a 数组有 3 个元素",
-        "a 数组的元素的下标为 1～3",
-        "对数组元素的引用 a [a.length-1] 是合法的"
+        "A. 定义了一个名为 a 的一维数组",
+        "B. a 数组有 3 个元素",
+        "C. a 数组的元素的下标为 1～3",
+        "D. 对数组元素的引用 a [a.length-1] 是合法的"
       ],
       "answer": 2
     },
@@ -630,10 +642,10 @@
       "category": "单选题",
       "question": "Java 语言中，正确的初始化语句是",
       "options": [
-        "char str [ ]=\"hello\";",
-        "char str [100]=\"hello\";",
-        "char str [ ]={'h','e','l','l','o'};",
-        "char str [ ]={'hello'};"
+        "A. char str [ ]=\"hello\";",
+        "B. char str [100]=\"hello\";",
+        "C. char str [ ]={'h','e','l','l','o'};",
+        "D. char str [ ]={'hello'};"
       ],
       "answer": 2
     },
@@ -642,10 +654,10 @@
       "category": "单选题",
       "question": "int [] a=new int [10]; 错误的引用是",
       "options": [
-        "a [0]=1;",
-        "a [10]=2;",
-        "a [0]=5*2;",
-        "a [1]=a [2]*a [0];"
+        "A. a [0]=1;",
+        "B. a [10]=2;",
+        "C. a [0]=5*2;",
+        "D. a [1]=a [2]*a [0];"
       ],
       "answer": 1
     },
@@ -654,10 +666,10 @@
       "category": "单选题",
       "question": "下列数组定义中，正确的是",
       "options": [
-        "int a [][]=new int [10,10];",
-        "int a [10][10];",
-        "int a [][]=new int [10][10];",
-        "int a [][10];"
+        "A. int a [][]=new int [10,10];",
+        "B. int a [10][10];",
+        "C. int a [][]=new int [10][10];",
+        "D. int a [][10];"
       ],
       "answer": 2
     },
@@ -666,10 +678,10 @@
       "category": "单选题",
       "question": "正确地初始化二维数组语句是",
       "options": [
-        "float b [2][2]={1.12,3.45,8.36,0.4};",
-        "int a [][]={{1,2},{3,4},{1},{4,5,6,7}};",
-        "int a [2][]={{1,2},{3,4}};",
-        "float a [2][2]={0};"
+        "A. float b [2][2]={1.12,3.45,8.36,0.4};",
+        "B. int a [][]={{1,2},{3,4},{1},{4,5,6,7}};",
+        "C. int a [2][]={{1,2},{3,4}};",
+        "D. float a [2][2]={0};"
       ],
       "answer": 1
     },
@@ -678,10 +690,10 @@
       "category": "单选题",
       "question": "下面的方法重载，正确的是 float fun (int a,float b){ } float fun (int x,float y){ } float fun (float a,float b){ } float fun2 (int a,float b){ }",
       "options": [
-        "int fun (int a,float b){ }",
-        "float fun (int a,float b){ }",
-        "float fun (float a){ }",
-        "float fun1 (int a,float b){ }"
+        "A. int fun (int a,float b){ }",
+        "B. float fun (int a,float b){ }",
+        "C. float fun (float a){ }",
+        "D. float fun1 (int a,float b){ }"
       ],
       "answer": 2
     },
@@ -690,10 +702,10 @@
       "category": "单选题",
       "question": "为了区分类中重载的同名的不同方法，要求",
       "options": [
-        "采用不同的形式参数列表",
-        "返回值类型不同",
-        "调用时用类名或对象名做前缀",
-        "参数名不同"
+        "A. 采用不同的形式参数列表",
+        "B. 返回值类型不同",
+        "C. 调用时用类名或对象名做前缀",
+        "D. 参数名不同"
       ],
       "answer": 0
     },
@@ -702,10 +714,10 @@
       "category": "单选题",
       "question": "下列方法定义中，方法头不正确的是",
       "options": [
-        "public int x (){ ...}",
-        "public static int x ( double y ){ ... }",
-        "void x ( double d ) { ... }",
-        "public static x ( double a ){ ... }"
+        "A. public int x (){ ...}",
+        "B. public static int x ( double y ){ ... }",
+        "C. void x ( double d ) { ... }",
+        "D. public static x ( double a ){ ... }"
       ],
       "answer": 3
     },
@@ -714,10 +726,10 @@
       "category": "单选题",
       "question": "（）可以用来区别类中的重载方法。",
       "options": [
-        "采用不同的形式参数列表",
-        "返回值的数据类型不同",
-        "调用时用类名或对象名做前缀",
-        "参数名不同"
+        "A. 采用不同的形式参数列表",
+        "B. 返回值的数据类型不同",
+        "C. 调用时用类名或对象名做前缀",
+        "D. 参数名不同"
       ],
       "answer": 0
     },
@@ -726,10 +738,10 @@
       "category": "单选题",
       "question": "下列方法定义中，正确的是",
       "options": [
-        "void x (int a, b) { return a-b; }",
-        "x ( int a,int b) { return a-b; }",
-        "double x { return b; }",
-        "int x ( int a,int b) { return a+b; }"
+        "A. void x (int a, b) { return a-b; }",
+        "B. x ( int a,int b) { return a-b; }",
+        "C. double x { return b; }",
+        "D. int x ( int a,int b) { return a+b; }"
       ],
       "answer": 3
     },
@@ -738,10 +750,10 @@
       "category": "单选题",
       "question": "下面关于静态方法和实例方法的描述，正确的是（）。",
       "options": [
-        "静态方法可以访问静态成员变量，不可以访问实例成员变量。",
-        "实例方法可以访问静态成员变量，不可以访问实例成员变量。",
-        "静态方法可以访问静态成员变量，也可以访问实例成员变量。",
-        "静态方法不可以访问静态成员变量，也不可以访问实例成员变量。"
+        "A. 静态方法可以访问静态成员变量，不可以访问实例成员变量。",
+        "B. 实例方法可以访问静态成员变量，不可以访问实例成员变量。",
+        "C. 静态方法可以访问静态成员变量，也可以访问实例成员变量。",
+        "D. 静态方法不可以访问静态成员变量，也不可以访问实例成员变量。"
       ],
       "answer": 0
     },
@@ -1029,6 +1041,16 @@
       "type": "choice",
       "category": "判断题",
       "question": "在类中定义的非静态方法能够直接访问静态方法和非静态方法。",
+      "options": [
+        "正确",
+        "错误"
+      ],
+      "answer": 0
+    },
+    {
+      "type": "choice",
+      "category": "判断题",
+      "question": "不同对象的实例变量占用的堆空间不同。",
       "options": [
         "正确",
         "错误"

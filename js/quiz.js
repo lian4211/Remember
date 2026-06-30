@@ -19,6 +19,17 @@ let state = {
   choiceAnswered: false // 当前 choice 是否已答
 };
 
+/** 格式化含代码的题目文本：保留换行、代码使用等宽字体 */
+function formatQuestionText(text) {
+  const html = escapeHtml(text);
+  // 判断是否包含代码（含 class/void/public 或大括号或 import）
+  const hasCode = /[{}]/.test(text) || /\b(class|import|public|private|static|void|int|double|String|interface|abstract|final|extends|implements|new|return|if|for|while)\b/.test(text);
+  if (hasCode) {
+    return `<pre style="white-space:pre-wrap;font-family:Consolas,'Courier New',monospace;background:#f5f5f5;padding:0.75rem;border-radius:6px;font-size:0.875rem;line-height:1.65;margin:0;color:var(--text)">${html}</pre>`;
+  }
+  return `<p style="font-weight:600;line-height:1.8;font-size:1.0625rem;white-space:pre-wrap;margin:0">${html}</p>`;
+}
+
 // ==================== 试题列表页 ====================
 export function renderQuizListPage() {
   const c = document.getElementById('quiz-list-container');
@@ -157,7 +168,7 @@ function renderQuestion() {
     state.multiSelected = isMulti ? new Set() : null;
     area.innerHTML = `
       <div class="app-card" style="padding:1rem;margin-bottom:0.75rem">
-        <p style="font-weight:600;margin-bottom:0.75rem;line-height:1.7">${escapeHtml(q.question)}</p>
+        ${formatQuestionText(q.question)}
         ${isMulti ? '<p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.5rem">（多选，请选择所有正确选项后确认）</p>' : ''}
         <div id="quiz-options" style="display:flex;flex-direction:column;gap:0.5rem"></div>
       </div>
@@ -185,9 +196,13 @@ function renderQuestion() {
       /_{2,}|（\s*）|\(\s*\)/g,
       '<span class="fill-blank">________</span>'
     );
+    const hasCode = /[{}]/.test(q.question) || /\b(class|import|public|private|static|void|int|double|String|interface|abstract|final|extends|implements|new|return|if|for|while)\b/.test(q.question);
+    const fmtHTML = hasCode
+      ? `<pre style="white-space:pre-wrap;font-family:Consolas,'Courier New',monospace;background:#f5f5f5;padding:0.75rem;border-radius:6px;font-size:0.875rem;line-height:1.65;margin:0;color:var(--text)">${questionHTML}</pre>`
+      : `<p style="font-weight:600;line-height:2;font-size:1.0625rem;white-space:pre-wrap;margin:0">${questionHTML}</p>`;
     area.innerHTML = `
       <div class="app-card" style="padding:1.25rem;margin-bottom:0.75rem">
-        <p style="font-weight:600;line-height:2;font-size:1.0625rem">${questionHTML}</p>
+        ${fmtHTML}
       </div>
       <div style="display:flex;gap:0.5rem;align-items:center">
         <input type="text" id="fill-input" class="app-input" placeholder="在此输入答案..." autocomplete="off"
@@ -214,7 +229,7 @@ function renderQuestion() {
     // qa 问答题：先显示题目，点击显示答案
     area.innerHTML = `
       <div class="app-card" style="padding:1.25rem;margin-bottom:0.75rem">
-        <p style="font-weight:600;line-height:1.8;font-size:1.0625rem">${escapeHtml(q.question)}</p>
+        ${formatQuestionText(q.question)}
       </div>
       <div id="quiz-answer-area" class="hidden"></div>
       <button id="quiz-reveal-btn" class="btn-primary" style="width:100%">👁 点击显示答案</button>`;
