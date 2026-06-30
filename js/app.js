@@ -14,9 +14,9 @@ import { analyzeRoots } from './dictionary.js';
 import { initTheme, cycleTheme, getThemeIcon, getAlgorithmLabel, switchAlgorithm, getTheme, setTheme } from './settings.js';
 import { globalSearch as doGlobalSearch } from './search.js';
 import { renderQuizListPage, showQuizImportModal, loadBuiltinQuizzes } from './quiz.js';
-import { renderJavaExerciseList } from './java-exercise.js';
+import { renderJavaCrashPage } from './java-crash.js';
 
-const APP_VERSION = '2.4';
+const APP_VERSION = '2.3';
 
 // ==================== 全局暴露 ====================
 window.goToPage = goToPage;
@@ -187,7 +187,7 @@ function bindEvents() {
     else if (pageName === 'settings') { updateAlgoUI(); updateThemeUI(); }
     else if (pageName === 'voice-settings') initVoiceSettings();
     else if (pageName === 'quiz-list') renderQuizListPage();
-    else if (pageName === 'java-exercise') renderJavaExerciseList();
+    else if (pageName === 'java-crash') renderJavaCrashPage();
   });
 }
 

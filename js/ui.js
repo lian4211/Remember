@@ -17,7 +17,7 @@ const PAGE_TITLES = {
   'settings': '设置',
   'quiz-list': '试题测试',
   'quiz-test': '答题中',
-  'java-exercise': 'Java 程序题练习'
+  'java-crash': '☕ Java速成'
 };
 
 /** 切换到指定页面 */

@@ -503,6 +503,7 @@ export async function loadBuiltinQuizzes() {
   const builtin = [
     { file: 'data/quiz-maogai.json', name: '毛概复习资料（究极版）' },
     { file: 'data/quiz-java.json', name: 'Java期末复习资料' },
+    { file: 'data/quiz-java-supplement.json', name: 'Java期末-补充题库（判断+填空+程序）' },
     { file: 'data/quiz-maogai-exam.json', name: '毛概复习资料（参考题）' },
     { file: 'data/quiz-maogai2.json', name: '毛概复习题库（填空+简答/论述）' },
     { file: 'data/quiz-maogai-exam-real.json', name: '毛概真题' }
