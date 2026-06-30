@@ -40,7 +40,7 @@
     {
       "type": "choice",
       "category": "单选题",
-      "question": "定义了一个类AbstractClass，关于该类说法正确的是( )。 abstract class AbstractClass{ }",
+      "question": "定义了一个类AbstractClass，关于该类说法正确的是( )。\nabstract class AbstractClass{ }\n\nA.能利用new AbstractClass()构造方法实例化为一个对象。\nB.该类不能被继承\nC.该类的方法都不能被重载\nD.以上说法都不对",
       "options": [
         "能利用new AbstractClass()构造方法实例化为一个对象。",
         "该类不能被继承",
@@ -112,7 +112,7 @@
     {
       "type": "choice",
       "category": "单选题",
-      "question": "以下( )正确定义了接口。（JDK8之前） interface InterfaceB{ void print(){ }; } abstract interface InterfaceB { void print(); } interface InterfaceB extends InterfaceA1, InterfaceA2 void print(){ }; } interface InterfaceB { viod print(); }",
+      "question": "以下( )正确定义了接口。（JDK8之前）\nA.\ninterface InterfaceB{\n    void print(){ };\n}\nB.\nabstract interface InterfaceB {\n    void print();\n}\nC.\ninterface InterfaceB extends InterfaceA1, InterfaceA2\n    void print(){ };\n}\nD.\ninterface InterfaceB {\n    viod print();\n}",
       "options": [
         "",
         "",
@@ -124,7 +124,7 @@
     {
       "type": "choice",
       "category": "单选题",
-      "question": "假设X、Y和Z都是已经定义的接口，（）是不正确的接口定义。（JDK8之前） public interface A extends X{ void show( ); } interface B extends Y{ void show( ); } interface C extends X,Y,Z{ void show( ); } interface D extends X{ void show(){} }",
+      "question": "假设X、Y和Z都是已经定义的接口，（）是不正确的接口定义。（JDK8之前）\nA.\npublic interface A extends X{\n    void show( );\n}\nB.\ninterface B extends Y{\n    void show( );\n}\nC.\ninterface C extends X,Y,Z{\n    void show( );\n}\nD.\ninterface D extends X{\n    void show(){}\n}",
       "options": [
         "",
         "",
@@ -328,7 +328,7 @@
     {
       "type": "choice",
       "category": "单选题",
-      "question": "编译如下定义的MyString类将出现( ) class MyString extends java.lang.String{}",
+      "question": "编译如下定义的MyString类将出现( )\nclass MyString extends java.lang.String{}\n\nA.成功编译\nB.不能编译，因为没有main方法\nC.不能编译，因为String是abstract类型的\nD.不能编译，因为String是final类型的",
       "options": [
         "成功编译",
         "不能编译，因为没有main方法",
@@ -340,7 +340,7 @@
     {
       "type": "choice",
       "category": "单选题",
-      "question": "以下程序运行结果是（）。 class FatherX{ public Integer getX() { return new Integer(10); } } class Son extends FatherX{ public Double getX() { return new Double(20); } } public class Demo12 { public static void main(String[] args) { FatherX f=new FatherX(); Son s=new Son(); System.out.println(f.getX()+s.getX()); } }",
+      "question": "以下程序运行结果是（）。\nclass FatherX{\n    public Integer getX() {\n        return new Integer(10);\n    }\n}\nclass Son extends FatherX{\n    public Double getX() {\n        return new Double(20);\n    }\n}\npublic class Demo12 {\n    public static void main(String[] args) {\n        FatherX f=new FatherX();\n        Son s=new Son();\n        System.out.println(f.getX()+s.getX());\n    }\n}",
       "options": [
         "30",
         "30.0",
@@ -676,7 +676,7 @@
     {
       "type": "choice",
       "category": "单选题",
-      "question": "下面的方法重载，正确的是 float fun (int a,float b){ } float fun (int x,float y){ } float fun (float a,float b){ } float fun2 (int a,float b){ }",
+      "question": "下面的方法重载，正确的是\nA.\nint fun (int a,float b){ }\nfloat fun (int a,float b){ }\nB.\nfloat fun (int a,float b){ }\nfloat fun (int x,float y){ }\nC.\nfloat fun (float a){ }\nfloat fun (float a,float b){ }\nD.\nfloat fun1 (int a,float b){ }\nfloat fun2 (int a,float b){ }",
       "options": [
         "int fun (int a,float b){ }",
         "float fun (int a,float b){ }",
@@ -878,7 +878,7 @@
     {
       "type": "choice",
       "category": "判断题",
-      "question": "以下代码能够通过JDK 8的编译。 interface NewI{ int data=10; void show(); public default void say() { System.out.println(NewI.data); } public static void print() { } } public class Demo2 { public static void main(String[] args){ NewI.print(); } }",
+      "question": "以下代码能够通过JDK 8的编译。\ninterface NewI{\n    int data=10;\n    void show();\n    public default void say() {\n        System.out.println(NewI.data);\n    }\n    public static void print() { }\n}\npublic class Demo2 {\n    public static void main(String[] args){\n        NewI.print();\n    }\n}",
       "options": [
         "正确",
         "错误"
@@ -1092,7 +1092,7 @@
     {
       "type": "qa",
       "category": "填空题",
-      "question": "下面程序中第（ ）行代码出现编译错误。\ninterface Newl{// (1)\nint data=10;// (2)\n}\npublic class Demo2 {\npublic static void main(String[] args) {\nNewl.data=20;//(3)\nSystem.out.println(Newl.data);//(4)\n}\n}",
+      "question": "下面程序中第（ ）行代码出现编译错误。\ninterface Newl{// (1)\n    int data=10;// (2)\n}\npublic class Demo2 {\n    public static void main(String[] args) {\n        Newl.data=20;//(3)\n        System.out.println(Newl.data);//(4)\n    }\n}",
       "answer": "3"
     },
     {
@@ -1176,7 +1176,7 @@
     {
       "type": "qa",
       "category": "填空题",
-      "question": "一维数组求和程序运行结果\nimport java.io.*;\npublic class abc{\npublic static void main(String args[ ]){\nint i , s = 0 ;\nint a[ ] = { 10, 20 , 30 , 40 , 50 , 60 , 70 , 80 , 90 };\nfor ( i = 0 ; i < a.length ; i ++ )\ns += a[i] ;\nSystem.out.println(\"s=\"+s);\n}\n}",
+      "question": "一维数组求和程序运行结果\nimport java.io.*;\npublic class abc{\n    public static void main(String args[ ]){\n        int i , s = 0 ;\n        int a[ ] = { 10, 20 , 30 , 40 , 50 , 60 , 70 , 80 , 90 };\n        for ( i = 0 ; i < a.length ; i ++ )\n            s += a[i] ;\n        System.out.println(\"s=\"+s);\n    }\n}",
       "answer": "s=450"
     },
     {
@@ -1200,13 +1200,13 @@
     {
       "type": "qa",
       "category": "填空题",
-      "question": "arraycopy数组复制求和结果\npublic class Demo {\npublic static void main(String[] args) {\nint a[]={1,3,5,7,9,11,13};\nint b[]=new int[10];\nint sum=0;\nSystem.arraycopy(a,2,b,3,3);\nfor(int x:b)\nsum=sum+x;\nSystem.out.println(sum);\n}\n}",
+      "question": "arraycopy数组复制求和结果\npublic class Demo {\n    public static void main(String[] args) {\n        int a[]={1,3,5,7,9,11,13};\n        int b[]=new int[10];\n        int sum=0;\n        System.arraycopy(a,2,b,3,3);\n        for(int x:b)\n            sum=sum+x;\n        System.out.println(sum);\n    }\n}",
       "answer": "21"
     },
     {
       "type": "qa",
       "category": "填空题",
-      "question": "语句 int [][] arr1 = { { 2, 3, 4 }, { 5, 6 }, { 7, 8, 9, 0 } }; 则 arr1 [2][2] * arr1.length * arr1 [2].length 的值是（）",
+      "question": "语句 int [][] arr1 = {\n    {\n        2, 3, 4 }\n    , {\n        5, 6 }\n    , {\n        7, 8, 9, 0 }\n};\n则 arr1 [2][2] * arr1.length * arr1 [2].length 的值是（）",
       "answer": "108"
     },
     {
@@ -1218,13 +1218,13 @@
     {
       "type": "qa",
       "category": "填空题",
-      "question": "二维数组双重循环求和程序结果\npublic class Demo2 {\npublic static void main(String[] args) {\nint [][] arr=new int[4][3];\nint sum=0;\nfor(int i=0;i<arr.length;i++)\nfor(int j=0;j<arr[i].length;j++)\nsum=sum+i+j;\nSystem.out.println(sum);\n}\n}",
+      "question": "二维数组双重循环求和程序结果\npublic class Demo2 {\n    public static void main(String[] args) {\n        int [][] arr=new int[4][3];\n        int sum=0;\n        for(int i=0;i<arr.length;i++)\n            for(int j=0;j<arr[i].length;j++)\n                sum=sum+i+j;\n        System.out.println(sum);\n    }\n}",
       "answer": "30"
     },
     {
       "type": "qa",
       "category": "填空题",
-      "question": "二维数组增强for条件累加程序结果\npublic class Demo05 {\npublic static void main(String[] args) {\nint temp = 0;\nint[][] arr = { { 3, 4, 5 }, { 7, 8, 2 }, { 1 }, { 6, 2, 8 } };\nfor (int[] list : arr)\nfor (int x : list) {\nif(x>3)\ntemp += list.length;\n}\nSystem.out.println(temp);\n}\n}",
+      "question": "二维数组增强for条件累加程序结果\npublic class Demo05 {\n    public static void main(String[] args) {\n        int temp = 0;\n        int[][] arr = { { 3, 4, 5 }, { 7, 8, 2 }, { 1 }, { 6, 2, 8 } };\n        for (int[] list : arr)\n            for (int x : list) {\n                if(x>3)\n                    temp += list.length;\n            }\n        System.out.println(temp);\n    }\n}",
       "answer": "18"
     },
     {
@@ -1248,49 +1248,49 @@
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "第1题\n题目代码：\nclass Student{\n//所有学生学校名相同，并且不能改变校名\npublic ① String SCHOOL_NAME=\"吉首大学\";//学生所在学校名称\nprivate String name;\nprivate char sex;\n//省略其它代码\n}",
+      "question": "第1题\n题目代码：\nclass Student{\n    //所有学生学校名相同，并且不能改变校名\n    public ① String SCHOOL_NAME=\"吉首大学\";//学生所在学校名称\n    private String name;\n    private char sex;\n    //省略其它代码\n}",
       "answer": "① static final（也可写final static）"
     },
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "第2题\n题目代码：\n① class Product{\nprivate String name;\npublic Product(String name) {\nthis.name = name;\n}\npublic ② getName() {\nreturn this.name;\n}\npublic abstract void show();\n}\nclass Fan extends Product {//电扇\nprivate double power; //功率\npublic Fan(String name,double power)\n{\n③;\nthis.power = power;\n}\npublic void show() {\nSystem.out.println(this.getName() + \",电扇功率:\" + this.power );\n}\n}\nclass Phone extends Product {//手机\nprivate double price;\npublic Phone(String name,double price)\n{\nsuper(name);\n④;\n}\npublic void show() {\nSystem.out.println(this.getName() + \",手机价格:\" + this.price);\n}\n}\nclass Factory {\npublic static ⑤ getProduct(String name , double x) {\nProduct p = null;\nif (name.equals(\"格力电扇\"))\np = new Fan(name,x);\nelse if (name.equals(\"手机\"))\np = new Phone(\"苹果手机\",x);\nelse\np = null;\nreturn p;\n}\n}\npublic class Demo {\npublic static void main( String[ ] args){\nProduct fan=Factory.getProduct(\"格力电扇\", 100);\nfan.show();\n}\n}",
+      "question": "第2题\n题目代码：\n① class Product{\n    private String name;\n    public Product(String name) {\n        this.name = name;\n    }\npublic ② getName() {\n    return this.name;\n}\npublic abstract void show();\n}\nclass Fan extends Product {//电扇\n    private double power; //功率\n    public Fan(String name,double power)\n    {\n        ③;\n        this.power = power;\n    }\npublic void show() {\n    System.out.println(this.getName() + \",电扇功率:\" + this.power );\n}\n}\nclass Phone extends Product {//手机\n    private double price;\n    public Phone(String name,double price)\n    {\n        super(name);\n        ④;\n    }\npublic void show() {\n    System.out.println(this.getName() + \",手机价格:\" + this.price);\n}\n}\nclass Factory {\n    public static ⑤ getProduct(String name , double x) {\n        Product p = null;\n        if (name.equals(\"格力电扇\"))\n        p = new Fan(name,x);\n        else if (name.equals(\"手机\"))\n        p = new Phone(\"苹果手机\",x);\n        else\n        p = null;\n        return p;\n    }\n}\npublic class Demo {\n    public static void main( String[ ] args){\n        Product fan=Factory.getProduct(\"格力电扇\", 100);\n        fan.show();\n    }\n}",
       "answer": "① abstract\n② String\n③ super(name)\n④ this.price = price\n⑤ Product"
     },
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "第3题\n题目代码：\n① class Base{\nprivate int x;\npublic ② (int x) {\nthis.x=x;\n}\npublic ③ void show();\n}\nclass Sub ④ Base{\nprivate Vector v;\npublic Sub(int x,Vector v) {\n⑤ ;//调用父类构造方法\nthis.v=v;\n}\npublic void show() {}\n}",
+      "question": "第3题\n题目代码：\n① class Base{\n    private int x;\n    public ② (int x) {\n        this.x=x;\n    }\npublic ③ void show();\n}\nclass Sub ④ Base{\n    private Vector v;\n    public Sub(int x,Vector v) {\n        ⑤ ;//调用父类构造方法\n        this.v=v;\n    }\npublic void show() {}\n}",
       "answer": "① abstract\n② Base\n③ abstract\n④ extends\n⑤ super(x)"
     },
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "第4题\n题目代码：\n( ① ) IA{\nvoid show();\n}\nclass Base implements IA{\n( ② ) int max = 100; //公共静态成员变量\npublic void show() {\nSystem.out.println(\"执行方法show\");\n}\n}",
+      "question": "第4题\n题目代码：\n( ① ) IA{\n    void show();\n}\nclass Base implements IA{\n    ( ② ) int max = 100; //公共静态成员变量\n    public void show() {\n        System.out.println(\"执行方法show\");\n    }\n}",
       "answer": "① interface\n② public static final（顺序可互换）"
     },
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "第5题\n题目代码：\n① Action{  //定义接口\nvoid say();\n}\nclass Speak ② Action{  //实现接口\npublic void ③ {\nSystem.out.println(\"八戒，前方妖气很重，保护好师傅！\");\n}\n}\nclass Person {\nprivate String name;\npublic Person(String name) {\n④ = name;\n}\npublic void addListener( ⑤ ) {\naction.say();\n}\n}\npublic class Demo {\npublic static void main(String[] args) {\nPerson p = new Person(\"孙悟空\");\nSpeak s = new Speak();\np.addListener(s);\n}\n}",
+      "question": "第5题\n题目代码：\n① Action{  //定义接口\n    void say();\n}\nclass Speak ② Action{  //实现接口\n    public void ③ {\n        System.out.println(\"八戒，前方妖气很重，保护好师傅！\");\n    }\n}\nclass Person {\n    private String name;\n    public Person(String name) {\n        ④ = name;\n    }\npublic void addListener( ⑤ ) {\n    action.say();\n}\n}\npublic class Demo {\n    public static void main(String[] args) {\n        Person p = new Person(\"孙悟空\");\n        Speak s = new Speak();\n        p.addListener(s);\n    }\n}",
       "answer": "① interface\n② implements\n③ say()\n④ this.name\n⑤ Action action"
     },
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "第6题\n题目代码：\n//JDK 8 下的接口定义\ninterface MyInterface{\nvoid show();//抽象方法\n//静态方法\n① void print() {\nSystem.out.println(\"print\");\n}\n//默认方法\n② void receive() {\nSystem.out.println(\"receive\");\n}\n}\npublic class MyClass ③ MyInterface{\npublic void show() {\nSystem.out.println(\"show\");\n}\n}\npublic class Demo {\npublic static void main(String[] args) {\nMyClass c=new MyClass();\nc.show();\nc.receive();\n④ ;//调用MyInterface的print()方法\n}\n}",
+      "question": "第6题\n题目代码：\n//JDK 8 下的接口定义\ninterface MyInterface{\n    void show();//抽象方法\n    //静态方法\n    ① void print() {\n        System.out.println(\"print\");\n    }\n//默认方法\n② void receive() {\n    System.out.println(\"receive\");\n}\n}\npublic class MyClass ③ MyInterface{\n    public void show() {\n        System.out.println(\"show\");\n    }\n}\npublic class Demo {\n    public static void main(String[] args) {\n        MyClass c=new MyClass();\n        c.show();\n        c.receive();\n        ④ ;//调用MyInterface的print()方法\n    }\n}",
       "answer": "① static / public static\n② default / public default\n③ implements\n④ MyInterface.print()"
     },
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "第7题（适配器模式）\n题目代码：\n//利用适配器模式，把一个英文单词翻译成中文\n//源类：英语单词类\nclass English {\nprivate String[] list = { \"dream\", \"great\", \"wonderful\" };\npublic String ① {\nreturn list[i];\n}\npublic int getSize() {\nreturn list.length;\n}\n}\n// 目标接口：汉语\ninterface ② {\nString ③ ;\n}\n// 适配器类，把英语单词转换成中文\nclass ④ implements Chinese {\nprivate ⑤ list;\nint index;\npublic PowerAdapter(English list, int index) {\nthis.list = list;\nthis.index = index;\n}\npublic String getChinese() {// 把英文转换成中文\nif (this.index > list.getSize() || this.index < 0)\nreturn null;\nString word = list.getEnglishWord(this.index);\nif (word.equalsIgnoreCase(\"dream\"))\nreturn \"梦想\";\nelse if (word.equalsIgnoreCase(\"great\"))\nreturn \"伟大\";\nelse if (word.equalsIgnoreCase(\"wonderful\"))\nreturn \"绝妙的\";\nreturn null;\n}\n}\npublic class DemoAdapter {\npublic static void main(String[] args) {\nEnglish english = new English();\nChinese chinese = new PowerAdapter(english, 0);\nSystem.out.println(chinese.getChinese());\n}\n}",
+      "question": "第7题（适配器模式）\n题目代码：\n//利用适配器模式，把一个英文单词翻译成中文\n//源类：英语单词类\nclass English {\n    private String[] list = { \"dream\", \"great\", \"wonderful\" };\n    public String ① {\n        return list[i];\n    }\npublic int getSize() {\n    return list.length;\n}\n}\n// 目标接口：汉语\ninterface ② {\n    String ③ ;\n}\n// 适配器类，把英语单词转换成中文\nclass ④ implements Chinese {\n    private ⑤ list;\n    int index;\n    public PowerAdapter(English list, int index) {\n        this.list = list;\n        this.index = index;\n    }\npublic String getChinese() {// 把英文转换成中文\n    if (this.index > list.getSize() || this.index < 0)\n    return null;\n    String word = list.getEnglishWord(this.index);\n    if (word.equalsIgnoreCase(\"dream\"))\n    return \"梦想\";\n    else if (word.equalsIgnoreCase(\"great\"))\n    return \"伟大\";\n    else if (word.equalsIgnoreCase(\"wonderful\"))\n    return \"绝妙的\";\n    return null;\n}\n}\npublic class DemoAdapter {\n    public static void main(String[] args) {\n        English english = new English();\n        Chinese chinese = new PowerAdapter(english, 0);\n        System.out.println(chinese.getChinese());\n    }\n}",
       "answer": "① getEnglishWord(int i)\n② Chinese\n③ getChinese()\n④ PowerAdapter\n⑤ English"
     },
     {
       "type": "qa",
       "category": "程序填空",
-      "question": "题目8\n题目代码：\n//遍历二维数组\nfor(int i=0;i<________;i++){\nfor(int j=0;j<________;j++){\n//输出元素\n}\n}",
+      "question": "题目8\n题目代码：\n//遍历二维数组\nfor(int i=0;i<________;i++){\n    for(int j=0;j<________;j++){\n        //输出元素\n    }\n}",
       "answer": "arr.length\narr[i].length"
     },
     {
