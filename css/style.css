@@ -600,6 +600,10 @@ body {
   transform: rotate(180deg);
 }
 
+/* Java 错题卡片 */
+.jm-card.expanded .jm-body { display: block !important; }
+.jm-card.expanded > div > span:last-child { transform: rotate(180deg); }
+
 /* ==================== 响应式微调 ==================== */
 @media (max-width: 380px) {
   .feature-card { padding: 0.875rem 0.5rem; }

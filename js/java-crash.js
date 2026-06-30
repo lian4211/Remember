@@ -385,9 +385,21 @@ export function renderJavaCrashPage() {
     ${renderCodePatterns()}
     ${renderCodeReading()}
     ${renderSprintRoadmap()}
+    <div style="text-align:center;margin:1rem 0">
+      <button class="btn-primary" onclick="window.goToPage('java-mistakes')" style="width:100%;max-width:20rem;font-size:0.9375rem">
+        📋 Java错题库 <span id="java-mistake-count-badge" style="font-size:0.75rem;opacity:0.8"></span>
+      </button>
+    </div>
     <p style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:0.5rem">
-      💡 建议配合「试题测试」刷题，记忆算法会自动安排复习
+      💡 启用「记忆算法」刷 Java 题，答错自动录入错题库
     </p>`;
 
   document.getElementById('page-title').textContent = '☕ Java速成';
+
+  // 显示错题数
+  import('./java-mistakes.js').then(m => {
+    const cnt = m.getJavaMistakeCount();
+    const badge = document.getElementById('java-mistake-count-badge');
+    if (badge && cnt > 0) badge.textContent = '(' + cnt + '题)';
+  });
 }

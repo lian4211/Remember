@@ -15,8 +15,9 @@ import { initTheme, cycleTheme, getThemeIcon, getAlgorithmLabel, switchAlgorithm
 import { globalSearch as doGlobalSearch } from './search.js';
 import { renderQuizListPage, showQuizImportModal, loadBuiltinQuizzes } from './quiz.js';
 import { renderJavaCrashPage } from './java-crash.js';
+import { renderJavaMistakesPage, getJavaMistakeCount } from './java-mistakes.js';
 
-const APP_VERSION = '2.3';
+const APP_VERSION = '2.5';
 
 // ==================== 全局暴露 ====================
 window.goToPage = goToPage;
@@ -188,6 +189,7 @@ function bindEvents() {
     else if (pageName === 'voice-settings') initVoiceSettings();
     else if (pageName === 'quiz-list') renderQuizListPage();
     else if (pageName === 'java-crash') renderJavaCrashPage();
+    else if (pageName === 'java-mistakes') renderJavaMistakesPage();
   });
 }
 

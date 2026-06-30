@@ -1,5 +1,6 @@
 // ==================== 试题测试模块 ====================
 // 支持 choice(选择题,选项答题) 和 qa(问答题,点击显示答案) 两种题型
+// v2.4: 记忆算法错题回池（最多3轮）+ 答案解析 + Java独立错题库
 
 import { data, saveData, addQuizSet, deleteQuizSet, renameQuizSet, sortQuizByAlgo } from './data.js';
 import { goToPage, goHome, showModal, hideModal, showToast, escapeHtml } from './ui.js';
@@ -7,19 +8,53 @@ import { updateStats } from './stats.js';
 import { sm2Answer } from './sm2.js';
 import { fsrsAnswer } from './fsrs.js';
 
+// ===== Java 独立错题库（localStorage） =====
+const JAVA_MISTAKE_KEY = 'javaQuizMistakes';
+
+function recordJavaMistake(q) {
+  // 只记录 Java 试题（题目集名称含 Java）
+  const setName = (state.quizSet?.name || '').toLowerCase();
+  if (!setName.includes('java')) return;
+  
+  try {
+    const raw = localStorage.getItem(JAVA_MISTAKE_KEY);
+    const mistakes = raw ? JSON.parse(raw) : [];
+    // 去重：同一题目不重复记录
+    const exists = mistakes.some(m => m.question === q.question && m.category === q.category);
+    if (!exists) {
+      mistakes.push({
+        type: q.type,
+        category: q.category || '',
+        question: q.question,
+        options: q.options || [],
+        answer: q.answer,
+        explanation: q.explanation || '',
+        time: new Date().toISOString()
+      });
+      localStorage.setItem(JAVA_MISTAKE_KEY, JSON.stringify(mistakes));
+    }
+  } catch(e) { /* 静默失败 */ }
+}
+
 let state = {
   quizSet: null,
   questions: [],
-  memoryMode: false,    // 是否启用记忆算法模式
+  memoryMode: false,    // 启用记忆算法（答错回池）
   currentIndex: 0,
   filter: 'all',
   shuffle: false,
   startTime: 0,
-  correctCount: 0,     // choice 答对数
-  answeredChoice: 0,   // choice 已答数
-  revealedQA: 0,       // qa 已看答案数
-  revealed: false,     // 当前 qa 是否已显示答案
-  choiceAnswered: false // 当前 choice 是否已答
+  correctCount: 0,
+  answeredChoice: 0,
+  revealedQA: 0,
+  answeredFill: 0,
+  revealed: false,
+  choiceAnswered: false,
+  fillAnswered: false,
+  // 错题回池
+  wrongPool: [],
+  round: 1,
+  maxRounds: 3
 };
 
 /** 格式化含代码的题目文本：保留换行、代码使用等宽字体 */
@@ -183,7 +218,8 @@ export function startQuiz(quizSet, opts = {}) {
     memoryMode: !!opts.memory,
     startTime: Date.now(),
     correctCount: 0, answeredChoice: 0, revealedQA: 0, answeredFill: 0,
-    revealed: false, choiceAnswered: false, fillAnswered: false
+    revealed: false, choiceAnswered: false, fillAnswered: false,
+    wrongPool: [], round: 1, maxRounds: 3
   };
   goToPage('quiz-test');
   renderQuestion();
@@ -361,14 +397,30 @@ function checkChoice(idx, btnEl) {
   state.answeredChoice++;
   if (correct) state.correctCount++;
 
-  // 记忆算法更新
-  if (state.memoryMode) { quizAnswer(q, correct); }
+  // 记忆算法更新 + 错题入池
+  if (state.memoryMode) {
+    quizAnswer(q, correct);
+    if (!correct) state.wrongPool.push(q);
+  }
 
   if (q.options && q.answer >= 0) opts[q.answer].classList.add('correct');
   if (!correct && btnEl) btnEl.classList.add('wrong');
+
+  // 答案解析展示
+  let explHTML = '';
+  if (q.explanation) {
+    explHTML = `<div style="margin-top:0.5rem;padding:0.5rem 0.75rem;background:var(--info-bg);border-radius:6px;font-size:0.8125rem;line-height:1.6">
+      <span style="font-weight:600;color:var(--info)">📖 </span>${escapeHtml(q.explanation)}</div>`;
+  }
+
   const fb = document.getElementById('quiz-feedback');
-  fb.textContent = correct ? '✅ 回答正确' : `❌ 正确答案: ${String.fromCharCode(65 + q.answer)}. ${q.options[q.answer]}`;
-  fb.className = `feedback-text ${correct ? 'feedback-correct' : 'feedback-wrong'}`;
+  fb.innerHTML = (correct
+    ? '<p class="feedback-text feedback-correct" style="margin:0">✅ 回答正确</p>'
+    : `<p class="feedback-text feedback-wrong" style="margin:0">❌ 正确答案: ${String.fromCharCode(65 + q.answer)}. ${escapeHtml(q.options[q.answer])}</p>`) + explHTML;
+
+  // 记录 Java 错题
+  if (!correct) recordJavaMistake(q);
+
   renderNav();
   saveData();
 }
@@ -400,14 +452,23 @@ function checkFill() {
 
   if (isCorrect) state.correctCount++;
 
-  // 记忆算法更新
-  if (state.memoryMode) { quizAnswer(q, isCorrect); }
+  // 记忆算法更新 + 错题入池
+  if (state.memoryMode) {
+    quizAnswer(q, isCorrect);
+    if (!isCorrect) state.wrongPool.push(q);
+  }
 
   const area = document.getElementById('fill-answer-area');
   area.classList.remove('hidden');
+  let explHTML = '';
+  if (q.explanation) {
+    explHTML = `<div style="margin-top:0.5rem;padding:0.5rem 0.75rem;background:var(--info-bg);border-radius:6px;font-size:0.8125rem;line-height:1.6">
+      <span style="font-weight:600;color:var(--info)">📖 </span>${escapeHtml(q.explanation)}</div>`;
+  }
   area.innerHTML = `<div class="app-card" style="padding:1rem;border-left:3px solid ${isCorrect ? 'var(--success)' : 'var(--danger)'};background:var(--primary-bg)">
     <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.5rem;font-weight:600">${isCorrect ? '✅ 回答正确' : '❌ 回答错误'}</p>
     <p style="line-height:1.85;white-space:pre-wrap;font-size:0.9375rem;color:${isCorrect ? 'var(--success)' : 'var(--text)'}">参考答案：${escapeHtml(q.answer || '（无答案）')}</p>
+    ${explHTML}
   </div>`;
 
   const fb = document.getElementById('quiz-feedback');
@@ -451,15 +512,28 @@ window._quizPrev = prevQuestion;
 window._quizNext = nextQuestion;
 
 function finishQuiz() {
+  // 错题回池：尚有错题且未达最大轮次
+  if (state.memoryMode && state.wrongPool.length > 0 && state.round < state.maxRounds) {
+    state.round++;
+    state.questions = state.wrongPool.slice();
+    state.wrongPool = [];
+    state.currentIndex = 0;
+    state.choiceAnswered = false; state.fillAnswered = false; state.revealed = false;
+    renderQuestion();
+    showToast('🔄 第' + state.round + '轮复习 — ' + state.questions.length + '道错题');
+    return;
+  }
+
   const time = Math.round((Date.now() - state.startTime) / 1000);
   updateStats('time', { seconds: time });
   const total = state.questions.length;
   const choiceCnt = state.questions.filter(q => q.type === 'choice').length;
   const fillCnt = state.questions.filter(q => q.type === 'fill').length;
   const qaCnt = total - choiceCnt - fillCnt;
+  const roundInfo = state.round > 1 ? '<p style="color:var(--warning);font-size:0.8125rem">共经历 ' + state.round + ' 轮复习</p>' : '';
   let body = '<div style="text-align:center">' +
     '<p style="font-size:2.5rem;margin-bottom:0.5rem">🎉</p>' +
-    '<p style="font-size:1.125rem">已完成 ' + total + ' 题</p>';
+    '<p style="font-size:1.125rem">已完成 ' + total + ' 题</p>' + roundInfo;
   if (choiceCnt > 0) {
     body += '<p style="color:var(--success);margin-top:0.5rem">选择题正确: ' + state.correctCount + '/' + choiceCnt + '</p>';
   }
