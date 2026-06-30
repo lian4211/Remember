@@ -62,6 +62,22 @@
                 <div class="feature-card" onclick="goToPage('settings')"><span class="icon">⚙️</span><span class="label">设置</span></div>
             </div>
 
+            <!-- ====== ☕ Java 程序题专区 ====== -->
+            <div style="background:var(--card);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:0.75rem;border:1px solid var(--border)">
+              <p style="font-weight:700;font-size:0.9375rem;color:var(--primary);margin-bottom:0.5rem">☕ Java 程序题练习</p>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem">
+                <div class="java-entry-card" onclick="window._jStart='flow';goToPage('java-exercise')">
+                  <span class="icon">🔄</span><span class="label">流程控制</span>
+                </div>
+                <div class="java-entry-card" onclick="window._jStart='class';goToPage('java-exercise')">
+                  <span class="icon">📦</span><span class="label">类定义</span>
+                </div>
+                <div class="java-entry-card" onclick="window._jStart='interface';goToPage('java-exercise')">
+                  <span class="icon">🔌</span><span class="label">接口</span>
+                </div>
+              </div>
+            </div>
+
             <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;margin-bottom:0.5rem">
                 <button class="btn-ghost" onclick="showFileImport()">📁 文件导入</button>
                 <button class="btn-ghost" onclick="showPasteImport()">📋 粘贴导入</button>
@@ -304,6 +320,12 @@
             <div id="quiz-test-area"></div>
             <p id="quiz-feedback" style="text-align:center;margin:0.5rem 0"></p>
             <div id="quiz-nav-area" style="display:flex;gap:0.5rem;margin-top:0.5rem"></div>
+        </div>
+
+        <!-- ====== Java 程序题练习 ====== -->
+        <div id="java-exercise-page" class="page">
+            <div id="java-exercise-list-container"></div>
+            <div id="java-exercise-detail-area" style="display:none"></div>
         </div>
 
     </div>

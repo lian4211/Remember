@@ -563,6 +563,92 @@ body {
   text-align: center;
 }
 
+/* ==================== Java 程序题样式 ==================== */
+.java-entry-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.625rem;
+  background: var(--bg);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: 1px solid var(--border);
+}
+.java-entry-card:hover {
+  background: var(--primary-bg);
+  border-color: var(--primary-light);
+  transform: translateY(-1px);
+}
+.java-entry-card .icon { font-size: 1.5rem; }
+.java-entry-card .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* 代码块容器 */
+.java-code-block {
+  background: #1e293b;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  overflow-x: auto;
+  font-family: 'Consolas', 'Courier New', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.java-line-num {
+  display: inline-block;
+  width: 1.8rem;
+  text-align: right;
+  color: #64748b;
+  font-size: 0.6875rem;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.java-line-content {
+  color: #e2e8f0;
+  white-space: pre;
+}
+
+.java-comment { color: #94a3b8 !important; font-style: italic; }
+.java-keyword-import { color: #94a3b8; }
+.java-keyword { color: #c084fc; }
+.java-string { color: #34d399; }
+
+/* 填空行 */
+.java-blank-line {
+  background: rgba(251,191,36,0.08);
+  border-radius: 3px;
+  transition: background 0.15s;
+}
+.java-blank-line:hover {
+  background: rgba(251,191,36,0.18);
+}
+.java-blank-line.revealed {
+  background: rgba(16,185,129,0.08);
+}
+.blank-hint {
+  font-size: 0.7rem;
+  color: #fbbf24;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+.java-blank-line.revealed .blank-hint {
+  color: var(--success);
+}
+
+/* 暗色模式下填空行适配 */
+[data-theme="dark"] .java-code-block {
+  background: #0f172a;
+}
+
 /* ==================== 响应式微调 ==================== */
 @media (max-width: 380px) {
   .feature-card { padding: 0.875rem 0.5rem; }
