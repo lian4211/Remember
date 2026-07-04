@@ -1,0 +1,479 @@
+{
+  "name": "考研必背长难句",
+  "_comment": "共40句考研英语长难句，来自历年阅读真题。来源：优研考研PDF。",
+  "sentences": [
+    {
+      "id": 1,
+      "english": "Such behavior is regarded as \"all too human\", with the underlying assumption that other animals would not be capable of this finely developed sense of grievance.",
+      "chinese": "这种行为被看作是\"人之常情\"，因为我们有一个潜在的假定：其他动物不可能具有如此高度发达的悲伤感。",
+      "source": "2005 TEXT1",
+      "vocab": [
+        {"word": "be regarded as", "meaning": "被认为是"},
+        {"word": "all too human", "meaning": "人之常情"},
+        {"word": "assumption", "meaning": "n.假设、前提"},
+        {"word": "be capable of sth./doing sth.", "meaning": "有能力做"},
+        {"word": "grievance", "meaning": "n.悲伤、不满"}
+      ]
+    },
+    {
+      "id": 2,
+      "english": "Your humor must be relevant to the audience and should help to show them that you are one of them or that you understand their situation and are in sympathy with their point of view.",
+      "chinese": "你的幽默必须要和受众相关并且能够有助于告诉他们你是他们中的一员或你理解他们的处境并赞同他们的观点。",
+      "source": "2002 TEXT1",
+      "vocab": [
+        {"word": "relevant", "meaning": "adj.相关的"},
+        {"word": "audience", "meaning": "n.听众、受众"},
+        {"word": "be in sympathy with", "meaning": "支持、赞同"}
+      ]
+    },
+    {
+      "id": 3,
+      "english": "Everyone is very peaceful, polite and friendly until, waiting in a line for lunch, the new arrival is suddenly pushed aside by a man in a white coat, who rushes to the head of the line, grabs his food and stomps over to a table by himself.",
+      "chinese": "所有人本来都很安静、礼貌和友善，直到这位新人在排队等候午餐的时候，突然被一位穿白大褂的人推到一旁。只见这人跑到队伍的最前头，抓起他的食物，飞扬跋扈、旁若无人地走到一张餐桌旁。",
+      "source": "2002 TEXT1",
+      "vocab": [
+        {"word": "arrival", "meaning": "n.到达、到来的人（物）"},
+        {"word": "grab", "meaning": "v.夺取、霸占"},
+        {"word": "stomp over to", "meaning": "v.大步走到、重重地走向"}
+      ]
+    },
+    {
+      "id": 4,
+      "english": "If you are part of the group, which you are addressing, you will be in a position to know the experiences and problems which are common to all of you and it'll be appropriate for you to make a passing remark about the inedible canteen food or the chairman's notorious bad taste in ties.",
+      "chinese": "如果你是演讲对象中的一员，那么你就能够了解你们共同的经验和问题，同时可以对餐厅极度难吃的食物或者总裁在选择领带方面极度糟糕的品味评头论足。",
+      "source": "2002 TEXT1",
+      "vocab": [
+        {"word": "address", "meaning": "v.演讲"},
+        {"word": "appropriate", "meaning": "adj.合适的、恰当的"},
+        {"word": "passing remark", "meaning": "一笔带过的评论"},
+        {"word": "inedible", "meaning": "adj.难吃的、无法食用的"},
+        {"word": "notorious", "meaning": "adj.臭名昭著的"}
+      ]
+    },
+    {
+      "id": 5,
+      "english": "Often it's the delivery which causes the audience to smile, so speak slowly and remember that a raised eyebrow or an unbelieving look may help to show that you are making a light-hearted remark.",
+      "chinese": "往往使听众发笑的是你说话的方式，因此说慢一些，并记住上扬的眉毛或难以置信的表情都可以向人们展示你在轻松地评论。",
+      "source": "2002 TEXT1",
+      "vocab": [
+        {"word": "delivery", "meaning": "n.传递"},
+        {"word": "eyebrow", "meaning": "n.眉毛"},
+        {"word": "light-hearted", "meaning": "adj.轻松愉快的"}
+      ]
+    },
+    {
+      "id": 6,
+      "english": "As a result, the modern world is increasingly populated by intelligent gizmos whose presence we barely notice but whose universal existence has removed much human labor.",
+      "chinese": "因此，当今世界充斥着越来越多的智能设备，我们几乎注意不到它们的存在，但是它们的普遍存在已经减少了大量的人类劳动。",
+      "source": "2002 TEXT2",
+      "vocab": [
+        {"word": "intelligent", "meaning": "adj.智能的"},
+        {"word": "gizmos", "meaning": "n.小装置、设备"},
+        {"word": "universal", "meaning": "adj.普遍的"}
+      ]
+    },
+    {
+      "id": 7,
+      "english": "If robots are to reach the next stage of laborsaving utility, they will have to operate with less human supervision and be able to make at least a few decisions for themselves — goals that pose a real challenge.",
+      "chinese": "如果机器人要进入节省劳力应用的下一阶段，它们就必须能够在更少的人工监管下运行，并且能够独立做出起码的一些决定——而这些目标给我们提出了真正的挑战。",
+      "source": "2002 TEXT2",
+      "vocab": [
+        {"word": "utility", "meaning": "n.应用、效用"},
+        {"word": "supervision", "meaning": "n.监督"},
+        {"word": "pose", "meaning": "v.提出、造成"}
+      ]
+    },
+    {
+      "id": 8,
+      "english": "One more reason not to lose sleep over the rise in oil prices is that, unlike the rises in the 1970s, it has not occurred against the background of general commodity-price inflation and global excess demand.",
+      "chinese": "另一个不要因为油价上涨而失眠的理由是：与20世纪70年代的油价上涨不同，此次上涨并非发生在普遍商品价格膨胀和全球需求过剩的背景之下。",
+      "source": "2003 TEXT3",
+      "vocab": [
+        {"word": "lose sleep over", "meaning": "因为...失眠"},
+        {"word": "inflation", "meaning": "n.通货膨胀"},
+        {"word": "excess", "meaning": "n./adj.过剩"}
+      ]
+    },
+    {
+      "id": 9,
+      "english": "Although it ruled that there is no constitutional right to physician-assisted suicide, the Court in effect supported the medical principle of \"double effect\", a centuries-old moral principle holding that an action having two effects — a good one that is intended and a harmful one that is foreseen — is permissible if the actor intends only the good effect.",
+      "chinese": "尽管最高法院裁定医助自杀没有宪法权利，但最高法院实际上支持了\"双效原则\"这一几个世纪以来的古老道德原则。该原则认为：如果一个行为产生两种效果——一种是预期的好效果，一种是可预见的坏效果——只要行动者的意图仅仅是好效果，该行为就是允许的。",
+      "source": "2002 TEXT4",
+      "vocab": [
+        {"word": "constitutional right", "meaning": "宪法权利"},
+        {"word": "in effect", "meaning": "实际上"},
+        {"word": "moral", "meaning": "adj.道德的"},
+        {"word": "intend", "meaning": "v.打算、意图"},
+        {"word": "foresee", "meaning": "v.预见"},
+        {"word": "permissible", "meaning": "adj.允许的"}
+      ]
+    },
+    {
+      "id": 10,
+      "english": "Nancy Dubler, director of Montefiore Medical Center, contends that the principle will shield doctors who \"until now have very, very strongly insisted that they could not give patients sufficient medication to control their pain if that might hasten death.\"",
+      "chinese": "蒙特菲奥里医疗中心主任南希·都博勒坚称，这项原则将会庇护那些此前一直强烈坚持认为如果会加速死亡就不能给病人足够的药物来控制疼痛的医生。",
+      "source": "2002 TEXT4",
+      "vocab": [
+        {"word": "contend", "meaning": "v.坚称、主张"},
+        {"word": "shield", "meaning": "v.庇护、保护"},
+        {"word": "sufficient", "meaning": "adj.足够的"},
+        {"word": "hasten", "meaning": "v.加速"}
+      ]
+    },
+    {
+      "id": 11,
+      "english": "It identifies the undertreatment of pain and the aggressive use of \"ineffectual and forced medical procedures that may prolong and even dishonor the period of dying\" as the twin problems of end-of-life care.",
+      "chinese": "它报告认为对于病痛的处理不力和对于无效、强制性医疗程序（这些程序可能会延长甚至羞辱临终期）的过激使用是临终护理的双重问题。",
+      "source": "2002 TEXT4",
+      "vocab": [
+        {"word": "identify", "meaning": "v.识别、认为"},
+        {"word": "undertreatment", "meaning": "n.处理不力"},
+        {"word": "aggressive", "meaning": "adj.过激的、积极的"},
+        {"word": "ineffectual", "meaning": "adj.无效的"},
+        {"word": "prolong", "meaning": "v.延长"}
+      ]
+    },
+    {
+      "id": 12,
+      "english": "Medical licensing boards \"must make it clear that painful deaths are presumptively ones that are incompetently managed and should result in license suspension.\"",
+      "chinese": "医疗从业资格委员会必须明确一点：痛苦的死亡应该被假定为管理不当的死亡，并应导致从业执照的吊销。",
+      "source": "2002 TEXT4",
+      "vocab": [
+        {"word": "licensing boards", "meaning": "从业资格委员会"},
+        {"word": "presumptively", "meaning": "adv.假定地"},
+        {"word": "incompetently", "meaning": "adv.不称职地"},
+        {"word": "suspension", "meaning": "n.暂停、吊销"}
+      ]
+    },
+    {
+      "id": 13,
+      "english": "The winner, by a large margin, was a tiny Virginia company called Open Source Solutions, whose clear advantage was its mastery of the electronic world.",
+      "chinese": "以巨大优势胜出的是来自弗吉尼亚州的一家叫做\"公开来源解决\"的微型公司，而这家公司的明显优势就在于它对电子世界的掌控。",
+      "source": "2003 TEXT1",
+      "vocab": [
+        {"word": "by a large margin", "meaning": "以巨大优势"},
+        {"word": "mastery", "meaning": "n.掌握、精通"}
+      ]
+    },
+    {
+      "id": 14,
+      "english": "Among the firms making the biggest splash in this new world is Straitford, Inc., a private intelligence-analysis firm based in Austin, Texas.",
+      "chinese": "在这个新领域引起最大轰动的公司之一是Straitford公司，这是一家位于德克萨斯州奥斯汀市的私人情报分析公司。",
+      "source": "2003 TEXT1",
+      "vocab": [
+        {"word": "splash", "meaning": "n.轰动"},
+        {"word": "based in", "meaning": "总部位于"}
+      ]
+    },
+    {
+      "id": 15,
+      "english": "Scientists need to respond forcefully to animal rights advocates, whose arguments are confusing the public and thereby threatening advances in health knowledge and care.",
+      "chinese": "科学家应该对动物权利鼓吹者做出强有力地回应，因为他们的论点正在迷惑公众，从而威胁到健康知识和医疗保健方面的进步。",
+      "source": "2003 TEXT2",
+      "vocab": [
+        {"word": "advocate", "meaning": "n.鼓吹者、倡导者"},
+        {"word": "thereby", "meaning": "adv.从而"}
+      ]
+    },
+    {
+      "id": 16,
+      "english": "A grandmotherly woman staffing an animal rights booth at a recent street fair was distributing a brochure that encouraged readers not to use anything that comes from or is tested in animals — no meat, no fur, no medicines.",
+      "chinese": "在最近的一次街头集市上，一位站在动物权利宣传点前的老奶奶正在散发小册子，鼓励读者不要使用任何来自动物或在动物身上做过试验的东西——不要吃肉、不要穿毛皮、不要用药物。",
+      "source": "2003 TEXT2",
+      "vocab": [
+        {"word": "staff", "meaning": "v.担任工作人员"},
+        {"word": "booth", "meaning": "n.摊位、宣传点"},
+        {"word": "street fair", "meaning": "街头集市"},
+        {"word": "distribute", "meaning": "v.分发"},
+        {"word": "brochure", "meaning": "n.小册子"}
+      ]
+    },
+    {
+      "id": 17,
+      "english": "Despite a spell of initial optimism in the 1960s and 1970s when it appeared that transistor circuits and microprocessors might be able to copy the action of the human brain by the year 2010, researchers lately have begun to extend that forecast by decades if not centuries.",
+      "chinese": "虽然20世纪60年代和70年代初期人们乐观地认为晶体管电路和微处理器似乎能在2010年前复制人脑的活动，但最近研究人员已经开始将这个预测向后推迟了几十年甚至几个世纪。",
+      "source": "2002 TEXT2",
+      "vocab": [
+        {"word": "despite", "meaning": "prep.尽管"},
+        {"word": "spell", "meaning": "n.一段时间"},
+        {"word": "initial", "meaning": "adj.最初的"},
+        {"word": "optimism", "meaning": "n.乐观"},
+        {"word": "transistor", "meaning": "n.晶体管"},
+        {"word": "circuit", "meaning": "n.电路"},
+        {"word": "microprocessor", "meaning": "n.微处理器"},
+        {"word": "extend", "meaning": "v.延伸、延长"},
+        {"word": "forecast", "meaning": "n.预测"}
+      ]
+    },
+    {
+      "id": 18,
+      "english": "To those who are unaware that animal research was needed to produce these treatments, as well as new treatments and vaccines, animal research seems wasteful at best and cruel at worst.",
+      "chinese": "对于那些不了解动物研究对于产生这些治疗方法和新疗法及疫苗是必不可少的人来说，动物实验往好里说是浪费，往坏里说就是残忍。",
+      "source": "2003 TEXT2",
+      "vocab": [
+        {"word": "unaware", "meaning": "adj.未意识到的"},
+        {"word": "treatment", "meaning": "n.治疗"},
+        {"word": "vaccine", "meaning": "n.疫苗"},
+        {"word": "at best", "meaning": "往好里说"},
+        {"word": "at worst", "meaning": "往坏里说"}
+      ]
+    },
+    {
+      "id": 19,
+      "english": "Because the ultimate stakeholders are patients, the health research community should actively recruit to its cause not only well-known personalities such as Stephen Cooper, who has made courageous statements about the value of animal research, but all who receive medical treatment.",
+      "chinese": "因为最终握有投票权的是病人，所以医疗研究机构不仅应该积极争取斯蒂芬·库柏（他已对动物实验的价值勇敢地进行了肯定）这样的名人的支持，还应该争取所有接受药物治疗的病人的支持。",
+      "source": "2003 TEXT2",
+      "vocab": [
+        {"word": "ultimate", "meaning": "adj.最终的"},
+        {"word": "stakeholder", "meaning": "n.利益相关者"},
+        {"word": "recruit", "meaning": "v.招募、争取"},
+        {"word": "courageous", "meaning": "adj.勇敢的"}
+      ]
+    },
+    {
+      "id": 20,
+      "english": "Shippers who feel they are being overcharged have the right to appeal to the federal government's Surface Transportation Board for rate relief, but the process is expensive, time-consuming, and will work only in truly extreme cases.",
+      "chinese": "那些认为自己被过度收费的货运商有权向联邦政府的陆路运输局投诉并申请费用下调，但是整个过程昂贵、耗时，而且只有在真正极端的情况下才会生效。",
+      "source": "2003 TEXT3",
+      "vocab": [
+        {"word": "shipper", "meaning": "n.货运商"},
+        {"word": "overcharge", "meaning": "v.过度收费"},
+        {"word": "appeal to", "meaning": "向...投诉"},
+        {"word": "relief", "meaning": "n.减轻、救济"},
+        {"word": "time-consuming", "meaning": "adj.耗时的"}
+      ]
+    },
+    {
+      "id": 21,
+      "english": "Shippers who feel they are being overcharged have the right to appeal to the federal government's Surface Transportation Board for rate relief, but the process is expensive, time-consuming, and will work only in truly extreme cases.",
+      "chinese": "那些认为被过度收费的货运商有权向联邦政府地面运输委员会申请费率减免，但这一过程昂贵、耗时，且仅在极端情况下才有效。",
+      "source": "2003 TEXT3",
+      "vocab": [
+        {"word": "shipper", "meaning": "n.托运人"},
+        {"word": "overcharge", "meaning": "v.多收费"},
+        {"word": "appeal", "meaning": "v.申诉"},
+        {"word": "relief", "meaning": "n.减免"},
+        {"word": "time-consuming", "meaning": "adj.耗时的"}
+      ]
+    },
+    {
+      "id": 22,
+      "english": "Physicians — frustrated by their inability to cure the disease and fearing loss of hope in the patient — too often offer aggressive treatment far beyond what is scientifically justified.",
+      "chinese": "医生们——因无法治愈疾病而感到沮丧，又担心病人失去希望——常常提供远远超出科学合理范围的激进治疗。",
+      "source": "2003 TEXT4",
+      "vocab": [
+        {"word": "physician", "meaning": "n.内科医生"},
+        {"word": "frustrated", "meaning": "adj.挫败的"},
+        {"word": "inability", "meaning": "n.无能、无力"},
+        {"word": "aggressive", "meaning": "adj.激进的"},
+        {"word": "justified", "meaning": "adj.合理的"}
+      ]
+    },
+    {
+      "id": 23,
+      "english": "Former Colorado governor Richard Lamm has been quoted as saying that the old and infirm \"have a duty to die and get out of the way\" so that younger, healthier people can realize their potential.",
+      "chinese": "前科罗拉多州州长理查德·拉姆曾引用说，年老体弱者\"有义务死去并让路\"，以便更年轻、更健康的人能够实现他们的潜力。",
+      "source": "2003 TEXT4",
+      "vocab": [
+        {"word": "be quoted as saying", "meaning": "被引用说"},
+        {"word": "old and infirm", "meaning": "年老体弱者"},
+        {"word": "potential", "meaning": "n.潜力"}
+      ]
+    },
+    {
+      "id": 24,
+      "english": "These leaders are living proof that prevention works and that we can manage the health problems that come naturally with age.",
+      "chinese": "这些领导人是活生生的证据，证明预防是有效的，并且我们能够处理随年龄增长自然会出现的健康问题。",
+      "source": "2003 TEXT4",
+      "vocab": [
+        {"word": "living proof", "meaning": "活生生的证据"},
+        {"word": "prevention", "meaning": "n.预防"},
+        {"word": "manage", "meaning": "v.处理、应对"}
+      ]
+    },
+    {
+      "id": 25,
+      "english": "An interactive feature that lets you key in job criteria may then beep when it matches a corresponding position.",
+      "chinese": "当你输入求职标准时，交互式功能会在匹配到相应职位时发出提示音。",
+      "source": "2004 TEXT1",
+      "vocab": [
+        {"word": "interactive feature", "meaning": "交互功能"},
+        {"word": "key in", "meaning": "输入"},
+        {"word": "criteria", "meaning": "n.标准(criterion的复数)"},
+        {"word": "corresponding", "meaning": "adj.相应的"}
+      ]
+    },
+    {
+      "id": 26,
+      "english": "It includes only three potential jobs — those that it considers the best matches when CareerSite's agent sends out those that match your results.",
+      "chinese": "它只包含三个潜在职位——那些在CareerSite的代理发送与你结果匹配的职位时被认为是最佳匹配的职位。",
+      "source": "2004 TEXT1",
+      "vocab": [
+        {"word": "potential", "meaning": "adj.潜在的"},
+        {"word": "agent", "meaning": "n.代理"},
+        {"word": "match", "meaning": "v.匹配"}
+      ]
+    },
+    {
+      "id": 27,
+      "english": "This refers to the widespread practice of typing fewer characters than the minimum number required by the school — a form of discrimination against those whose applications are not typed.",
+      "chinese": "这指的是那些打字字符数少于学校要求的最低标准的普遍做法——一种对没有打印申请表的人的歧视。",
+      "source": "2004 TEXT2",
+      "vocab": [
+        {"word": "refer to", "meaning": "指的是"},
+        {"word": "discrimination", "meaning": "n.歧视"},
+        {"word": "application", "meaning": "n.申请"}
+      ]
+    },
+    {
+      "id": 28,
+      "english": "It has long been known that a taxi firm called AAAA cars has a big advantage over Zodiac cars when customers thumb through their phone directories.",
+      "chinese": "长期以来人们都知道，当顾客翻看电话簿时，一家名为AAAA的出租车公司比名为Zodiac的出租车公司有更大的优势。",
+      "source": "2004 TEXT2",
+      "vocab": [
+        {"word": "advantage over", "meaning": "比...有优势"},
+        {"word": "thumb through", "meaning": "翻阅"},
+        {"word": "directory", "meaning": "n.电话簿"}
+      ]
+    },
+    {
+      "id": 29,
+      "english": "Even before Alan Greenspan conceded that America's red-hot economy is cooling, lots of working folks had already sensed the slowdown in the economic expansion.",
+      "chinese": "甚至在美国联邦储备委员会主席艾伦·格林斯潘承认美国过热的经济正在冷却之前，许多上班族就已经觉察到了经济扩张的放缓。",
+      "source": "2004 TEXT3",
+      "vocab": [
+        {"word": "concede", "meaning": "v.承认"},
+        {"word": "red-hot", "meaning": "adj.过热的"},
+        {"word": "folks", "meaning": "n.人们"},
+        {"word": "slowdown", "meaning": "n.放缓"},
+        {"word": "expansion", "meaning": "n.扩张"}
+      ]
+    },
+    {
+      "id": 30,
+      "english": "Ravitch's latest book, Left Back: A Century of Failed School Reforms, traces the roots of anti-intellectualism in our schools, concluding that they are anything but a counterbalance to the American distaste for intellectual pursuits.",
+      "chinese": "拉维奇的最新著作《落后：一个世纪失败的学校改革》追溯了学校中反智主义的根源，得出结论：它们绝没能抵消美国人对知识追求的反感。",
+      "source": "2004 TEXT4",
+      "vocab": [
+        {"word": "trace", "meaning": "v.追溯"},
+        {"word": "root", "meaning": "n.根源"},
+        {"word": "anti-intellectualism", "meaning": "n.反智主义"},
+        {"word": "counterbalance", "meaning": "n.平衡、抵消"},
+        {"word": "distaste", "meaning": "n.反感"},
+        {"word": "pursuit", "meaning": "n.追求"}
+      ]
+    },
+    {
+      "id": 31,
+      "english": "However, when two monkeys were placed in separate but adjoining chambers, so that each could observe what the other was getting in return for its rock, their behavior became markedly different.",
+      "chinese": "然而，当两个猴子被放在隔开但相邻的两个房间里，以便它们能互相看见对方用石头换到什么时，它们的行为就变得明显不同了。",
+      "source": "2005 TEXT1",
+      "vocab": [
+        {"word": "adjoining", "meaning": "adj.相邻的"},
+        {"word": "chamber", "meaning": "n.房间、隔间"},
+        {"word": "observe", "meaning": "v.观察"},
+        {"word": "markedly", "meaning": "adv.显著地"}
+      ]
+    },
+    {
+      "id": 32,
+      "english": "If the other monkey received a grape, the one who had traded a rock would either refuse the token or refuse to accept the cucumber slice — thus rejecting the unequal reward.",
+      "chinese": "如果另一只猴子得到了葡萄，那么用石头交换的那只猴子要么拒绝接受代币，要么拒绝接受那片黄瓜——以此拒绝不平等的报酬。",
+      "source": "2005 TEXT1",
+      "vocab": [
+        {"word": "trade", "meaning": "v.交换"},
+        {"word": "token", "meaning": "n.代币"},
+        {"word": "reject", "meaning": "v.拒绝"},
+        {"word": "unequal", "meaning": "adj.不平等的"}
+      ]
+    },
+    {
+      "id": 33,
+      "english": "Do you remember all those years when scientists argued that smoking would kill us but the doubters insisted that we didn't know for sure?",
+      "chinese": "你还记得那些年吗？当时科学家认为吸烟会致人死亡，而怀疑者却坚持说我们无法确定。",
+      "source": "2005 TEXT2",
+      "vocab": [
+        {"word": "doubter", "meaning": "n.怀疑者"},
+        {"word": "insist", "meaning": "v.坚持说"},
+        {"word": "for sure", "meaning": "确定地"}
+      ]
+    },
+    {
+      "id": 34,
+      "english": "However, whether such a sense of fairness evolved independently in capuchins and humans, or whether it stems from the common ancestor that the species had 35 million years ago, is, as yet, an unanswered question.",
+      "chinese": "然而，这种公平感是在卷尾猴和人类身上各自独立进化而成的，还是来自它们3500万年前共同祖先的遗传，至今仍是一个悬而未决的问题。",
+      "source": "2005 TEXT1",
+      "vocab": [
+        {"word": "evolve", "meaning": "v.进化"},
+        {"word": "stem from", "meaning": "起源于"},
+        {"word": "ancestor", "meaning": "n.祖先"},
+        {"word": "as yet", "meaning": "至今"}
+      ]
+    },
+    {
+      "id": 35,
+      "english": "But science does provide us with the best available guide to the future, and it is critical that our nation and the world base important policies on the best judgments that science can provide concerning the future consequences of present actions.",
+      "chinese": "但是科学确实为我们提供了通向未来的最好指导，并且我们国家和整个世界的重大政策都应该以科学能够提供的关于当前行动未来后果的最佳判断为依据，这是至关重要的。",
+      "source": "2005 TEXT2",
+      "vocab": [
+        {"word": "available", "meaning": "adj.可用的、可获得的"},
+        {"word": "critical", "meaning": "adj.至关重要的"},
+        {"word": "consequence", "meaning": "n.后果"}
+      ]
+    },
+    {
+      "id": 36,
+      "english": "The brain is as active during REM (rapid eye movement) sleep — when most vivid dreams occur — as it is when fully awake.",
+      "chinese": "大脑在快眼动睡眠期（一般会产生清晰梦境的时段）和完全清醒时同样活跃。",
+      "source": "2005 TEXT3",
+      "vocab": [
+        {"word": "vivid", "meaning": "adj.生动的、清晰的"},
+        {"word": "occur", "meaning": "vi.发生、出现"}
+      ]
+    },
+    {
+      "id": 37,
+      "english": "At the end of the day, there's probably little reason to pay attention to our dreams at all unless they keep us from sleeping or \"we wake up in a panic\", Cartwright says.",
+      "chinese": "卡特赖特说，除非梦让我们失眠或者我们从恐慌中惊醒，否则一般没有理由太在意我们所做的梦。",
+      "source": "2005 TEXT3",
+      "vocab": [
+        {"word": "keep sb from doing", "meaning": "阻止某人做某事"},
+        {"word": "panic", "meaning": "n.恐慌"}
+      ]
+    },
+    {
+      "id": 38,
+      "english": "While even the modestly educated sought an elevated tone when they put pen to paper before the 1960s, even the most well regarded writing since then has sought to capture spoken English on the page.",
+      "chinese": "在20世纪60年代以前，就算是仅仅受过一般教育的人在下笔时都会寻求一种更高雅的语调；而从那之后，即使是最受关注的文章也开始把口语写在纸面上。",
+      "source": "2005 TEXT4",
+      "vocab": [
+        {"word": "modestly", "meaning": "adv.谦虚地、少量地"},
+        {"word": "elevated", "meaning": "adj.有档次的"},
+        {"word": "capture", "meaning": "v.抓住、捕捉"}
+      ]
+    },
+    {
+      "id": 39,
+      "english": "Russians have a deep love for their own language and carry large chunks of memorized poetry in their heads, while Italian politicians tend to elaborate speech that would seem old-fashioned to most English-speakers.",
+      "chinese": "俄罗斯人深爱他们的语言并在脑海中背诵了大量的诗词，而意大利政客在演讲时倾向于将语言精细化到在大部分英语使用者看来是老套的程度。",
+      "source": "2005 TEXT4",
+      "vocab": [
+        {"word": "large chunks of", "meaning": "大量的"},
+        {"word": "memorize", "meaning": "v.记住"},
+        {"word": "elaborate", "meaning": "v.精心制作、使精细"}
+      ]
+    },
+    {
+      "id": 40,
+      "english": "It's all deliciously ironic when you consider that Shakespeare, who earns their living, was himself an actor (with a beard) and did his share of noise-making.",
+      "chinese": "当想到为他们挣钱谋生的莎士比亚本人也是留着胡子的演员并且参与制造噪音的时候，这的确让人觉得非常讽刺。",
+      "source": "2006 TEXT2",
+      "vocab": [
+        {"word": "deliciously", "meaning": "adv.非常地"},
+        {"word": "ironic", "meaning": "adj.讽刺的"},
+        {"word": "beard", "meaning": "n.胡子"},
+        {"word": "noise-making", "meaning": "制造噪音"}
+      ]
+    }
+  ]
+}

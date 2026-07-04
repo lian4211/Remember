@@ -16,8 +16,9 @@ import { globalSearch as doGlobalSearch } from './search.js';
 import { renderQuizListPage, showQuizImportModal, loadBuiltinQuizzes } from './quiz.js';
 import { renderJavaCrashPage } from './java-crash.js';
 import { renderJavaMistakesPage, getJavaMistakeCount } from './java-mistakes.js';
+import { renderSentencesPage, startStudy } from './sentences.js';
 
-const APP_VERSION = '2.5';
+const APP_VERSION = '2.6';
 
 // ==================== 全局暴露 ====================
 window.goToPage = goToPage;
@@ -33,6 +34,7 @@ window.showPlanSettings = showPlanSettings;
 window.globalSearchStart = globalSearchStart;
 window.playVoice = playVoice;
 window.showQuizImportModal = showQuizImportModal;
+window.startStudy = startStudy;
 
 function init() {
   loadData();
@@ -190,6 +192,7 @@ function bindEvents() {
     else if (pageName === 'quiz-list') renderQuizListPage();
     else if (pageName === 'java-crash') renderJavaCrashPage();
     else if (pageName === 'java-mistakes') renderJavaMistakesPage();
+    else if (pageName === 'sentences') renderSentencesPage();
   });
 }
 

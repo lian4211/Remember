@@ -22,7 +22,7 @@
             <button id="back-btn" class="btn-icon" style="display:none;font-size:1.5rem">←</button>
             <h1 id="page-title" style="font-size:1.125rem;font-weight:700;color:var(--primary)">单词背诵助手</h1>
             <div style="display:flex;align-items:center;gap:0.4rem">
-                <span id="version-badge" style="font-size:0.65rem;color:var(--text-muted);background:var(--card-bg);padding:0.1rem 0.4rem;border-radius:4px;border:1px solid var(--border)">v2.5</span>
+                <span id="version-badge" style="font-size:0.65rem;color:var(--text-muted);background:var(--card-bg);padding:0.1rem 0.4rem;border-radius:4px;border:1px solid var(--border)">v2.6</span>
                 <button id="theme-btn" class="btn-icon" style="font-size:1.25rem">🌙</button>
             </div>
         </header>
@@ -60,6 +60,7 @@
                 <div class="feature-card" onclick="goToPage('plan')"><span class="icon">📅</span><span class="label">学习计划</span></div>
                 <div class="feature-card" onclick="goToPage('quiz-list')"><span class="icon">📝</span><span class="label">试题测试</span></div>
                 <div class="feature-card" onclick="goToPage('java-crash')"><span class="icon">☕</span><span class="label">Java速成</span></div>
+                <div class="feature-card" onclick="goToPage('sentences')"><span class="icon">📖</span><span class="label">长难句</span></div>
                 <div class="feature-card" onclick="goToPage('settings')"><span class="icon">⚙️</span><span class="label">设置</span></div>
             </div>
 
@@ -185,6 +186,7 @@
                     <p id="pitch-value" style="text-align:center;font-size:1.125rem;margin-top:0.5rem">0Hz</p>
                 </div>
                 <button id="save-voice-btn" class="btn-primary">保存设置</button>
+                <p id="voice-name-display" style="text-align:center;color:var(--text-muted);font-size:0.8rem"></p>
             </div>
         </div>
 
@@ -315,6 +317,19 @@
         <!-- ====== Java错题库 ====== -->
         <div id="java-mistakes-page" class="page">
             <div id="java-mistakes-container"></div>
+        </div>
+
+        <!-- ====== 长难句列表 ====== -->
+        <div id="sentences-page" class="page">
+            <div id="sentences-container"></div>
+        </div>
+
+        <!-- ====== 长难句学习 ====== -->
+        <div id="sentence-study-page" class="page">
+            <p id="study-progress" style="text-align:center;color:var(--info);margin-bottom:0.75rem;font-weight:600"></p>
+            <div id="study-test-area"></div>
+            <p id="study-feedback" style="text-align:center;margin:0.5rem 0"></p>
+            <div id="study-nav-area" style="display:flex;gap:0.5rem;margin-top:0.5rem"></div>
         </div>
 
     </div>

@@ -604,6 +604,36 @@ body {
 .jm-card.expanded .jm-body { display: block !important; }
 .jm-card.expanded > div > span:last-child { transform: rotate(180deg); }
 
+/* ==================== 长难句模块 ==================== */
+.sent-card:hover {
+  background: var(--card-hover);
+}
+.sent-card .sent-english {
+  font-size: 0.95rem;
+}
+.sent-card .badge-info {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.35rem;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border-radius: 4px;
+}
+.sent-card .btn-icon {
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+#study-test-area .badge-info {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 /* ==================== 响应式微调 ==================== */
 @media (max-width: 380px) {
   .feature-card { padding: 0.875rem 0.5rem; }
