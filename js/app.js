@@ -19,7 +19,7 @@ import { renderJavaMistakesPage, getJavaMistakeCount } from './java-mistakes.js'
 import { renderSentencesPage, startStudy } from './sentences.js';
 import { renderStarredPage, startStarredTest } from './starred.js';
 
-const APP_VERSION = '2.6';
+const APP_VERSION = '2.7';
 
 // ==================== 全局暴露 ====================
 window.goToPage = goToPage;

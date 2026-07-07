@@ -1,4 +1,4 @@
-const CACHE_NAME = 'word-learner-v5';
+const CACHE_NAME = 'word-learner-v6';
 const basePath = new URL(self.location.href).pathname.replace(/\/[^/]*$/, '');
 
 // 需要预缓存的静态资源
@@ -31,7 +31,10 @@ const urlsToCache = [
     `${basePath}/data/quiz-java.json`,
     `${basePath}/data/quiz-java-supplement.json`,
     `${basePath}/data/quiz-maogai-exam.json`,
-    `${basePath}/data/quiz-maogai2.json`
+    `${basePath}/data/quiz-maogai2.json`,
+    `${basePath}/js/sentences.js`,
+    `${basePath}/js/starred.js`,
+    `${basePath}/data/sentences.json`
 ];
 
 // 安装时缓存静态资源
