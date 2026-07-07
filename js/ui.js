@@ -20,7 +20,8 @@ const PAGE_TITLES = {
   'java-crash': '☕ Java速成',
   'java-mistakes': 'Java错题库',
   'sentences': '长难句',
-  'sentence-study': '长难句学习'
+  'sentence-study': '长难句学习',
+  'starred': '⭐ 收藏夹'
 };
 
 /** 切换到指定页面 */

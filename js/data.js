@@ -70,6 +70,7 @@ function migrateWord(word) {
   if (word.antonyms === undefined) word.antonyms = [];
   // 状态
   if (word.passed === undefined) word.passed = false;
+  if (word.starred === undefined) word.starred = false;
   return word;
 }
 
@@ -77,6 +78,15 @@ function migrateList(list) {
   list.words = (list.words || []).map(migrateWord);
   if (!list.ecMistakes) list.ecMistakes = [];
   if (!list.ceMistakes) list.ceMistakes = [];
+  // 迁移旧错题格式：添加 permanent 字段
+  list.ecMistakes.forEach(m => {
+    if (m.permanent === undefined) m.permanent = (m.errorCount || 1) >= PERMANENT_THRESHOLD;
+    if (m.errorCount === undefined) m.errorCount = 1;
+  });
+  list.ceMistakes.forEach(m => {
+    if (m.permanent === undefined) m.permanent = (m.errorCount || 1) >= PERMANENT_THRESHOLD;
+    if (m.errorCount === undefined) m.errorCount = 1;
+  });
   return list;
 }
 
@@ -131,11 +141,35 @@ export function resetAlgorithmData() {
   saveData();
 }
 
-/** 根据当前算法获取到期单词 */
+/** 根据当前算法获取到期单词（指定列表） */
 export function getDueWords(list) {
   if (!list) return [];
   if (data.algorithm === 'fsrs') return getDueWordsFSRS(list);
   return getDueWordsSM2(list);
+}
+
+/** 获取所有列表中到期的单词（含来源列表信息） */
+export function getAllDueWords() {
+  const result = [];
+  for (const list of data.lists) {
+    const due = getDueWords(list);
+    due.forEach(w => result.push({ word: w, list }));
+  }
+  return result;
+}
+
+/** 获取所有列表中到期单词的总数 */
+export function getAllDueCount() {
+  return getAllDueWords().length;
+}
+
+/** 获取所有列表中的所有单词（扁平） */
+export function getAllWords() {
+  const result = [];
+  for (const list of data.lists) {
+    list.words.forEach(w => result.push({ word: w, list }));
+  }
+  return result;
 }
 
 function getDueWordsSM2(list) {
@@ -147,25 +181,57 @@ function getDueWordsFSRS(list) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return list.words.filter(w => {
-    if (!w.fsrsLastReview || w.fsrsState === 0) return false;
-    // 简单策略：fsrsState>0 且过了 scheduled 天数就算到期
-    if (w.fsrsState === 1) return true; // Learning 总是需要复习
-    // Review 状态：检查是否到了预约日期
+    // 未学的新词不放进复习
+    if (w.fsrsState === 0) return false;
+    // 没有学习记录的不放
+    if (!w.fsrsLastReview) return false;
+    // Learning 状态（fsrsState===1）: 总是需要复习，直到毕业
+    if (w.fsrsState === 1) return true;
+    // Review 状态（fsrsState===2）: 检查 R 值是否低于 0.9
     const lastReview = new Date(w.fsrsLastReview);
     lastReview.setHours(0, 0, 0, 0);
     const elapsed = Math.round((today - lastReview) / (1000 * 60 * 60 * 24));
-    // R < 0.9 则到期
+    if (elapsed <= 0) return false;
     if (w.stability <= 0) return elapsed >= 1;
     const R = Math.exp(Math.log(0.9) * elapsed / w.stability);
     return R < 0.9;
   });
 }
 
-/** 获取到期复习单词数量 */
+/** 获取到期复习单词数量（指定列表） */
 export function getDueCount(list) {
   if (!list) return 0;
-  if (data.algorithm === 'fsrs') return getDueWordsFSRS(list).length;
-  return getDueWordsSM2(list).length;
+  return getDueWords(list).length;
+}
+
+/** 获取所有列表中的收藏单词 */
+export function getStarredWords() {
+  const result = [];
+  for (const list of data.lists) {
+    list.words.forEach(w => {
+      if (w.starred) result.push({ word: w, list });
+    });
+  }
+  return result;
+}
+
+/** 切换单词收藏状态 */
+export function toggleStar(word) {
+  word.starred = !word.starred;
+  saveData();
+  return word.starred;
+}
+
+/** 获取全部列表的掌握度统计 */
+export function getAllMastery() {
+  let mastered = 0, total = 0;
+  for (const list of data.lists) {
+    for (const w of list.words) {
+      total++;
+      if (w.passed) mastered++;
+    }
+  }
+  return { mastered, total, percent: total > 0 ? Math.round((mastered / total) * 100) : 0 };
 }
 
 /** 获取列表掌握度 */
@@ -214,12 +280,21 @@ export function deleteWord(list, index) {
   saveData();
 }
 
-/** 添加错题 */
+/** 添加错题（新版：记录总错误次数，自动标记永久错题） */
+export const PERMANENT_THRESHOLD = 5; // 错误次数达到此值标记为永久错题
+
 export function addMistake(list, word, type) {
   const mistakes = type === 'ec' ? list.ecMistakes : list.ceMistakes;
   const existing = mistakes.find(m => m.english === word.english && m.chinese === word.chinese);
-  if (!existing) mistakes.push({ english: word.english, chinese: word.chinese, streak: 0 });
-  else existing.streak = 0;
+  if (!existing) {
+    mistakes.push({ english: word.english, chinese: word.chinese, streak: 0, errorCount: 1, permanent: false });
+  } else {
+    existing.streak = 0;
+    existing.errorCount = (existing.errorCount || 0) + 1;
+    if (existing.errorCount >= PERMANENT_THRESHOLD) {
+      existing.permanent = true;
+    }
+  }
   saveData();
 }
 

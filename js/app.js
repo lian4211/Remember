@@ -1,6 +1,6 @@
 // ==================== 应用主入口 ====================
 
-import { data, loadData, saveData, currentList, setCurrentList, getCurrentList, addWord, renameList, deleteList, getDueCount } from './data.js';
+import { data, loadData, saveData, currentList, setCurrentList, getCurrentList, addWord, renameList, deleteList, getDueCount, getAllDueCount, PERMANENT_THRESHOLD } from './data.js';
 import { goToPage, goHome, showModal, hideModal, showToast, onPageEnter } from './ui.js';
 import { initVoiceSettings, playVoice } from './voice.js';
 import { startECTest, playECVoice } from './test-ec.js';
@@ -17,6 +17,7 @@ import { renderQuizListPage, showQuizImportModal, loadBuiltinQuizzes } from './q
 import { renderJavaCrashPage } from './java-crash.js';
 import { renderJavaMistakesPage, getJavaMistakeCount } from './java-mistakes.js';
 import { renderSentencesPage, startStudy } from './sentences.js';
+import { renderStarredPage, startStarredTest } from './starred.js';
 
 const APP_VERSION = '2.6';
 
@@ -35,6 +36,7 @@ window.globalSearchStart = globalSearchStart;
 window.playVoice = playVoice;
 window.showQuizImportModal = showQuizImportModal;
 window.startStudy = startStudy;
+window.startStarredTest = startStarredTest;
 
 function init() {
   loadData();
@@ -193,6 +195,7 @@ function bindEvents() {
     else if (pageName === 'java-crash') renderJavaCrashPage();
     else if (pageName === 'java-mistakes') renderJavaMistakesPage();
     else if (pageName === 'sentences') renderSentencesPage();
+    else if (pageName === 'starred') renderStarredPage();
   });
 }
 
@@ -200,7 +203,7 @@ function bindEvents() {
 function renderHomePage() {
   refreshListSelect();
   renderPlanProgress();
-  const due = currentList ? getDueCount(currentList) : 0;
+  const due = getAllDueCount();
   const badge = document.getElementById('review-badge');
   if (badge) { badge.textContent = due; badge.style.display = due > 0 ? 'inline-flex' : 'none'; }
   document.getElementById('page-title').textContent = '单词背诵助手';
@@ -239,17 +242,31 @@ function renderWordListPage(filter = '') {
           <div style="margin-top:0.25rem;display:flex;gap:0.25rem;flex-wrap:wrap">
             ${w.phonetic ? `<span class="badge badge-primary">${esc(w.phonetic)}</span>` : ''}
             ${w.passed ? `<span class="badge badge-success">通过</span>` : ''}
+            ${w.starred ? `<span class="badge badge-warning">⭐</span>` : ''}
             ${w.nextReview ? `<span class="badge badge-warning">${w.nextReview}</span>` : ''}
           </div>
         </div>
         <div style="display:flex;gap:0.25rem;flex-shrink:0">
+          <button class="star-word-btn" data-idx="${idx}" style="font-size:1.1rem;border:none;background:none;cursor:pointer;padding:0.25rem" title="收藏">${w.starred ? '⭐' : '☆'}</button>
           <button class="btn-ghost" style="padding:0.25rem 0.5rem;font-size:0.75rem" onclick="window._ed=${idx};editWordDetail(${idx})">详情</button>
           <button class="btn-ghost" style="padding:0.25rem 0.5rem;font-size:0.75rem" onclick="window._ew=${idx};editWordHandler(${idx})">修改</button>
           <button class="btn-ghost" style="padding:0.25rem 0.5rem;font-size:0.75rem;color:var(--danger)" onclick="deleteWordHandler(${idx})">删除</button>
         </div>
       </div>
-    </div>`;
-  }).join('');
+    </div>`).join('');
+  // 绑定收藏按钮
+  document.querySelectorAll('.star-word-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const idx = parseInt(this.dataset.idx);
+      const w = currentList.words[idx];
+      if (!w) return;
+      w.starred = !w.starred;
+      saveData();
+      this.textContent = w.starred ? '⭐' : '☆';
+      showToast(w.starred ? '已收藏' : '取消收藏');
+    });
+  });
   window.editWordHandler = editWordHandlerFn;
   window.deleteWordHandler = deleteWordHandlerFn;
   window.editWordDetail = editWordDetailFn;
@@ -337,11 +354,39 @@ function renderMistakesList() {
   const d = document.getElementById('mistakes-list');
   const mistakes = mistakeTab === 'ec' ? (currentList?.ecMistakes||[]) : (currentList?.ceMistakes||[]);
   if (mistakes.length === 0) { d.innerHTML = '<p style="text-align:center;color:var(--text-muted);margin-top:2rem">暂无错题 🎉</p>'; return; }
-  d.innerHTML = mistakes.map(m =>
-    `<div class="app-card" style="padding:0.75rem;display:flex;justify-content:space-between;align-items:center">
-      <div><p style="font-weight:600">${esc(m.english)} - ${esc(m.chinese)}</p><p style="color:var(--text-secondary);font-size:0.75rem">连续正确: ${m.streak||0}/3</p></div>
-      <button class="btn-icon" onclick="playVoice('${esc(m.english)}')">🔊</button>
-    </div>`).join('');
+  // 分开永久错题和普通错题
+  const permanent = mistakes.filter(m => m.permanent).sort((a, b) => (b.errorCount || 1) - (a.errorCount || 1));
+  const normal = mistakes.filter(m => !m.permanent).sort((a, b) => (b.errorCount || 1) - (a.errorCount || 1));
+
+  let html = '';
+  if (permanent.length > 0) {
+    html += `<p style="font-weight:700;color:var(--danger);margin-bottom:0.5rem">🔴 永久错题（错误${PERMANENT_THRESHOLD}次以上，永不消除）</p>`;
+    html += permanent.map(m =>
+      `<div class="app-card" style="padding:0.75rem;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;background:var(--danger-bg);border-color:var(--danger)">
+        <div>
+          <p style="font-weight:600">${esc(m.english)} - ${esc(m.chinese)}</p>
+          <p style="color:var(--danger);font-size:0.75rem">
+            ❌ 错误 <strong>${m.errorCount || 1}</strong> 次 | ✅ 连续正确: ${m.streak || 0} 次
+          </p>
+        </div>
+        <button class="btn-icon" onclick="playVoice('${esc(m.english)}')">🔊</button>
+      </div>`).join('');
+  }
+  if (normal.length > 0) {
+    if (permanent.length > 0) html += `<p style="font-weight:600;margin:1rem 0 0.5rem;color:var(--text-secondary)">📋 普通错题</p>`;
+    html += normal.map(m =>
+      `<div class="app-card" style="padding:0.75rem;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <p style="font-weight:600">${esc(m.english)} - ${esc(m.chinese)}</p>
+          <p style="color:var(--text-secondary);font-size:0.75rem">
+            ❌ 错误 ${m.errorCount || 1} 次 | ✅ 连续正确: ${m.streak || 0} 次
+            ${(m.streak || 0) >= 7 ? ' 🎉 即将出库' : ''}
+          </p>
+        </div>
+        <button class="btn-icon" onclick="playVoice('${esc(m.english)}')">🔊</button>
+      </div>`).join('');
+  }
+  d.innerHTML = html;
 }
 
 // ==================== 导出 ====================

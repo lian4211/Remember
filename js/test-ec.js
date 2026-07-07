@@ -1,4 +1,5 @@
-// ==================== 英译汉测试模块 (v2) ====================
+// ==================== 英译汉测试模块 (v3) ====================
+// 增强错题：记录错误次数，不轻易移除
 
 import { currentList, saveData, data } from './data.js';
 import { goToPage, goHome, showModal, hideModal, showToast } from './ui.js';
@@ -8,7 +9,6 @@ import { fsrsAnswer } from './fsrs.js';
 import { updateStats } from './stats.js';
 import { showFlashcard } from './flashcard.js';
 
-// 安全播放（带静默失败）
 function safePlay(text) {
   try { playVoice(text); } catch(e) { console.log('TTS:', e); }
 }
@@ -22,6 +22,8 @@ let state = {
 export function startECTest() {
   if (!currentList) { showToast('请先选择一个列表'); return; }
   if (currentList.words.length < 4) { showToast('单词数不足4个'); return; }
+  // 确保错题记录有 errorCount 字段
+  currentList.ecMistakes.forEach(m => { if (m.errorCount === undefined) m.errorCount = 1; });
   state = {
     words: [...currentList.words].sort(() => Math.random() - 0.5),
     mistakes: [...currentList.ecMistakes],
@@ -36,7 +38,6 @@ function showECQuestion() {
   const fb = document.getElementById('ec-feedback');
   fb.textContent = ''; fb.className = '';
   state.buttonsEnabled = true;
-  // 恢复测试视图
   document.getElementById('ec-test-area').classList.remove('hidden');
   document.getElementById('ec-flashcard-area').classList.add('hidden');
 
@@ -50,18 +51,18 @@ function showECQuestion() {
     document.getElementById('ec-word').textContent = word.english;
     document.getElementById('ec-progress').textContent = `学习进度: ${state.currentIndex + 1}/${state.words.length}`;
     showWordDetail(word);
-    safePlay(word.english); // 自动朗读
+    safePlay(word.english);
   } else {
     if (state.reviewQueue.length === 0) {
       if (state.mistakes.length > 0) { prepareECReview(); return; }
       finishECTest(); return;
     }
-    const [word, streak] = state.reviewQueue[0];
-    state.correctAnswer = word.chinese;
-    document.getElementById('ec-word').textContent = word.english;
+    const entry = state.reviewQueue[0];
+    state.correctAnswer = entry.word.chinese;
+    document.getElementById('ec-word').textContent = entry.word.english;
     document.getElementById('ec-progress').textContent = `错题复习 - 剩余: ${state.reviewQueue.length}题`;
-    showWordDetail(word);
-    safePlay(word.english);
+    showWordDetail(entry.word);
+    safePlay(entry.word.english);
   }
   generateECOptions();
 }
@@ -90,13 +91,17 @@ function generateECOptions() {
   });
 }
 
-const MAX_RETRIES = 5;
+const MISTAKE_REVIEW_MAX = 5; // 同一错题最多复习5轮
+
 function prepareECReview() {
-  state.reviewQueue = state.mistakes.map(m => [
-    currentList.words.find(w => w.english === m.english && w.chinese === m.chinese) || { english: m.english, chinese: m.chinese },
-    m.streak || 0,
-    0
-  ]).sort(() => Math.random() - 0.5);
+  // 按错误次数降序排列（错得多的优先）
+  state.mistakes.sort((a, b) => (b.errorCount || 1) - (a.errorCount || 1));
+  state.reviewQueue = [];
+  state.mistakes.forEach(m => {
+    const word = currentList.words.find(w => w.english === m.english && w.chinese === m.chinese)
+      || { english: m.english, chinese: m.chinese };
+    state.reviewQueue.push({ word, streak: m.streak || 0, errorCount: m.errorCount || 1, retries: 0 });
+  });
   showECQuestion();
 }
 
@@ -106,26 +111,28 @@ function checkECAnswer(index, btnEl) {
 
   const isCorrect = state.options[index] === state.correctAnswer;
 
-  // 标记所有按钮
   document.querySelectorAll('#ec-options .option-btn').forEach((btn, i) => {
     btn.disabled = true;
     if (state.options[i] === state.correctAnswer) btn.classList.add('correct');
   });
   if (!isCorrect && btnEl) btnEl.classList.add('wrong');
 
-  // 获取当前单词
   let word;
   if (state.phase === 'learning') word = state.words[state.currentIndex];
-  else word = state.reviewQueue[0]?.[0];
+  else word = state.reviewQueue[0]?.word;
 
-  // 算法分发
   if (word) {
     if (data.algorithm === 'fsrs') fsrsAnswer(word, isCorrect);
     else sm2Answer(word, isCorrect);
 
     if (isCorrect && !word.passed) {
-      word.passed = true;
-      updateStats('new-word', { count: 1 });
+      if (data.algorithm === 'sm2' && (word.interval >= 21 || word.repetitions >= 5)) {
+        word.passed = true;
+        updateStats('new-word', { count: 1 });
+      } else if (data.algorithm === 'fsrs' && word.stability >= 30) {
+        word.passed = true;
+        updateStats('new-word', { count: 1 });
+      }
     }
   }
 
@@ -136,55 +143,59 @@ function checkECAnswer(index, btnEl) {
     fb.className = 'feedback-text feedback-correct';
     updateStats('review', { count: 1, correct: true });
 
-    if (state.phase === 'learning') state.currentIndex++;
-    else {
-      const [rw, streak] = state.reviewQueue.shift();
-      const newStreak = streak + 1;
-      if (newStreak >= 3) state.mistakes = state.mistakes.filter(m => !(m.english === rw.english && m.chinese === rw.chinese));
-      else { const m = state.mistakes.find(x => x.english === rw.english && x.chinese === rw.chinese); if (m) m.streak = newStreak; state.reviewQueue.push([rw, newStreak, 0]); }
+    if (state.phase === 'learning') {
+      state.currentIndex++;
+    } else {
+      const entry = state.reviewQueue.shift();
+      entry.streak++;
+      // 连续正确 >= 7 次则移出错题库（永久错题不移除）
+      const masterMistake = state.mistakes.find(m => m.english === entry.word.english && m.chinese === entry.word.chinese);
+      if (entry.streak >= 7 && masterMistake && !masterMistake.permanent) {
+        state.mistakes = state.mistakes.filter(m => m !== masterMistake);
+      } else if (masterMistake) {
+        masterMistake.streak = entry.streak;
+        // 即使已移除错题池，仍然加入队尾再练一次巩固
+        state.reviewQueue.push(entry);
+      }
     }
     currentList.ecMistakes = state.mistakes;
     saveData();
-    // 延长：1500ms 后下一题
     setTimeout(showECQuestion, 1500);
   } else {
     fb.textContent = `❌ 错误！正确答案: ${state.correctAnswer}`;
     fb.className = 'feedback-text feedback-wrong';
     updateStats('review', { count: 1, correct: false });
 
-    // 错误处理
     if (state.phase === 'learning') {
       const w = state.words[state.currentIndex];
       const ex = state.mistakes.find(m => m.english === w.english && m.chinese === w.chinese);
-      if (!ex) state.mistakes.push({ english: w.english, chinese: w.chinese, streak: 0 });
-      else ex.streak = 0;
+      if (!ex) state.mistakes.push({ english: w.english, chinese: w.chinese, streak: 0, errorCount: 1, permanent: false });
+      else { ex.streak = 0; ex.errorCount = (ex.errorCount || 1) + 1; if (ex.errorCount >= 5) ex.permanent = true; }
       state.currentIndex++;
     } else {
-      const [rw, , retries = 0] = state.reviewQueue.shift();
-      const m = state.mistakes.find(x => x.english === rw.english && x.chinese === rw.chinese);
-      if (m) m.streak = 0;
-      if (retries < MAX_RETRIES) state.reviewQueue.push([rw, 0, retries + 1]);
+      const entry = state.reviewQueue.shift();
+      const masterMistake = state.mistakes.find(m => m.english === entry.word.english && m.chinese === entry.word.chinese);
+      if (masterMistake) { masterMistake.streak = 0; masterMistake.errorCount = (masterMistake.errorCount || 1) + 1; if (masterMistake.errorCount >= 5) masterMistake.permanent = true; }
+      if (entry.retries < MISTAKE_REVIEW_MAX) {
+        entry.retries++; entry.streak = 0;
+        state.reviewQueue.push(entry);
+      }
     }
     currentList.ecMistakes = state.mistakes;
     saveData();
 
-    // 延长：3000ms 后显示闪卡
     setTimeout(() => {
       showFlashcardCard(word || { english: state.correctAnswer, chinese: state.correctAnswer });
     }, 2500);
   }
 }
 
-/** 显示闪卡 */
 function showFlashcardCard(word) {
   document.getElementById('ec-test-area').classList.add('hidden');
   document.getElementById('ec-flashcard-area').classList.remove('hidden');
   document.getElementById('ec-feedback').textContent = '';
   document.getElementById('ec-feedback').className = '';
-
-  // 确保 word 有完整数据
   const fullWord = currentList?.words.find(w => w.english === word.english) || word;
-
   showFlashcard(fullWord, document.getElementById('ec-flashcard-area'), () => {
     showECQuestion();
   });
@@ -193,9 +204,15 @@ function showFlashcardCard(word) {
 function finishECTest() {
   const timeSpent = Math.round((Date.now() - state.startTime) / 1000);
   updateStats('time', { seconds: timeSpent });
-  showModal('学习完成', '英译汉学习已全部完成！🎉', [
-    { text: '返回首页', onClick: () => { hideModal(); goHome(); } }
-  ]);
+  const totalErrors = state.mistakes.reduce((sum, m) => sum + (m.errorCount || 1), 0);
+  showModal('学习完成',
+    `<div style="text-align:center">
+      <p style="font-size:2.5rem;margin-bottom:0.5rem">🎉</p>
+      <p style="font-weight:600">英译汉学习已全部完成！</p>
+      <p style="color:var(--text-secondary);font-size:0.875rem;margin-top:0.5rem">当前错题: ${state.mistakes.length} 个 | 总错误: ${totalErrors} 次</p>
+    </div>`,
+    [{ text: '返回首页', onClick: () => { hideModal(); goHome(); } }]
+  );
 }
 
 export function playECVoice() {
