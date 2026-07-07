@@ -253,7 +253,8 @@ function renderWordListPage(filter = '') {
           <button class="btn-ghost" style="padding:0.25rem 0.5rem;font-size:0.75rem;color:var(--danger)" onclick="deleteWordHandler(${idx})">删除</button>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   // 绑定收藏按钮
   document.querySelectorAll('.star-word-btn').forEach(btn => {
     btn.addEventListener('click', function(e) {
